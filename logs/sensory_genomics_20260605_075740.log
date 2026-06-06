@@ -1,3 +1,0 @@
-2026-06-05 07:57:40.753 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260605_075740.log
-2026-06-05 07:57:40.769 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260605_075740.log
-2026-06-05 07:57:40.770 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260605_075740.log

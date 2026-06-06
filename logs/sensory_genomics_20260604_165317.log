@@ -1,5 +1,0 @@
-2026-06-04 16:53:17.500 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_165317.log
-2026-06-04 16:53:17.500 [INFO] scripts.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_165317.log
-2026-06-04 16:53:17.500 [INFO] scripts.vep.client: VEP annotation started: 3 variants, batch_size=200
-2026-06-04 16:53:20.658 [INFO] scripts.vep.client: VEP batch 1/1 done
-2026-06-04 16:53:20.658 [INFO] scripts.vep.client: VEP annotation completed: 3 results

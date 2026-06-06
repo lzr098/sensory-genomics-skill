@@ -1,7 +1,0 @@
-2026-06-06 15:16:05.464 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151605.log
-2026-06-06 15:16:05.501 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151605.log
-2026-06-06 15:16:05.502 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151605.log
-2026-06-06 15:16:05.504 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151605.log
-2026-06-06 15:16:05.542 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151605.log
-2026-06-06 15:16:06.520 [INFO] src.config_loader: Config loaded from config.yaml
-2026-06-06 15:16:07.262 [INFO] src.gene_sets.loader: Loaded gene sets: 391 genes across 9 subsystems

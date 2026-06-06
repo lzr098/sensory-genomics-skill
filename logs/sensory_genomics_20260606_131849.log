@@ -1,6 +1,0 @@
-2026-06-06 13:18:49.587 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131849.log
-2026-06-06 13:18:49.630 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131849.log
-2026-06-06 13:18:49.632 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131849.log
-2026-06-06 13:18:49.636 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131849.log
-2026-06-06 13:18:49.719 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131849.log
-2026-06-06 13:18:51.684 [INFO] src.config_loader: Config loaded from config.yaml

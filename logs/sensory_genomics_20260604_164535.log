@@ -1,7 +1,0 @@
-2026-06-04 16:45:35.277 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164535.log
-2026-06-04 16:45:35.278 [INFO] scripts.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164535.log
-2026-06-04 16:45:35.278 [INFO] scripts.vep.client: VEP annotation started: 2 variants, batch_size=200
-2026-06-04 16:45:36.483 [ERROR] scripts.vep.client: VEP HTTP 400 for https://rest.ensembl.org/vep/human/region/13:20189560-20189560:1/T?content-type=application/json: {"error":"request for consequence of [T] matches reference [T]"}
-2026-06-04 16:45:36.546 [ERROR] scripts.vep.client: VEP HTTP 400 for https://rest.ensembl.org/vep/human/region/1:94120724-94120724:1/G?content-type=application/json: {"error":"request for consequence of [G] matches reference [G]"}
-2026-06-04 16:45:36.546 [INFO] scripts.vep.client: VEP batch 1/1 done
-2026-06-04 16:45:36.546 [INFO] scripts.vep.client: VEP annotation completed: 2 results

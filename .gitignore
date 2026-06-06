@@ -1,0 +1,25 @@
+# Ignore runtime artifacts
+logs/
+output/
+cache.sqlite
+*.pyc
+__pycache__/
+.venv/
+
+# Ignore large data files that should be managed via Git LFS
+assets/data/sensory_variants_vep.sqlite
+assets/data/*.bed
+references/vep_cache/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Test artifacts
+.pytest_cache/
+*.egg-info/
+dist/
+build/

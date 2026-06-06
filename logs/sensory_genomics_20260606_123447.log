@@ -1,7 +1,0 @@
-2026-06-06 12:34:47.789 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123447.log
-2026-06-06 12:34:47.823 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123447.log
-2026-06-06 12:34:47.824 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123447.log
-2026-06-06 12:34:47.825 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123447.log
-2026-06-06 12:35:01.692 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 6931 intervals across 23 chromosomes (bisect indexed)
-2026-06-06 12:35:01.703 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 382 intervals across 23 chromosomes (bisect indexed)
-2026-06-06 12:36:20.615 [INFO] src.gene_sets.filter: Sensory filter: 22507 / 23821 variants retained

@@ -1,3 +1,0 @@
-2026-06-06 15:16:24.600 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151624.log
-2026-06-06 15:16:24.601 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_151624.log
-2026-06-06 15:16:24.606 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
