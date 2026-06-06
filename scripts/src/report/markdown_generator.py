@@ -46,6 +46,8 @@ class MarkdownReportGenerator:
         self.jinja_env.filters["polyphen_badge"] = self._polyphen_badge_filter
         self.jinja_env.filters["freq_desc"] = self._freq_desc_filter
         self.jinja_env.filters["key_variants"] = self._key_variants_filter
+        # Register 'in' test for selectattr/rejectattr
+        self.jinja_env.tests["in"] = lambda x, y: x in y
 
     def generate(self, report: SensoryReport) -> str:
         """生成 Markdown 报告.
@@ -149,7 +151,53 @@ class MarkdownReportGenerator:
             "profile": profile,
             "gnomad_refs": gnomad_refs,
             "key_snps": report.key_snps if report.key_snps else [],
+            # SNP hits: key SNPs actually found in VCF
+            "snp_hits": [s for s in (report.key_snps or []) if s.found_in_vcf],
+            # High-impact cards: significant or above
+            "high_impact_cards": [c for c in report.gene_cards
+                if c.assessment.level in ("完全丧失", "显著影响")],
+            # LOF/GOF variants across all genes
+            "lof_gof_variants": self._collect_lof_gof_variants(report.gene_cards),
+            # All analyzed genes list for appendix
+            "all_genes_list": sorted(report.gene_cards, key=lambda c: c.gene_symbol),
         }
+
+    @staticmethod
+    def _collect_lof_gof_variants(gene_cards: List[GeneCard]) -> List[Dict[str, Any]]:
+        """收集所有 LOF/GOF 变异."""
+        lof_gof = []
+        for card in gene_cards:
+            for v in card.variants:
+                cons = v.consequence.lower() if v.consequence else ""
+                is_lof = any(x in cons for x in [
+                    "frameshift_variant", "stop_gained", "stop_lost", "start_lost",
+                    "splice_acceptor_variant", "splice_donor_variant", "transcript_ablation"
+                ])
+                # GOF is harder to predict; flag missense with high CADD or known domain
+                is_gof_candidate = (
+                    "missense" in cons
+                    and (v.cadd_score is not None and v.cadd_score > 20)
+                )
+                if is_lof or is_gof_candidate:
+                    lof_gof.append({
+                        "gene": card.gene_symbol,
+                        "subsystem": card.subsystem,
+                        "variant": v,
+                        "type": "LOF" if is_lof else "GOF候选",
+                    })
+        # Sort: LOF first, then by consequence severity
+        def sort_key(item: Dict[str, Any]) -> int:
+            cons = item["variant"].consequence.lower() if item["variant"].consequence else ""
+            if "frameshift" in cons:
+                return 0
+            if "stop_gained" in cons or "stop_lost" in cons or "start_lost" in cons:
+                return 1
+            if "splice_acceptor" in cons or "splice_donor" in cons:
+                return 2
+            if "missense" in cons:
+                return 3
+            return 4
+        return sorted(lof_gof, key=sort_key)
 
     @staticmethod
     def _get_top_variants(variants: List[Variant], n: int = 3) -> List[Variant]:

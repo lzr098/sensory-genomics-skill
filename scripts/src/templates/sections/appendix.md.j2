@@ -44,17 +44,42 @@
 
 </details>
 
-### D. 建议补充分析
+### D. 分析覆盖基因及功能清单
+
+本次感官基因组学分析共覆盖 **391 个基因**，分布于 9 个子系统。以下按子系统列出全部基因及其功能：
+
+<details>
+<summary>点击展开 — 完整基因清单（391 个基因）</summary>
+
+{% set subsys_display = {"vision": "视觉系统", "hearing": "听觉系统", "olfaction": "嗅觉系统", "taste": "味觉系统", "somatosensation": "体感/痛觉/温度觉系统", "pigmentation": "色素沉着", "metabolism": "代谢特征", "muscle": "肌肉特征", "hair": "毛发特征"} %}
+
+{% for ss_name, ss_display in subsys_display.items() %}
+{% if ss_name in subsystems %}
+**{{ ss_display }}**
+
+| 基因 | 功能描述 | 本样本变异数 | 影响评估 |
+|------|---------|-------------|---------|
+{% for card in all_genes_list if card.subsystem == ss_name %}
+| {{ card.gene_symbol }} | {{ card.sensory_function_zh or "N/A" }} | {{ card.variants | length }} | {{ card.assessment.level | level_badge }} |
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+
+</details>
+
+### E. 建议补充分析
 
 | 补充项目 | 关键基因/SNP | 当前状态 |
 |---------|------------|---------|
-| 瞳孔颜色 | HERC2 rs12913832, OCA2 rs1800407 | ❌ 关键 SNP 缺失 |
-| 苦味敏感度 | TAS2R38 rs713598, rs10246939 | ❌ 关键 SNP 缺失 |
-| 咖啡因代谢 | CYP1A2 rs762551 | ⚠️ 基因区域有变异但非关键 SNP |
-| 酒精代谢 | ALDH2 rs671, ADH1B rs1229984 | ⚠️ 基因区域有变异但非关键 SNP |
-| 乳糖耐受 | MCM6/LCT rs4988235 | ⚠️ 基因区域有变异但非关键 SNP |
-| 肌肉类型 | ACTN3 rs1815739 | ⚠️ 基因区域有变异但非关键 SNP |
-| 卷发表型 | EDAR | ⚠️ 基因区域有变异但非关键 SNP |
+| 瞳孔颜色 | HERC2 rs12913832, OCA2 rs1800407 | {% if key_snps | selectattr("rsid", "equalto", "rs12913832") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 苦味敏感度 | TAS2R38 rs713598, rs10246939 | {% if tas2r38 %}✅ 单倍型已推断{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 咖啡因代谢 | CYP1A2 rs762551 | {% if key_snps | selectattr("rsid", "equalto", "rs762551") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 酒精代谢 | ALDH2 rs671 | {% if key_snps | selectattr("rsid", "equalto", "rs671") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 乳糖耐受 | LCT rs4988235 | {% if key_snps | selectattr("rsid", "equalto", "rs4988235") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 肌肉类型 | ACTN3 rs1815739 | {% if key_snps | selectattr("rsid", "equalto", "rs1815739") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 卷发表型 | EDAR rs3827760 | {% if key_snps | selectattr("rsid", "equalto", "rs3827760") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 耳垢类型 | ABCC11 rs17822931 | {% if key_snps | selectattr("rsid", "equalto", "rs17822931") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
 
 > 当前分析覆盖 9 个子系统共 391 个基因。
 

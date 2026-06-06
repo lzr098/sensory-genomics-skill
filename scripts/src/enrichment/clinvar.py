@@ -1,16 +1,93 @@
 """ClinVar 查询客户端.
 
-通过 NCBI E-utilities 查询 ClinVar 记录。
+通过本地 ClinVar VCF (优先) 或 NCBI E-utilities (fallback) 查询 ClinVar 记录。
+
+本地 VCF 路径: /Users/zhaorongli/WorkBuddy/2026-05-24-17-27-51/tools/clinvar.vcf.gz
 """
 
-from typing import Any, Dict
+import subprocess
+from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 from src.enrichment.cache import CacheManager
 from src.enrichment.client_base import AsyncApiClient
 
 
+_LOCAL_CLINVAR_VCF = Path("/Users/zhaorongli/WorkBuddy/2026-05-24-17-27-51/tools/clinvar.vcf.gz")
+
+
+def _bcftools_query(args: List[str]) -> str:
+    """Run bcftools query and return stdout."""
+    cmd = ["bcftools"] + args
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    if result.returncode != 0:
+        raise RuntimeError(f"bcftools failed: {result.stderr}")
+    return result.stdout
+
+
+def _query_clinvar_by_gene(gene_symbol: str) -> Optional[Dict[str, Any]]:
+    """Query local ClinVar VCF for all records matching a gene symbol.
+
+    Uses bcftools to filter INFO/GENEINFO field for the given gene.
+    Returns structured dict compatible with NCBI API response format.
+    """
+    if not _LOCAL_CLINVAR_VCF.exists():
+        return None
+
+    fmt = "%CHROM\t%POS\t%ID\t%REF\t%ALT\t%CLNSIG\t%CLNREVSTAT\t%CLNDN\t%GENEINFO\t%ALLELEID\t%CLNHGVS\t%MC\t%ORIGIN\t%RS\n"
+
+    # Filter by GENEINFO containing the gene symbol followed by colon
+    # GENEINFO format: SYMBOL:ENTREZ_ID|SYMBOL2:ENTREZ_ID2|...
+    filter_expr = f'INFO/GENEINFO ~ "{gene_symbol}:"'
+
+    try:
+        stdout = _bcftools_query([
+            "query", "-f", fmt,
+            "-i", filter_expr,
+            str(_LOCAL_CLINVAR_VCF),
+        ])
+    except RuntimeError:
+        return None
+
+    lines = [l for l in stdout.strip().split("\n") if l.strip()]
+    if not lines:
+        return None
+
+    records = []
+    for line in lines:
+        parts = line.split("\t")
+        if len(parts) < 14:
+            continue
+        (
+            chrom, pos, vid, ref, alt, clnsig, clnrevstat, clndn,
+            geneinfo, alleleid, clnhgvs, mc, origin, rs
+        ) = parts
+
+        records.append({
+            "uid": vid,
+            "title": clnhgvs if clnhgvs != "." else f"{chrom}:{pos} {ref}>{alt}",
+            "clinical_significance": {
+                "description": clnsig if clnsig != "." else "Unknown",
+                "review_status": clnrevstat if clnrevstat != "." else "Unknown",
+            },
+            "gds": clndn if clndn != "." else "",
+            "position": f"{chrom}:{pos}",
+            "ref": ref,
+            "alt": alt,
+            "geneinfo": geneinfo,
+        })
+
+    return {
+        "found": True,
+        "gene": gene_symbol,
+        "count": len(records),
+        "records": records,
+        "source": "local_vcf",
+    }
+
+
 class ClinVarClient(AsyncApiClient):
-    """ClinVar E-utilities 客户端."""
+    """ClinVar E-utilities 客户端（带本地 VCF 优先查询）."""
 
     def __init__(self, cache: CacheManager, rate_limit: int = 3, timeout: int = 30) -> None:
         """初始化 ClinVar 客户端.
@@ -29,7 +106,7 @@ class ClinVarClient(AsyncApiClient):
         )
 
     async def _fetch(self, key: str) -> Dict[str, Any]:
-        """查询 ClinVar 记录.
+        """查询 ClinVar 记录 (NCBI API fallback).
 
         Args:
             key: 基因符号或 rsID。
@@ -50,7 +127,7 @@ class ClinVarClient(AsyncApiClient):
 
         id_list = search_data.get("esearchresult", {}).get("idlist", [])
         if not id_list:
-            return {"found": False, "gene": key}
+            return {"found": False, "gene": key, "source": "ncbi_api"}
 
         # Step 2: esummary 获取摘要
         ids = ",".join(id_list)
@@ -78,10 +155,13 @@ class ClinVarClient(AsyncApiClient):
             "gene": key,
             "count": len(records),
             "records": records,
+            "source": "ncbi_api",
         }
 
     async def query_gene(self, gene_symbol: str) -> Dict[str, Any]:
         """公开接口：查询 ClinVar 记录.
+
+        优先使用本地 VCF 查询（离线、零延迟），本地未找到时 fallback 到 NCBI API。
 
         Args:
             gene_symbol: 基因符号。
@@ -89,4 +169,10 @@ class ClinVarClient(AsyncApiClient):
         Returns:
             ClinVar 数据字典。
         """
+        # Try local VCF first
+        local_result = _query_clinvar_by_gene(gene_symbol)
+        if local_result:
+            return local_result
+
+        # Fallback to NCBI API
         return await self.query(gene_symbol)

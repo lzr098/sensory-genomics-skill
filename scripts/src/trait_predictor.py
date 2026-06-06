@@ -32,6 +32,8 @@ class PersonalTraitPredictor:
         predictions.append(self._predict_caffeine_metabolism())
         predictions.append(self._predict_alcohol_metabolism())
         predictions.append(self._predict_lactose_tolerance())
+        predictions.append(self._predict_hair_texture())
+        predictions.append(self._predict_earwax_type())
         return [p for p in predictions if p is not None]
 
     def _get_snp(self, rsid: str) -> Optional[KeySNPResult]:
@@ -482,6 +484,106 @@ class PersonalTraitPredictor:
         return PersonalTraitPrediction(
             trait="乳糖耐受",
             subsystem="metabolism",
+            prediction=prediction,
+            confidence=confidence,
+            evidence="；".join(evidence),
+            key_genes=list(set(key_genes)),
+            key_snps=list(set(key_snps)),
+        )
+
+    def _predict_hair_texture(self) -> Optional[PersonalTraitPrediction]:
+        """预测毛发卷曲程度.
+
+        核心逻辑：
+        - EDAR rs3827760：GG/AG → 直发/粗发（东亚典型）；AA → 卷发倾向
+        """
+        edar_snp = self._get_snp("rs3827760")
+        edar_gene = self._get_gene("EDAR")
+
+        evidence = []
+        key_genes = []
+        key_snps = []
+
+        if edar_snp:
+            key_snps.append(edar_snp.rsid)
+            key_genes.append("EDAR")
+            gt = edar_snp.inferred_genotype
+            if "G" in gt:
+                prediction = "直发/粗发倾向 — 东亚典型表型"
+                confidence = "中高"
+                evidence.append(f"EDAR rs3827760 {gt} → 直发/粗发等位基因携带（东亚常见）")
+            else:
+                prediction = "卷发/波浪发倾向"
+                confidence = "中高"
+                evidence.append(f"EDAR rs3827760 {gt} → 卷发参考等位基因纯合（非东亚常见型）")
+        elif edar_gene:
+            key_genes.append("EDAR")
+            if edar_gene.assessment.level in ("完全丧失", "显著影响"):
+                prediction = "EDAR 功能显著受损，毛发/汗腺发育可能异常"
+                confidence = "中"
+                evidence.append("EDAR 检出功能显著受损变异")
+            else:
+                prediction = "直发/粗发倾向 — 东亚典型表型（参考型推断）"
+                confidence = "中"
+                evidence.append("EDAR 未检出显著功能变异，参考型推断")
+        else:
+            prediction = "毛发形态未知（EDAR 数据不足）"
+            confidence = "低"
+            evidence.append("EDAR 基因数据不足")
+
+        return PersonalTraitPrediction(
+            trait="毛发卷曲",
+            subsystem="hair",
+            prediction=prediction,
+            confidence=confidence,
+            evidence="；".join(evidence),
+            key_genes=list(set(key_genes)),
+            key_snps=list(set(key_snps)),
+        )
+
+    def _predict_earwax_type(self) -> Optional[PersonalTraitPrediction]:
+        """预测耳垢类型.
+
+        核心逻辑：
+        - ABCC11 rs17822931：AA → 干耳垢（东亚典型）；GG/GA → 湿耳垢
+        """
+        abcc11_snp = self._get_snp("rs17822931")
+        abcc11_gene = self._get_gene("ABCC11")
+
+        evidence = []
+        key_genes = []
+        key_snps = []
+
+        if abcc11_snp:
+            key_snps.append(abcc11_snp.rsid)
+            key_genes.append("ABCC11")
+            gt = abcc11_snp.inferred_genotype
+            if "A" in gt:
+                prediction = "干耳垢 — 东亚典型表型"
+                confidence = "中高"
+                evidence.append(f"ABCC11 rs17822931 {gt} → 干耳垢等位基因携带（东亚常见）")
+            else:
+                prediction = "湿耳垢"
+                confidence = "中高"
+                evidence.append(f"ABCC11 rs17822931 {gt} → 湿耳垢参考等位基因纯合")
+        elif abcc11_gene:
+            key_genes.append("ABCC11")
+            if abcc11_gene.assessment.level in ("完全丧失", "显著影响"):
+                prediction = "ABCC11 功能显著受损，耳垢类型/体味可能异常"
+                confidence = "中"
+                evidence.append("ABCC11 检出功能显著受损变异")
+            else:
+                prediction = "干耳垢倾向 — 东亚典型表型（参考型推断）"
+                confidence = "中"
+                evidence.append("ABCC11 未检出显著功能变异，参考型推断")
+        else:
+            prediction = "耳垢类型未知（ABCC11 数据不足）"
+            confidence = "低"
+            evidence.append("ABCC11 基因数据不足")
+
+        return PersonalTraitPrediction(
+            trait="耳垢类型",
+            subsystem="hair",
             prediction=prediction,
             confidence=confidence,
             evidence="；".join(evidence),

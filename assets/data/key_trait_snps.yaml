@@ -146,3 +146,41 @@ snps:
         label: "肥皂味敏感"
         description: "纯合变异等位基因，OR6A2 可能对醛类气味分子异常敏感，感知肥皂味"
     notes: "OR6A2 附近 GWAS 信号位点，与香菜'肥皂味'感知相关，T 为参考等位基因"
+
+  # === 毛发卷曲 ===
+  rs3827760:
+    gene: EDAR
+    chrom: "2"
+    pos: 109513601
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "卷发倾向"
+        description: "EDAR 参考等位基因，与卷发/波浪发相关，非东亚常见型"
+      AG:
+        label: "直发/卷发中间型"
+        description: "杂合状态，毛发形态介于直发与卷发之间"
+      GG:
+        label: "直发/粗发/汗腺发达"
+        description: "EDAR 370A 变异纯合，东亚典型等位基因，与直发、粗发、汗腺发达、乳腺密度增加相关"
+    notes: "EDAR Val370Ala (V370A)，G 等位基因是东亚人群的特征性衍生等位基因（频率>80%），与直发、粗发、汗腺发达等表型强相关"
+
+  # === 耳垢类型 ===
+  rs17822931:
+    gene: ABCC11
+    chrom: "16"
+    pos: 48224242
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "湿耳垢"
+        description: "ABCC11 参考等位基因，耳垢为湿润型，腋下体味较明显"
+      GA:
+        label: "湿耳垢"
+        description: "杂合状态，通常表现为湿耳垢"
+      AA:
+        label: "干耳垢"
+        description: "ABCC11 功能缺失等位基因纯合，耳垢为干燥片状，腋下体味较轻，东亚人群中高频"
+    notes: "ABCC11 Gly180Arg (G180R)，A 等位基因导致 ABCC11 功能丧失，与干耳垢、轻度体味相关，在东亚人群中频率约80-95%"
