@@ -1,0 +1,6 @@
+2026-06-04 16:35:10.702 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163510.log
+2026-06-04 16:35:10.714 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:35:10.717 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:35:10.719 [INFO] src.config_loader: Config loaded from /Users/zhaorongli/.workbuddy/skills/sensory-genomics/config.yaml
+2026-06-04 16:35:10.725 [INFO] src.config_loader: Config loaded from /private/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/pytest-of-root/pytest-8/test_load_empty_yaml0/empty.yaml
+2026-06-04 16:35:10.726 [INFO] src.config_loader: Config loaded from /private/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/pytest-of-root/pytest-8/test_custom_values0/custom.yaml

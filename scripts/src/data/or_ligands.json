@@ -1,0 +1,71 @@
+{
+  "description": "OR 基因已知配体映射表（Tier A）。记录已有文献报道的 OR-配体对应关系。",
+  "ligands": [
+    {
+      "gene_symbol": "OR2T11",
+      "ligand_zh": "甲硫醇 / 二甲基硫醚",
+      "odor_description_zh": "鱼腥味、葱蒜味、海洋气味",
+      "reference": "Mainland et al., Nature Neuroscience 2015"
+    },
+    {
+      "gene_symbol": "OR7D4",
+      "ligand_zh": "雄烯酮（5α-androst-16-en-3-one）",
+      "odor_description_zh": "猪骚味、尿骚味、麝香",
+      "reference": "Keller et al., Nature 2007"
+    },
+    {
+      "gene_symbol": "OR2J3",
+      "ligand_zh": "薄荷醇",
+      "odor_description_zh": "薄荷清凉气味",
+      "reference": "McRae et al., Chemical Senses 2012"
+    },
+    {
+      "gene_symbol": "OR5A1",
+      "ligand_zh": "β-紫罗兰酮",
+      "odor_description_zh": "紫罗兰花香、覆盆子",
+      "reference": "Jaeger et al., Chemical Senses 2013"
+    },
+    {
+      "gene_symbol": "OR6A2",
+      "ligand_zh": "香菜醛（E-2-癸烯醛）",
+      "odor_description_zh": "香菜/肥皂味",
+      "reference": "Eriksson et al., Flavour 2012"
+    },
+    {
+      "gene_symbol": "OR2B11",
+      "ligand_zh": "多种花香类化合物",
+      "odor_description_zh": "花香",
+      "reference": "Sanz et al., BMC Genomics 2005"
+    },
+    {
+      "gene_symbol": "OR1A1",
+      "ligand_zh": "香茅醛",
+      "odor_description_zh": "柠檬/柑橘类气味",
+      "reference": "Braun et al., Journal of Biological Chemistry 2010"
+    },
+    {
+      "gene_symbol": "OR1G1",
+      "ligand_zh": "多种脂肪醛",
+      "odor_description_zh": "脂肪/蜡质气味",
+      "reference": "Braun et al., Journal of Biological Chemistry 2010"
+    },
+    {
+      "gene_symbol": "OR2AT4",
+      "ligand_zh": "檀香油醇（Sandalore）",
+      "odor_description_zh": "檀香木香气",
+      "reference": "Busse et al., Journal of Investigative Dermatology 2014"
+    },
+    {
+      "gene_symbol": "OR51E1",
+      "ligand_zh": "丙酸",
+      "odor_description_zh": "奶酪/酸腐味",
+      "reference": "Braun et al., European Journal of Cell Biology 2007"
+    },
+    {
+      "gene_symbol": "OR51E2",
+      "ligand_zh": "吲哚 / 粪臭素",
+      "odor_description_zh": "花香（低浓度）/ 粪便味（高浓度）",
+      "reference": "Gelis et al., Journal of Biological Chemistry 2016"
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{# 视觉系统章节 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+## 2. 视觉系统
+
+视觉系统负责光信号的接收、传导与处理。本章节涵盖色觉、光信号传导、黄斑感光细胞、晶状体角膜及白化病相关基因的分析。
+
+> ⚠️ **已知局限**：本分析仅覆盖单核苷酸变异（SNV）和小片段插入缺失（indel），**未检测拷贝数变异（CNV）和基因重组**。对于 OPN1LW/OPN1MW 基因，大片段缺失/重复和基因重组是色觉异常的重要原因，因此本章节的色觉分析可能不完整。
+
+### 2.1 色觉
+
+色觉由视网膜视锥细胞的三种视蛋白（红敏、绿敏、蓝敏）共同实现。
+
+{% for card in gene_cards if card.gene_symbol in ["OPN1LW", "OPN1MW", "OPN1SW"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 OPN1LW/OPN1MW/OPN1SW 上发现需要关注的变异。*
+{% endfor %}
+
+### 2.2 光信号传导
+
+光信号传导通路负责将光子信号转化为神经电信号。
+
+{% for card in gene_cards if card.gene_symbol in ["RHO", "PDE6A"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 RHO/PDE6A 上发现需要关注的变异。*
+{% endfor %}
+
+### 2.3 黄斑感光细胞
+
+黄斑区感光细胞负责中央视力与高分辨率视觉。
+
+{% for card in gene_cards if card.gene_symbol in ["ABCA4", "EYS"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 ABCA4/EYS 上发现需要关注的变异。*
+{% endfor %}
+
+### 2.4 晶状体与角膜
+
+晶状体透明度和角膜发育相关基因。
+
+{% for card in gene_cards if card.gene_symbol in ["GJA8", "CRYAA"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 GJA8/CRYAA 上发现需要关注的变异。*
+{% endfor %}
+
+### 2.5 白化病相关视力
+
+黑色素合成相关基因影响虹膜色素沉着和视力发育。
+
+{% for card in gene_cards if card.gene_symbol in ["OCA2", "TYRP1"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 OCA2/TYRP1 上发现需要关注的变异。*
+{% endfor %}
+
+---

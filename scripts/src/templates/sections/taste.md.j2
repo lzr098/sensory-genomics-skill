@@ -1,0 +1,72 @@
+{# 味觉系统章节 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+## 5. 味觉系统
+
+味觉系统负责甜、咸、酸、苦、鲜五种基本味觉的感知。味觉受体基因型与个体味觉偏好和感知阈值密切相关。
+
+> ⚠️ **已知局限**：味觉能力受基因、年龄、饮食习惯、吸烟、药物等多因素影响，基因型仅解释部分个体差异。
+
+### 5.1 苦味感知 — TAS2R38 Haplotype 分析
+
+TAS2R38 是决定苯硫脲（PTC）和丙硫氧嘧啶（PROP）等苦味化合物感知能力的关键基因。
+
+{% if tas2r38 and tas2r38.diplotype %}
+| SNP | 基因型 |
+|-----|--------|
+| rs713598 | {{ tas2r38.rs713598_gt }} |
+| rs1726866 | {{ tas2r38.rs1726866_gt }} |
+| rs10246939 | {{ tas2r38.rs10246939_gt }} |
+
+**判定单体型组合（Diplotype）**：`{{ tas2r38.diplotype }}`
+
+**苦味感知能力**：{{ tas2r38.phenotype_level }}
+
+**表型描述**：{{ tas2r38.phenotype_zh }}
+
+> ℹ️ **解读**：{{ tas2r38.diplotype }} 组合意味着您对苦味化合物（如西兰花、咖啡、啤酒中的苦味成分）的感知能力处于 {{ tas2r38.phenotype_level }} 范围。这属于正常的基因多态性差异，并非异常。
+{% else %}
+| SNP | 基因型 | 状态 |
+|-----|--------|------|
+| rs713598 | {{ tas2r38.rs713598_gt if tas2r38 else "./." }} | ❌ 数据缺失 |
+| rs1726866 | {{ tas2r38.rs1726866_gt if tas2r38 else "./." }} | {% if tas2r38 and tas2r38.rs1726866_gt and tas2r38.rs1726866_gt != "./." %}✅ 有数据{% else %}❌ 数据缺失{% endif %} |
+| rs10246939 | {{ tas2r38.rs10246939_gt if tas2r38 else "./." }} | ❌ 数据缺失 |
+
+**判定结果**：**无法判定** — 关键苦味 SNP 数据缺失
+
+> ⚠️ **说明**：两个关键 SNP（rs713598 和 rs10246939）在 VCF 中基因型缺失（./.），无法判定苦味感知单体型。这通常是由于测序覆盖度不足或变异检测过滤导致的。
+>
+> **假设参考基因组型推断**：若 rs713598 和 rs10246939 均为参考等位基因（AVI），则倾向于 **AVI/AVI（苦味不敏感型）**。但此推断置信度低，建议补充基因型数据或通过表型观察验证（如对苦瓜、黑咖啡的接受度）。
+{% endif %}
+
+### 5.2 甜味与鲜味
+
+甜味和鲜味受体由 TAS1R 家族基因编码。
+
+{% for card in gene_cards if card.gene_symbol in ["TAS1R2", "TAS1R3", "TAS1R1"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 TAS1R2/TAS1R3/TAS1R1 上发现需要关注的变异。*
+{% endfor %}
+
+### 5.3 咸味
+
+咸味感知由上皮钠通道（ENaC）介导。
+
+{% for card in gene_cards if card.gene_symbol in ["SCNN1A", "SCNN1B", "SCNN1G"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 SCNN1A/SCNN1B/SCNN1G 上发现需要关注的变异。*
+{% endfor %}
+
+### 5.4 酸味
+
+酸味感知由 Otopetrin 质子通道介导。
+
+{% for card in gene_cards if card.gene_symbol in ["OTOP1", "OTOP2", "OTOP3"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 OTOP1/OTOP2/OTOP3 上发现需要关注的变异。*
+{% endfor %}
+
+---

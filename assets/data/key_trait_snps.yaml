@@ -1,0 +1,148 @@
+# 关键性状关联 SNP 数据库
+# 用于从 VCF 推断参考基因型（REF/REF）的表型含义
+# 格式：每个 SNP 包含位置、等位基因、基因型-表型映射
+
+snps:
+  # === 色素沉着 ===
+  rs12913832:
+    gene: HERC2
+    chrom: "15"
+    pos: 28365618
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "棕色/深色眼睛"
+        description: "非蓝色眼睛表型，虹膜黑色素含量高"
+      AG:
+        label: "棕色/深色眼睛"
+        description: "携带一个蓝眼关联等位基因，通常表现为棕色眼睛"
+      GG:
+        label: "蓝色/浅色眼睛"
+        description: "纯合蓝眼关联等位基因，虹膜黑色素含量低"
+    notes: "HERC2 内含子增强子变异，调控 OCA2 表达，是决定蓝/棕眼色的最强遗传标记"
+
+  rs16891982:
+    gene: SLC45A2
+    chrom: "5"
+    pos: 33951588
+    ref: "C"
+    alt: ["G", "A"]
+    phenotype_map:
+      CC:
+        label: "深色皮肤/头发"
+        description: "黑色素合成效率高，皮肤/头发/眼睛色素较深"
+      CG:
+        label: "中等色素"
+        description: "携带一个浅色关联等位基因，色素程度中等"
+      GG:
+        label: "浅色皮肤/头发"
+        description: "黑色素合成效率降低，皮肤/头发/眼睛色素较浅"
+      CA:
+        label: "中等色素"
+        description: "携带一个浅色关联等位基因，色素程度中等"
+    notes: "SLC45A2 p.Leu374Phe，影响黑色素转运，G 等位基因在欧洲人群中高频"
+
+  # === 咖啡因代谢 ===
+  rs762551:
+    gene: CYP1A2
+    chrom: "15"
+    pos: 74749576
+    ref: "C"
+    alt: ["A"]
+    phenotype_map:
+      CC:
+        label: "咖啡因慢代谢"
+        description: "CYP1A2 酶活性较低，咖啡因清除速度慢，咖啡因敏感度高"
+      CA:
+        label: "咖啡因中等代谢"
+        description: "CYP1A2 酶活性中等，咖啡因清除速度中等"
+      AC:
+        label: "咖啡因中等代谢"
+        description: "CYP1A2 酶活性中等，咖啡因清除速度中等"
+      AA:
+        label: "咖啡因快代谢"
+        description: "CYP1A2 酶活性高，咖啡因清除速度快，咖啡因耐受度高"
+    notes: "CYP1A2 内含子变异，A 等位基因与增强的酶诱导能力和咖啡因快代谢相关"
+
+  # === 肌肉爆发力 ===
+  rs1815739:
+    gene: ACTN3
+    chrom: "11"
+    pos: 66560624
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "爆发力优势型"
+        description: "功能性 α-actinin-3 表达正常，快肌纤维功能完整，爆发力/短跑表现佳"
+      CT:
+        label: "爆发力中间型"
+        description: "α-actinin-3 表达量约为正常一半，爆发力表现中等"
+      TT:
+        label: "耐力倾向型"
+        description: "α-actinin-3 完全缺失（R577X），爆发力减弱，可能耐力表现更佳"
+    notes: "ACTN3 R577X 变异，T 等位基因导致提前终止密码子，是运动遗传学最经典的 SNP 之一"
+
+  # === 酒精代谢 ===
+  rs671:
+    gene: ALDH2
+    chrom: "12"
+    pos: 111803962
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "酒精代谢正常"
+        description: "ALDH2 酶活性正常，乙醛代谢能力正常"
+      GA:
+        label: "酒精代谢降低"
+        description: "ALDH2 酶活性约降低 50%，乙醛积累，饮酒易脸红"
+      AG:
+        label: "酒精代谢降低"
+        description: "ALDH2 酶活性约降低 50%，乙醛积累，饮酒易脸红"
+      AA:
+        label: "酒精代谢严重降低"
+        description: "ALDH2 酶活性几乎丧失，乙醛严重积累，强烈酒精不耐受"
+    notes: "ALDH2 Glu504Lys (E504K)，A 等位基因导致酶活性显著降低，是东亚人群酒精脸红反应的主要遗传基础"
+
+  # === 乳糖耐受 ===
+  rs4988235:
+    gene: LCT
+    chrom: "2"
+    pos: 135851076
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "乳糖不耐受"
+        description: "乳糖酶非持久型，成年后乳糖酶活性下降，可能出现乳糖不耐受症状"
+      GA:
+        label: "乳糖耐受"
+        description: "携带一个乳糖酶持久型等位基因，乳糖酶活性维持，乳糖耐受"
+      AG:
+        label: "乳糖耐受"
+        description: "携带一个乳糖酶持久型等位基因，乳糖酶活性维持，乳糖耐受"
+      AA:
+        label: "乳糖耐受"
+        description: "乳糖酶持久型纯合，乳糖酶活性持续维持，乳糖耐受"
+    notes: "LCT/MCM6 增强子区域变异，A 等位基因与乳糖酶持久型（成人乳糖耐受）相关，在欧洲人群中高频"
+
+  # === 香菜偏好 ===
+  rs2741742:
+    gene: OR6A2
+    chrom: "11"
+    pos: 6796097
+    ref: "T"
+    alt: ["A", "C"]
+    phenotype_map:
+      TT:
+        label: "正常香菜偏好"
+        description: "OR6A2 功能正常，对香菜醛类气味分子无异常敏感"
+      TA:
+        label: "可能肥皂味敏感"
+        description: "携带一个 OR6A2 变异等位基因，可能对香菜肥皂味有一定敏感"
+      AA:
+        label: "肥皂味敏感"
+        description: "纯合变异等位基因，OR6A2 可能对醛类气味分子异常敏感，感知肥皂味"
+    notes: "OR6A2 附近 GWAS 信号位点，与香菜'肥皂味'感知相关，T 为参考等位基因"

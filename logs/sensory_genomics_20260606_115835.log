@@ -1,0 +1,14 @@
+2026-06-06 11:58:35.574 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.591 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.592 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.593 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.681 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.946 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.948 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.948 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.949 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.970 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.971 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.971 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.972 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log
+2026-06-06 11:58:35.972 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_115835.log

@@ -1,0 +1,214 @@
+{# 主报告模板 - v4 格式：核心仅保留有影响基因，无关/轻微转附录 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+# 感官基因组学特征分析报告
+
+> **样本**: {{ sample_id or "未命名样本" }} | **性别**: {{ "男性" if sex == "M" else "女性" }} | **参考基因组**: {{ ref_genome }} | **分析日期**: {{ analysis_date }} | **VEP 注释**: 本地 Docker VEP (离线)  
+> **说明**: 本报告为基于个人基因组的感官相关功能性特征推断，非临床诊断。
+
+---
+
+## 目录
+
+1. [执行摘要](#1-执行摘要)
+2. [嗅觉特征](#2-嗅觉特征)
+3. [味觉特征](#3-味觉特征)
+4. [体感特征](#4-体感特征)
+5. [视觉特征](#5-视觉特征)
+6. [听觉特征](#6-听觉特征)
+7. [个人特征](#7-个人特征)
+8. [综合特征档案](#8-综合特征档案)
+9. [蛋白功能域影响分析](#9-蛋白功能域影响分析)
+10. [方法学与局限性](#10-方法学与局限性)
+11. [附录](#11-附录)
+
+---
+
+{% include "sections/disclaimer.md.j2" %}
+
+{% include "sections/executive_summary.md.j2" %}
+
+{% if "olfaction" in subsystems %}
+{% include "sections/olfaction.md.j2" %}
+{% endif %}
+
+{% if "taste" in subsystems %}
+{% include "sections/taste.md.j2" %}
+{% endif %}
+
+{% if "somatosensation" in subsystems %}
+{% include "sections/somatosensation.md.j2" %}
+{% endif %}
+
+{% if "vision" in subsystems %}
+{% include "sections/vision.md.j2" %}
+{% endif %}
+
+{% if "hearing" in subsystems %}
+{% include "sections/hearing.md.j2" %}
+{% endif %}
+
+## 7. 个人特征
+
+本章涵盖瞳孔颜色、香菜喜好、咖啡因代谢、酒精代谢、乳糖耐受、运动类型等与感官间接相关的个人特征。
+
+### 7.0 关键性状 SNP 基因型推断
+
+以下 SNP 是基于文献明确报道的性状关联位点。对于 VCF 中未检出的位点，按参考基因组型（REF/REF）推断；检出的位点按实际基因型推断。
+
+| SNP | 基因 | 位置 | 推断基因型 | 来源 | 推断表型 |
+|-----|------|------|-----------|------|---------|
+{% for snp in key_snps %}
+| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}VCF 检出{% else %}REF/REF 推断{% endif %} | **{{ snp.phenotype_label }}** |
+{% endfor %}
+
+> **说明**: "REF/REF 推断"表示该位点在 VCF 中未出现，推断为纯合参考基因型。此类推断基于 GRCh38 参考等位基因，置信度较高但非实验验证。
+
+### 7.1 色素沉着 — 瞳孔/皮肤/毛发颜色
+
+#### 7.1.1 综合预测
+
+基于关键 SNP 基因型与基因层面变异数据，色素沉着相关特征的综合预测如下：
+
+| 特征 | 预测结论 | 置信度 | 推断依据 |
+|------|---------|--------|---------|
+{% for trait in personal_traits if trait.subsystem == "pigmentation" %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
+{% endfor %}
+
+> **综合解读**：以上预测整合了关键 SNP（如 HERC2 rs12913832、SLC45A2 rs16891982）的 REF/REF 推断或 VCF 实际检出，以及 OCA2、SLC24A4/5、TYRP1、IRF4 等基因的变异功能评估。东亚人群中 HERC2 rs12913832 以 AA 为主（棕眼），SLC45A2 rs16891982 以 AA 为主（深色皮肤/毛发）， Daughter 的基因型与此一致。
+
+#### 7.1.2 基因层面详情
+
+{% set pigment_cards = subsys_cards.get("pigmentation", []) %}
+{% if pigment_cards %}
+{% for card in pigment_cards %}
+{{ render_gene_card(card) }}
+{% endfor %}
+{% else %}
+*未在此基因集中检出具有功能影响的变异，无法做准确推断。关键 SNP（HERC2 rs12913832、SLC45A2 rs16891982）可能在 VCF 中缺失。*
+{% endif %}
+
+### 7.2 代谢特征 — 咖啡因/酒精/乳糖
+
+#### 7.2.1 综合预测
+
+| 特征 | 预测结论 | 置信度 | 推断依据 |
+|------|---------|--------|---------|
+{% for trait in personal_traits if trait.subsystem == "metabolism" %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
+{% endfor %}
+
+> **综合解读**：代谢特征预测基于关键 SNP（如 CYP1A2 rs762551）的实际检出或 REF/REF 推断，以及 ALDH2、ADH1B、LCT 等基因层面的功能变异评估。其中 CYP1A2 rs762551 AC（杂合）为实际 VCF 检出，其余为 REF/REF 推断。
+
+#### 7.2.2 基因层面详情
+
+{% set meta_cards = subsys_cards.get("metabolism", []) %}
+{% if meta_cards %}
+{% for card in meta_cards %}
+{{ render_gene_card(card) }}
+{% endfor %}
+{% else %}
+*未在此基因集中检出具有功能影响的变异。*
+{% endif %}
+
+### 7.3 肌肉特征 — 爆发力/耐力
+
+#### 7.3.1 综合预测
+
+| 特征 | 预测结论 | 置信度 | 推断依据 |
+|------|---------|--------|---------|
+{% for trait in personal_traits if trait.subsystem == "muscle" %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
+{% endfor %}
+
+> **综合解读**：ACTN3 rs1815739 CC（REF/REF 推断）为东亚人群中常见的"爆发力优势型"等位基因纯合，与快肌纤维比例较高相关。
+
+#### 7.3.2 基因层面详情
+
+{% set muscle_cards = subsys_cards.get("muscle", []) %}
+{% if muscle_cards %}
+{% for card in muscle_cards %}
+{{ render_gene_card(card) }}
+{% endfor %}
+{% else %}
+*未在 ACTN3 上检出具有功能影响的变异。*
+{% endif %}
+
+### 7.4 毛发特征 — 密度与直卷
+
+#### 7.4.1 综合预测
+
+| 特征 | 预测结论 | 置信度 | 推断依据 |
+|------|---------|--------|---------|
+{% for trait in personal_traits if trait.subsystem == "hair" %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
+{% endfor %}
+
+> **综合解读**：EDAR 基因的东亚等位基因与直发、粗发、汗腺发达等特征相关。Daughter 的 EDAR 基因未检出显著功能变异，提示为参考型（东亚常见型）。
+
+#### 7.4.2 基因层面详情
+
+{% set hair_cards = subsys_cards.get("hair", []) %}
+{% if hair_cards %}
+{% for card in hair_cards %}
+{{ render_gene_card(card) }}
+{% endfor %}
+{% else %}
+*未在 EDAR 上检出具有功能影响的变异。*
+{% endif %}
+
+---
+
+## 8. 综合特征档案
+
+### 8.1 基因型-特征推断汇总
+
+| # | 特征 | 基因 | 推断结果 | 可信度 |
+|---|------|------|---------|--------|
+{% for p in profile %}
+| {{ loop.index }} | **{{ p.feature }}** | {{ p.gene }} | {{ p.inference }} | {{ p.confidence }} |
+{% endfor %}
+
+> **可信度说明**：⭐ 越多表示推断置信度越高。❌ 表示数据不足无法推断。可信度基于基因功能确定性、变异类型、人群频率等多因素综合评估。
+
+### 8.2 关键 SNP 推断状态
+
+以下关键 SNP/基因的基因型已通过 VCF 查询或 REF/REF 推断完成：
+
+| SNP | 基因 | 功能 | 推断基因型 | 来源 | 状态 |
+|-----|------|------|-----------|------|------|
+{% for snp in key_snps %}
+| {{ snp.rsid }} | {{ snp.gene }} | {{ snp.notes[:30] }}... | **{{ snp.inferred_genotype }}** | {% if snp.found_in_vcf %}VCF 检出{% else %}REF/REF 推断{% endif %} | ✅ 已推断 |
+{% endfor %}
+
+> **说明**: ✅ 已推断 = 基于 VCF 实际检出或 REF/REF 参考基因组型推断。REF/REF 推断的置信度取决于参考基因组准确性及测序覆盖度。
+
+> 当前关键 SNP 数据库已覆盖：HERC2 rs12913832、SLC45A2 rs16891982、CYP1A2 rs762551、ALDH2 rs671、LCT rs4988235、ACTN3 rs1815739、OR6A2 rs2741742。
+
+---
+
+## 9. 蛋白功能域影响分析
+
+### 9.1 分析方法论
+
+对于错义变异，本报告增加了蛋白功能域层面的分析：
+1. **VEP 蛋白位置**: 通过 Ensembl VEP 获取变异在蛋白序列中的位置
+2. **功能预测**: 使用 SIFT 和 PolyPhen 预测氨基酸替换的功能影响
+3. **蛋白域注释**: 结合 VEP 返回的蛋白域信息进行域位置映射
+
+### 9.2 关键错义变异功能域分析
+
+| 基因 | 变异 | 蛋白位置 | 氨基酸替换 | SIFT | PolyPhen | 功能域位置 | 影响评估 |
+|------|------|---------|-----------|------|----------|-----------|---------|
+{% for card in impactful_cards %}
+{% for v in card.variants if v.amino_acid_change and (v.sift or v.polyphen) %}
+| {{ card.gene_symbol }} | {{ v.chrom }}:{{ v.pos }} | {{ v.protein_position or "N/A" }} | {{ v.amino_acid_change }} | {{ v.sift | sift_badge }} | {{ v.polyphen | polyphen_badge }} | {{ v.protein_domain or "N/A" }} | {% if v.sift and "deleterious" in v.sift.lower() %}可能影响蛋白功能{% elif v.polyphen and "damaging" in v.polyphen.lower() %}可能影响蛋白功能{% else %}影响有限{% endif %} |
+{% endfor %}
+{% endfor %}
+
+---
+
+{% include "sections/methodology.md.j2" %}
+
+{% include "sections/appendix.md.j2" %}

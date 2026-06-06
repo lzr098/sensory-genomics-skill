@@ -1,0 +1,52 @@
+{# 附录 #}
+
+## 附录 A：全部变异列表
+
+以下 JSON 包含本次分析中发现的全部感官基因变异及其评估结果，供进一步研究和验证使用。
+
+<details>
+<summary>点击展开全部变异 JSON</summary>
+
+```json
+{% if gene_cards %}
+[
+{% for card in gene_cards %}
+  {
+    "gene_symbol": "{{ card.gene_symbol }}",
+    "sensory_function": "{{ card.sensory_function_zh }}",
+    "assessment": {
+      "level": "{{ card.assessment.level }}",
+      "protein_impact": "{{ card.assessment.protein_impact }}",
+      "gene_certainty": "{{ card.assessment.gene_certainty }}",
+      "inheritance_pattern": "{{ card.assessment.inheritance_pattern }}",
+      "rationale": "{{ card.assessment.rationale_zh }}"
+    },
+    "variants": [
+{% for v in card.variants %}
+      {
+        "chrom": "{{ v.chrom }}",
+        "pos": {{ v.pos }},
+        "ref": "{{ v.ref }}",
+        "alt": "{{ v.alt }}",
+        "gt": "{{ v.gt }}",
+        "dp": {{ v.dp }},
+        "qual": {{ v.qual }},
+        "consequence": "{{ v.consequence or '' }}",
+        "hgvsc": "{{ v.hgvsc or '' }}",
+        "hgvsp": "{{ v.hgvsp or '' }}"
+      }{% if not loop.last %},{% endif %}
+{% endfor %}
+    ]
+  }{% if not loop.last %},{% endif %}
+{% endfor %}
+]
+{% else %}
+[]
+{% endif %}
+```
+
+</details>
+
+---
+
+*报告生成时间：{{ analysis_date }} | 感官基因组学分析 Skill v0.1.0*

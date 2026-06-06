@@ -1,0 +1,17 @@
+2026-06-06 12:00:54.029 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.029 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.030 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.034 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.034 [INFO] src.vep.hybrid_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.034 [INFO] main: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:00:54.045 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_120054.log
+2026-06-06 12:01:04.961 [INFO] main: BED-filtered VCF: /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmp7gb9upo2.vcf.gz -> 0 variants
+2026-06-06 12:01:04.963 [WARNING] main: No variants in sensory gene regions, using full VCF
+2026-06-06 12:01:04.991 [INFO] main: Loaded precomputed transcript map: 384 genes
+2026-06-06 12:01:04.995 [INFO] main: Loaded exon BED for strict filtering
+2026-06-06 12:01:04.995 [INFO] main: Using LocalVepClient (Docker offline)
+2026-06-06 12:01:04.995 [INFO] main: Pipeline started for /Users/zhaorongli/Documents/Documents - zhaorong’s MacBook Air/合作项目/之江实验室/AML/女儿分析报告/女儿短读全vcf-ML150006935_L01_184.genotyper.vcf.gz
+2026-06-06 12:01:05.027 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-06 12:01:43.189 [INFO] main: Stage 1 complete: 4880173 variants after prefilter
+2026-06-06 12:01:45.660 [INFO] src.vep.local_client: Running local VEP for 4880173 variants via Docker
+2026-06-06 12:11:45.822 [ERROR] src.vep.local_client: VEP Docker timed out after 600s

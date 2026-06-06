@@ -1,0 +1,4 @@
+2026-06-06 09:43:57.296 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_094357.log
+2026-06-06 09:43:57.296 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_094357.log
+2026-06-06 09:43:57.314 [INFO] src.vep.local_client: Running local VEP for 2 variants via Docker
+2026-06-06 09:43:58.599 [INFO] src.vep.local_client: Local VEP annotated 2 variants

@@ -1,0 +1,58 @@
+{# 基因卡片宏 #}
+{% macro render_gene_card(card) %}
+### {{ card.gene_symbol }}
+
+**基因功能**：{{ card.sensory_function_zh or "未定义" }}
+
+**感官影响评估**：{{ card.assessment.level | level_badge }}
+
+**影响依据**：{{ card.assessment.rationale_zh or "无" }}
+
+**遗传模式**：{{ card.assessment.inheritance_pattern or "未知" }}
+
+{% if card.assessment.limitation_note %}
+**⚠️ 局限说明**：{{ card.assessment.limitation_note }}
+{% endif %}
+
+{% if card.variants %}
+#### 变异信息
+
+| 位置 | 参考>替代 | HGVSc | HGVSp | 基因型 | 深度 | 质量 |
+|------|----------|-------|-------|--------|------|------|
+{% for v in card.variants %}
+| {{ v.chrom }}:{{ v.pos }} | {{ v.ref }}>{{ v.alt }} | {{ v.hgvsc or "N/A" }} | {{ v.hgvsp or "N/A" }} | {{ v.gt }} | {{ v.dp }} | {{ "%.1f" % v.qual }} |
+{% endfor %}
+
+**后果类型**：{{ card.variants[0].consequence or "N/A" }}
+
+{% if card.variants[0].protein_topology %}
+**蛋白拓扑位置**：{{ card.variants[0].protein_topology }}
+{% endif %}
+
+{% if card.variants[0].protein_domain %}
+**蛋白域**：{{ card.variants[0].protein_domain }}
+{% endif %}
+
+{% endif %}
+
+{% if card.enrichment_data %}
+#### 参考信息
+
+{% if card.enrichment_data.get("gnomad") %}
+- **gnomAD 约束**：pLI={{ card.enrichment_data.gnomad.get("pLI", "N/A") }}, oe_lof={{ card.enrichment_data.gnomad.get("oe_lof", "N/A") }}
+{% endif %}
+
+{% if card.enrichment_data.get("clinvar") %}
+- **ClinVar 记录数**：{{ card.enrichment_data.clinvar.get("count", "N/A") }}
+{% endif %}
+
+{% if card.enrichment_data.get("uniprot") %}
+- **UniProt 功能**：{{ card.enrichment_data.uniprot.get("protein_name", "N/A") }}
+{% endif %}
+
+{% endif %}
+
+**综合判断**：{{ card.assessment.protein_impact or "无额外信息" }}
+
+---
+{% endmacro %}

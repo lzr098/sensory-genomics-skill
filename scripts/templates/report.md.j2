@@ -1,0 +1,37 @@
+{# 主报告模板 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+{% from "macros/variant_table.md.j2" import render_variant_table %}
+
+# 个体感官能力基因分析报告
+
+> **样本**：{{ sample_id or "未命名样本" }} | **性别**：{{ "男性" if sex == "M" else "女性" }} | **参考基因组**：{{ ref_genome }} | **分析日期**：{{ analysis_date }}
+
+---
+
+{% include "sections/disclaimer.md.j2" %}
+
+{% include "sections/executive_summary.md.j2" %}
+
+{% if "vision" in subsystems %}
+{% include "sections/vision.md.j2" %}
+{% endif %}
+
+{% if "hearing" in subsystems %}
+{% include "sections/hearing.md.j2" %}
+{% endif %}
+
+{% if "olfaction" in subsystems %}
+{% include "sections/olfaction.md.j2" %}
+{% endif %}
+
+{% if "taste" in subsystems %}
+{% include "sections/taste.md.j2" %}
+{% endif %}
+
+{% if "somatosensation" in subsystems %}
+{% include "sections/somatosensation.md.j2" %}
+{% endif %}
+
+{% include "sections/methodology.md.j2" %}
+
+{% include "sections/appendix.md.j2" %}

@@ -1,0 +1,19 @@
+2026-06-04 19:48:10.839 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_194810.log
+2026-06-04 19:48:10.839 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_194810.log
+2026-06-04 19:48:10.868 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 19:48:10.868 [INFO] __main__: Precomputing coordinates for 334 unique genes
+2026-06-04 19:48:10.868 [INFO] __main__: Starting precompute for 334 sensory genes
+2026-06-04 19:48:10.872 [ERROR] __main__: Lookup batch error: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 19:48:10.872 [INFO] __main__: Lookup batch 1/4 done
+2026-06-04 19:48:10.872 [ERROR] __main__: Lookup batch error: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 19:48:10.873 [INFO] __main__: Lookup batch 2/4 done
+2026-06-04 19:48:10.873 [ERROR] __main__: Lookup batch error: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 19:48:10.874 [INFO] __main__: Lookup batch 3/4 done
+2026-06-04 19:48:10.874 [ERROR] __main__: Lookup batch error: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 19:48:10.874 [INFO] __main__: Lookup batch 4/4 done
+2026-06-04 19:48:10.874 [INFO] __main__: Resolved 0/334 genes to Ensembl IDs
+2026-06-04 19:48:10.874 [INFO] __main__: Fetched coordinates: 0 exons, 0 CDS, 0 UTRs. Failed: 334 genes
+2026-06-04 19:48:10.874 [WARNING] __main__: No records for sensory_genes_exons.bed
+2026-06-04 19:48:10.874 [WARNING] __main__: No records for sensory_genes_cds.bed
+2026-06-04 19:48:10.874 [WARNING] __main__: No records for sensory_genes_utr.bed
+2026-06-04 19:48:10.875 [INFO] __main__: Precompute complete. Files written to /tmp/sensory_precompute

@@ -1,0 +1,11 @@
+2026-06-04 16:35:56.766 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163556.log
+2026-06-04 16:35:56.799 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.824 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.857 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.884 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.908 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.933 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.958 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:35:56.958 [ERROR] src.gene_sets.loader: sensory_gene_sets.yaml not found at /nonexistent/path/sensory_gene_sets.yaml
+2026-06-04 16:35:56.964 [INFO] src.gene_sets.loader: Loaded gene sets: 2 genes across 1 subsystems
+2026-06-04 16:35:56.989 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems

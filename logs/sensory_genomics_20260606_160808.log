@@ -1,0 +1,26 @@
+2026-06-06 16:08:08.391 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_160808.log
+2026-06-06 16:08:08.391 [INFO] src.vep.client: VEP annotation: 1 variants, mem_cache=0 hits (0.0%), precompute=0 hits (0.0%), api=1 to fetch, batch_size=200
+2026-06-06 16:08:10.085 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highl
+2026-06-06 16:08:12.805 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highl
+2026-06-06 16:08:12.806 [INFO] src.vep.client: VEP batch 1/1 done
+2026-06-06 16:08:12.807 [INFO] src.vep.client: VEP annotation completed: 1 results (mem_cache: 0, precompute: 0, api: 0)

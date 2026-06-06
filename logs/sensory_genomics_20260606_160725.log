@@ -1,0 +1,2 @@
+2026-06-06 16:07:25.047 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_160725.log
+2026-06-06 16:07:25.078 [INFO] src.config_loader: Config loaded from /Users/zhaorongli/.workbuddy/skills/sensory-genomics/config.yaml

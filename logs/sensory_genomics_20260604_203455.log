@@ -1,0 +1,92 @@
+2026-06-04 20:34:55.736 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_203455.log
+2026-06-04 20:34:55.736 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_203455.log
+2026-06-04 20:34:55.760 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 20:34:55.760 [INFO] __main__: Precomputing coordinates for 376 unique genes
+2026-06-04 20:34:55.761 [INFO] __main__: Starting precompute for 376 sensory genes
+2026-06-04 20:35:07.825 [INFO] __main__: Lookup batch 1/4 done
+2026-06-04 20:35:10.467 [INFO] __main__: Lookup batch 2/4 done
+2026-06-04 20:35:25.943 [INFO] __main__: Lookup batch 3/4 done
+2026-06-04 20:35:29.933 [INFO] __main__: Lookup batch 4/4 done
+2026-06-04 20:35:29.933 [INFO] __main__: Resolved 369/376 genes to Ensembl IDs
+2026-06-04 20:35:29.934 [INFO] __main__: Fetching transcripts for 369 genes in batches of 20...
+2026-06-04 20:36:00.512 [ERROR] __main__: Transcript fetch error for ENSG00000138031: 
+2026-06-04 20:36:00.517 [INFO] __main__: Transcript batch 1/19 done (20 genes)
+2026-06-04 20:36:27.799 [INFO] __main__: Transcript batch 2/19 done (20 genes)
+2026-06-04 20:36:58.510 [ERROR] __main__: Transcript fetch error for ENSG00000172519: 
+2026-06-04 20:36:58.512 [INFO] __main__: Transcript batch 3/19 done (20 genes)
+2026-06-04 20:37:29.510 [ERROR] __main__: Transcript fetch error for ENSG00000258806: 
+2026-06-04 20:37:29.511 [ERROR] __main__: Transcript fetch error for ENSG00000280236: 
+2026-06-04 20:37:29.512 [ERROR] __main__: Transcript fetch error for ENSG00000256574: 
+2026-06-04 20:37:29.512 [ERROR] __main__: Transcript fetch error for ENSG00000276119: 
+2026-06-04 20:37:29.513 [ERROR] __main__: Transcript fetch error for ENSG00000130538: 
+2026-06-04 20:37:29.515 [ERROR] __main__: Transcript fetch error for ENSG00000112462: 
+2026-06-04 20:37:29.517 [ERROR] __main__: Transcript fetch error for ENSG00000204246: 
+2026-06-04 20:37:29.517 [ERROR] __main__: Transcript fetch error for ENSG00000176198: 
+2026-06-04 20:37:29.518 [ERROR] __main__: Transcript fetch error for ENSG00000258453: 
+2026-06-04 20:37:29.518 [ERROR] __main__: Transcript fetch error for ENSG00000148136: 
+2026-06-04 20:37:29.519 [ERROR] __main__: Transcript fetch error for ENSG00000277556: 
+2026-06-04 20:37:29.519 [ERROR] __main__: Transcript fetch error for ENSG00000196832: 
+2026-06-04 20:37:29.520 [INFO] __main__: Transcript batch 4/19 done (20 genes)
+2026-06-04 20:38:01.985 [INFO] __main__: Transcript batch 5/19 done (20 genes)
+2026-06-04 20:38:22.539 [INFO] __main__: Transcript batch 6/19 done (20 genes)
+2026-06-04 20:38:53.513 [ERROR] __main__: Transcript fetch error for ENSG00000175143: 
+2026-06-04 20:38:53.516 [ERROR] __main__: Transcript fetch error for ENSG00000177462: 
+2026-06-04 20:38:53.518 [ERROR] __main__: Transcript fetch error for ENSG00000184022: 
+2026-06-04 20:38:53.518 [ERROR] __main__: Transcript fetch error for ENSG00000196944: 
+2026-06-04 20:38:53.519 [ERROR] __main__: Transcript fetch error for ENSG00000196539: 
+2026-06-04 20:38:53.519 [ERROR] __main__: Transcript fetch error for ENSG00000187701: 
+2026-06-04 20:38:53.520 [INFO] __main__: Transcript batch 7/19 done (20 genes)
+2026-06-04 20:39:24.512 [ERROR] __main__: Transcript fetch error for ENSG00000172188: 
+2026-06-04 20:39:24.514 [ERROR] __main__: Transcript fetch error for ENSG00000141194: 
+2026-06-04 20:39:24.514 [ERROR] __main__: Transcript fetch error for ENSG00000174339: 
+2026-06-04 20:39:24.514 [ERROR] __main__: Transcript fetch error for ENSG00000221954: 
+2026-06-04 20:39:24.515 [ERROR] __main__: Transcript fetch error for ENSG00000279514: 
+2026-06-04 20:39:24.515 [ERROR] __main__: Transcript fetch error for ENSG00000258817: 
+2026-06-04 20:39:24.515 [ERROR] __main__: Transcript fetch error for ENSG00000254466: 
+2026-06-04 20:39:24.515 [ERROR] __main__: Transcript fetch error for ENSG00000237388: 
+2026-06-04 20:39:24.515 [ERROR] __main__: Transcript fetch error for ENSG00000181733: 
+2026-06-04 20:39:24.516 [INFO] __main__: Transcript batch 8/19 done (20 genes)
+2026-06-04 20:40:00.509 [ERROR] __main__: Transcript fetch error for ENSG00000182652: 
+2026-06-04 20:40:01.510 [ERROR] __main__: Transcript fetch error for ENSG00000176555: 
+2026-06-04 20:40:01.511 [INFO] __main__: Transcript batch 9/19 done (20 genes)
+2026-06-04 20:40:32.509 [ERROR] __main__: Transcript fetch error for ENSG00000278870: 
+2026-06-04 20:40:32.511 [ERROR] __main__: Transcript fetch error for ENSG00000280021: 
+2026-06-04 20:40:32.511 [ERROR] __main__: Transcript fetch error for ENSG00000167332: 
+2026-06-04 20:40:32.511 [ERROR] __main__: Transcript fetch error for ENSG00000167355: 
+2026-06-04 20:40:32.512 [ERROR] __main__: Transcript fetch error for ENSG00000205496: 
+2026-06-04 20:40:32.512 [ERROR] __main__: Transcript fetch error for ENSG00000172208: 
+2026-06-04 20:40:32.512 [ERROR] __main__: Transcript fetch error for ENSG00000176567: 
+2026-06-04 20:40:32.512 [ERROR] __main__: Transcript fetch error for ENSG00000176925: 
+2026-06-04 20:40:32.512 [ERROR] __main__: Transcript fetch error for ENSG00000176895: 
+2026-06-04 20:40:32.513 [ERROR] __main__: Transcript fetch error for ENSG00000176239: 
+2026-06-04 20:40:32.513 [INFO] __main__: Transcript batch 10/19 done (20 genes)
+2026-06-04 20:40:51.917 [INFO] __main__: Transcript batch 11/19 done (20 genes)
+2026-06-04 20:41:10.256 [INFO] __main__: Transcript batch 12/19 done (20 genes)
+2026-06-04 20:41:55.510 [ERROR] __main__: Transcript fetch error for ENSG00000231861: 
+2026-06-04 20:41:55.511 [INFO] __main__: Transcript batch 13/19 done (20 genes)
+2026-06-04 20:42:26.512 [ERROR] __main__: Transcript fetch error for ENSG00000150269: 
+2026-06-04 20:42:26.513 [ERROR] __main__: Transcript fetch error for ENSG00000182334: 
+2026-06-04 20:42:26.513 [ERROR] __main__: Transcript fetch error for ENSG00000183303: 
+2026-06-04 20:42:26.514 [ERROR] __main__: Transcript fetch error for ENSG00000181718: 
+2026-06-04 20:42:26.514 [ERROR] __main__: Transcript fetch error for ENSG00000172489: 
+2026-06-04 20:42:26.514 [ERROR] __main__: Transcript fetch error for ENSG00000243729: 
+2026-06-04 20:42:26.514 [ERROR] __main__: Transcript fetch error for ENSG00000255012: 
+2026-06-04 20:42:26.515 [INFO] __main__: Transcript batch 14/19 done (20 genes)
+2026-06-04 20:42:46.464 [INFO] __main__: Transcript batch 15/19 done (20 genes)
+2026-06-04 20:43:16.510 [ERROR] __main__: Transcript fetch error for ENSG00000127530: 
+2026-06-04 20:43:21.510 [ERROR] __main__: Transcript fetch error for ENSG00000170953: 
+2026-06-04 20:43:23.510 [ERROR] __main__: Transcript fetch error for ENSG00000284680: 
+2026-06-04 20:43:38.510 [ERROR] __main__: Transcript fetch error for ENSG00000284609: 
+2026-06-04 20:43:38.511 [INFO] __main__: Transcript batch 16/19 done (20 genes)
+2026-06-04 20:44:09.514 [ERROR] __main__: Transcript fetch error for ENSG00000167822: 
+2026-06-04 20:44:09.516 [ERROR] __main__: Transcript fetch error for ENSG00000280314: 
+2026-06-04 20:44:10.514 [ERROR] __main__: Transcript fetch error for ENSG00000284723: 
+2026-06-04 20:44:10.516 [INFO] __main__: Transcript batch 17/19 done (20 genes)
+2026-06-04 20:44:41.510 [ERROR] __main__: Transcript fetch error for ENSG00000103335: 
+2026-06-04 20:44:41.519 [INFO] __main__: Transcript batch 18/19 done (20 genes)
+2026-06-04 20:44:43.575 [INFO] __main__: Transcript batch 19/19 done (9 genes)
+2026-06-04 20:44:43.575 [INFO] __main__: Fetched coordinates: 5652 exons, 4718 CDS, 0 UTRs. Failed: 57 genes
+2026-06-04 20:44:43.592 [INFO] __main__: Wrote sensory_genes_exons.bed: 5652 unique intervals
+2026-06-04 20:44:43.602 [INFO] __main__: Wrote sensory_genes_cds.bed: 4718 unique intervals
+2026-06-04 20:44:43.602 [WARNING] __main__: No records for sensory_genes_utr.bed
+2026-06-04 20:44:43.603 [INFO] __main__: Precompute complete. Files written to /Users/zhaorongli/WorkBuddy/2026-06-04-12-52-25/assets/data

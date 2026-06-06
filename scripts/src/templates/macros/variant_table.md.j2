@@ -1,0 +1,8 @@
+{# 变异表格宏 #}
+{% macro render_variant_table(variants) %}
+| 染色体 | 位置 | 参考 | 替代 | 基因型 | 深度 | 质量 | 后果 |
+|--------|------|------|------|--------|------|------|------|
+{% for v in variants %}
+| {{ v.chrom }} | {{ v.pos }} | {{ v.ref }} | {{ v.alt }} | {{ v.gt }} | {{ v.dp }} | {{ "%.1f" % v.qual }} | {{ v.consequence or "N/A" }} |
+{% endfor %}
+{% endmacro %}

@@ -1,0 +1,85 @@
+{
+  "description": "已知线粒体致聋变异库，基于 ClinVar 与文献整理的 MT-RNR1 / MT-TS1 高频致聋位点",
+  "variants": [
+    {
+      "variant_name": "m.1555A>G",
+      "gene": "MT-RNR1",
+      "position": 1555,
+      "ref": "A",
+      "alt": "G",
+      "drug_warning": "氨基糖苷类抗生素（庆大霉素、链霉素、卡那霉素等）高度风险：该变异携带者使用氨基糖苷类药物后发生严重听力损失的风险显著增加。建议在用药前明确告知医生此基因特征，避免使用氨基糖苷类抗生素。",
+      "risk_level": "高风险",
+      "notes": "最常见的药物性耳聋线粒体变异，全球 prevalence 约 0.1-0.4%"
+    },
+    {
+      "variant_name": "m.1494C>T",
+      "gene": "MT-RNR1",
+      "position": 1494,
+      "ref": "C",
+      "alt": "T",
+      "drug_warning": "氨基糖苷类抗生素高风险：该变异与 m.1555A>G 类似，显著增加氨基糖苷类药物致聋风险。建议避免使用此类药物。",
+      "risk_level": "高风险",
+      "notes": "与 m.1555A>G 结构邻近，机制相似"
+    },
+    {
+      "variant_name": "m.1095T>C",
+      "gene": "MT-RNR1",
+      "position": 1095,
+      "ref": "T",
+      "alt": "C",
+      "drug_warning": "氨基糖苷类抗生素中度风险：部分研究表明该变异可能增加药物性耳聋风险，建议谨慎使用氨基糖苷类药物。",
+      "risk_level": "中风险",
+      "notes": "致病性证据相对有限"
+    },
+    {
+      "variant_name": "m.7445A>G",
+      "gene": "MT-CO1",
+      "position": 7445,
+      "ref": "A",
+      "alt": "G",
+      "drug_warning": "听力损失相关变异，氨基糖苷类抗生素可能加重风险。建议在使用耳毒性药物前咨询专业医生。",
+      "risk_level": "中风险",
+      "notes": "与遗传性耳聋相关，常与 MT-TS1 变异共存"
+    },
+    {
+      "variant_name": "m.7444G>A",
+      "gene": "MT-CO1",
+      "position": 7444,
+      "ref": "G",
+      "alt": "A",
+      "drug_warning": "听力损失相关变异。建议在使用耳毒性药物前咨询专业医生。",
+      "risk_level": "中风险",
+      "notes": "与 m.7445A>G 邻近"
+    },
+    {
+      "variant_name": "m.7511T>C",
+      "gene": "MT-TS1",
+      "position": 7511,
+      "ref": "T",
+      "alt": "C",
+      "drug_warning": "非综合征性听力损失相关。建议在使用耳毒性药物前咨询专业医生。",
+      "risk_level": "中风险",
+      "notes": "tRNA-Ser(UCN) 基因变异，与感音神经性耳聋相关"
+    },
+    {
+      "variant_name": "m.7512T>C",
+      "gene": "MT-TS1",
+      "position": 7512,
+      "ref": "T",
+      "alt": "C",
+      "drug_warning": "非综合征性听力损失相关。建议在使用耳毒性药物前咨询专业医生。",
+      "risk_level": "中风险",
+      "notes": "tRNA-Ser(UCN) 基因变异"
+    },
+    {
+      "variant_name": "m.7472insC",
+      "gene": "MT-TS1",
+      "position": 7472,
+      "ref": "-",
+      "alt": "C",
+      "drug_warning": "非综合征性听力损失相关，多见于母系遗传家系。建议在使用耳毒性药物前咨询专业医生。",
+      "risk_level": "中风险",
+      "notes": "插入变异，与家族性听力损失相关"
+    }
+  ]
+}

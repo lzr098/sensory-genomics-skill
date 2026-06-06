@@ -1,0 +1,109 @@
+{
+  "gene": "TAS2R38",
+  "description": "TAS2R38 三个功能 SNP 定义，用于判定苦味感知 diplotype",
+  "snps": [
+    {
+      "rsid": "rs713598",
+      "chrom": "7",
+      "pos": 141972755,
+      "ref": "G",
+      "alt": "C",
+      "amino_acid_change": "Pro49Ala",
+      "haplotype_alleles": {
+        "P": "C",
+        "A": "G"
+      }
+    },
+    {
+      "rsid": "rs1726866",
+      "chrom": "7",
+      "pos": 141973545,
+      "ref": "T",
+      "alt": "C",
+      "amino_acid_change": "Ala262Val",
+      "haplotype_alleles": {
+        "A": "C",
+        "V": "T"
+      }
+    },
+    {
+      "rsid": "rs10246939",
+      "chrom": "7",
+      "pos": 141974933,
+      "ref": "G",
+      "alt": "A",
+      "amino_acid_change": "Val296Ile",
+      "haplotype_alleles": {
+        "V": "G",
+        "I": "A"
+      }
+    }
+  ],
+  "haplotype_definitions": {
+    "PAV": ["rs713598_C", "rs1726866_T", "rs10246939_G"],
+    "AVI": ["rs713598_G", "rs1726866_C", "rs10246939_A"],
+    "AAI": ["rs713598_G", "rs1726866_C", "rs10246939_G"],
+    "PVI": ["rs713598_C", "rs1726866_T", "rs10246939_A"],
+    "PAVnote": "功能型单体型（苦味敏感）",
+    "AVInote": "非功能型单体型（苦味不敏感）",
+    "AAInote": "非功能型单体型（苦味不敏感）",
+    "PVInote": "功能型单体型（苦味敏感）"
+  },
+  "diplotype_phenotypes": {
+    "PAV/PAV": {
+      "phenotype": "对苦味化合物高度敏感",
+      "level": "苦味高敏感型",
+      "description": "两个功能型单体型，对苯硫脲（PTC）、丙硫氧嘧啶（PROP）等苦味化合物感知阈值最低"
+    },
+    "PAV/AVI": {
+      "phenotype": "对苦味化合物中等敏感",
+      "level": "苦味中等敏感型",
+      "description": "一个功能型单体型，对苦味化合物感知能力中等，属于人群最常见的基因型"
+    },
+    "PAV/AAI": {
+      "phenotype": "对苦味化合物中等敏感",
+      "level": "苦味中等敏感型",
+      "description": "一个功能型单体型，苦味感知能力中等"
+    },
+    "PAV/PVI": {
+      "phenotype": "对苦味化合物高度敏感",
+      "level": "苦味高敏感型",
+      "description": "两个功能型单体型，苦味感知能力强"
+    },
+    "AVI/AVI": {
+      "phenotype": "对苦味化合物不敏感",
+      "level": "苦味不敏感型",
+      "description": "两个非功能型单体型，对 PTC/PROP 等苦味化合物几乎无法感知"
+    },
+    "AVI/AAI": {
+      "phenotype": "对苦味化合物不敏感",
+      "level": "苦味不敏感型",
+      "description": "两个非功能型单体型，苦味感知能力弱"
+    },
+    "AVI/PVI": {
+      "phenotype": "对苦味化合物中等敏感",
+      "level": "苦味中等敏感型",
+      "description": "一个功能型单体型，苦味感知能力中等"
+    },
+    "AAI/AAI": {
+      "phenotype": "对苦味化合物不敏感",
+      "level": "苦味不敏感型",
+      "description": "两个非功能型单体型，苦味感知能力弱"
+    },
+    "AAI/PVI": {
+      "phenotype": "对苦味化合物中等敏感",
+      "level": "苦味中等敏感型",
+      "description": "一个功能型单体型，苦味感知能力中等"
+    },
+    "PVI/PVI": {
+      "phenotype": "对苦味化合物高度敏感",
+      "level": "苦味高敏感型",
+      "description": "两个功能型单体型，苦味感知能力强"
+    },
+    "default": {
+      "phenotype": "苦味感知能力未知",
+      "level": "未知",
+      "description": "无法确定 diplotype，苦味感知能力无法评估"
+    }
+  }
+}

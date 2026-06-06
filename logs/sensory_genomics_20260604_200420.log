@@ -1,0 +1,48 @@
+2026-06-04 20:04:20.610 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_200420.log
+2026-06-04 20:04:20.610 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_200420.log
+2026-06-04 20:04:20.641 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 20:04:20.641 [INFO] __main__: Precomputing coordinates for 334 unique genes
+2026-06-04 20:04:20.642 [INFO] __main__: Starting precompute for 334 sensory genes
+2026-06-04 20:04:28.488 [INFO] __main__: Lookup batch 1/4 done
+2026-06-04 20:04:48.226 [INFO] __main__: Lookup batch 2/4 done
+2026-06-04 20:04:54.383 [INFO] __main__: Lookup batch 3/4 done
+2026-06-04 20:05:00.173 [INFO] __main__: Lookup batch 4/4 done
+2026-06-04 20:05:00.174 [INFO] __main__: Resolved 327/334 genes to Ensembl IDs
+2026-06-04 20:05:00.174 [INFO] __main__: Fetching transcripts for 327 genes concurrently...
+2026-06-04 20:05:32.507 [ERROR] __main__: Transcript fetch error for ENSG00000184155: 
+2026-06-04 20:05:32.507 [ERROR] __main__: Transcript fetch error for ENSG00000196266: 
+2026-06-04 20:05:34.507 [ERROR] __main__: Transcript fetch error for ENSG00000279111: 
+2026-06-04 20:05:35.507 [ERROR] __main__: Transcript fetch error for ENSG00000176219: 
+2026-06-04 20:05:50.507 [ERROR] __main__: Transcript fetch error for ENSG00000280236: 
+2026-06-04 20:05:54.507 [ERROR] __main__: Transcript fetch error for ENSG00000204246: 
+2026-06-04 20:05:55.507 [ERROR] __main__: Transcript fetch error for ENSG00000277556: 
+2026-06-04 20:06:03.507 [ERROR] __main__: Transcript fetch error for ENSG00000168828: 
+2026-06-04 20:06:06.507 [ERROR] __main__: Transcript fetch error for ENSG00000153230: 
+2026-06-04 20:06:07.507 [ERROR] __main__: Transcript fetch error for ENSG00000165204: 
+2026-06-04 20:06:09.507 [ERROR] __main__: Transcript fetch error for ENSG00000221933: 
+2026-06-04 20:06:10.507 [ERROR] __main__: Transcript fetch error for ENSG00000279486: 
+2026-06-04 20:06:20.507 [ERROR] __main__: Transcript fetch error for ENSG00000213215: 
+2026-06-04 20:06:21.508 [ERROR] __main__: Transcript fetch error for ENSG00000221910: 
+2026-06-04 20:06:21.509 [ERROR] __main__: Transcript fetch error for ENSG00000177489: 
+2026-06-04 20:06:23.507 [ERROR] __main__: Transcript fetch error for ENSG00000204701: 
+2026-06-04 20:06:23.507 [ERROR] __main__: Transcript fetch error for ENSG00000204700: 
+2026-06-04 20:06:23.507 [ERROR] __main__: Transcript fetch error for ENSG00000204657: 
+2026-06-04 20:06:25.507 [ERROR] __main__: Transcript fetch error for ENSG00000203663: 
+2026-06-04 20:06:25.507 [ERROR] __main__: Transcript fetch error for ENSG00000196071: 
+2026-06-04 20:06:51.871 [WARNING] __main__: Transcript fetch HTTP 429 for ENSG00000181963
+2026-06-04 20:06:51.906 [WARNING] __main__: Transcript fetch HTTP 429 for ENSG00000197790
+2026-06-04 20:06:53.507 [ERROR] __main__: Transcript fetch error for ENSG00000221977: 
+2026-06-04 20:06:54.507 [ERROR] __main__: Transcript fetch error for ENSG00000186092: 
+2026-06-04 20:06:54.508 [ERROR] __main__: Transcript fetch error for ENSG00000184140: 
+2026-06-04 20:06:56.507 [ERROR] __main__: Transcript fetch error for ENSG00000176253: 
+2026-06-04 20:06:58.506 [ERROR] __main__: Transcript fetch error for ENSG00000176299: 
+2026-06-04 20:07:16.507 [ERROR] __main__: Transcript fetch error for ENSG00000176900: 
+2026-06-04 20:07:18.508 [ERROR] __main__: Transcript fetch error for ENSG00000187747: 
+2026-06-04 20:07:23.508 [ERROR] __main__: Transcript fetch error for ENSG00000184478: 
+2026-06-04 20:07:43.507 [ERROR] __main__: Transcript fetch error for ENSG00000150269: 
+2026-06-04 20:07:43.509 [ERROR] __main__: Transcript fetch error for ENSG00000183303: 
+2026-06-04 20:07:44.508 [ERROR] __main__: Transcript fetch error for ENSG00000181718: 
+2026-06-04 20:07:44.509 [ERROR] __main__: Transcript fetch error for ENSG00000182334: 
+2026-06-04 20:07:44.509 [ERROR] __main__: Transcript fetch error for ENSG00000181698: 
+2026-06-04 20:07:47.507 [ERROR] __main__: Transcript fetch error for ENSG00000243729: 
+2026-06-04 20:07:47.508 [ERROR] __main__: Transcript fetch error for ENSG00000172489: 

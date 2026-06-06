@@ -1,0 +1,69 @@
+{# 触觉/痛觉/温度觉章节 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+## 6. 触觉 / 痛觉 / 温度觉
+
+体感系统负责机械触觉、温度感知和痛觉传导。本章涵盖离子通道、神经营养因子和瘙痒感知相关基因。
+
+> ⚠️ **已知局限**：痛觉和温度觉受心理、情绪、既往疼痛经历等多因素影响，基因型仅解释部分个体差异。SCN9A 和 PIEZO2 等基因的显著变异可能与临床表型相关，建议遗传咨询。
+
+### 6.1 痛觉传导
+
+电压门控钠通道在痛觉信号传导中起核心作用。
+
+{% for card in gene_cards if card.gene_symbol in ["SCN9A", "SCN10A", "SCN11A"] %}
+{{ render_gene_card(card) }}
+{% if card.gene_symbol == "SCN9A" and card.assessment.level in ["完全丧失", "显著影响"] %}
+> 🏥 **建议遗传咨询**：SCN9A 功能严重改变可能与痛觉异常相关，建议咨询遗传咨询师或疼痛专科医生。
+{% endif %}
+{% else %}
+*未在 SCN9A/SCN10A/SCN11A 上发现需要关注的变异。*
+{% endfor %}
+
+### 6.2 温度感受
+
+瞬时受体电位（TRP）通道负责热和冷的感知。
+
+{% for card in gene_cards if card.gene_symbol in ["TRPV1", "TRPM8"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 TRPV1/TRPM8 上发现需要关注的变异。*
+{% endfor %}
+
+### 6.3 机械感知
+
+PIEZO 通道介导机械力感知，与触觉和本体感觉相关。
+
+{% for card in gene_cards if card.gene_symbol in ["PIEZO1", "PIEZO2"] %}
+{{ render_gene_card(card) }}
+{% if card.gene_symbol == "PIEZO2" and card.assessment.level in ["完全丧失", "显著影响"] %}
+> 🏥 **建议遗传咨询**：PIEZO2 功能严重改变可能影响触觉和本体感觉，建议咨询遗传咨询师或神经科医生。
+{% endif %}
+{% else %}
+*未在 PIEZO1/PIEZO2 上发现需要关注的变异。*
+{% endfor %}
+
+### 6.4 神经营养因子
+
+神经生长因子及其受体对伤害性感受器发育至关重要。
+
+{% for card in gene_cards if card.gene_symbol in ["NGF", "NTRK1"] %}
+{{ render_gene_card(card) }}
+{% if card.gene_symbol == "NTRK1" and card.assessment.level in ["完全丧失", "显著影响"] %}
+> 🏥 **建议遗传咨询**：NTRK1 功能严重改变与先天性无痛症相关，建议咨询遗传咨询师。
+{% endif %}
+{% else %}
+*未在 NGF/NTRK1 上发现需要关注的变异。*
+{% endfor %}
+
+### 6.5 瘙痒感知
+
+瘙痒信号传导相关基因。
+
+{% for card in gene_cards if card.gene_symbol in ["GRPR", "IL31RA"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 GRPR/IL31RA 上发现需要关注的变异。*
+{% endfor %}
+
+---

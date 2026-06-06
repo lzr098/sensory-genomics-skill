@@ -1,0 +1,31 @@
+2026-06-04 19:49:41.150 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_194941.log
+2026-06-04 19:49:41.150 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_194941.log
+2026-06-04 19:49:41.178 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 19:49:41.178 [INFO] __main__: Precomputing coordinates for 334 unique genes
+2026-06-04 19:49:41.178 [INFO] __main__: Starting precompute for 334 sensory genes
+2026-06-04 19:50:08.954 [INFO] __main__: Lookup batch 1/4 done
+2026-06-04 19:50:14.817 [INFO] __main__: Lookup batch 2/4 done
+2026-06-04 19:50:35.352 [INFO] __main__: Lookup batch 3/4 done
+2026-06-04 19:50:41.024 [INFO] __main__: Lookup batch 4/4 done
+2026-06-04 19:50:41.025 [INFO] __main__: Resolved 327/334 genes to Ensembl IDs
+2026-06-04 19:50:44.569 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000138031
+2026-06-04 19:50:47.019 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000183862
+2026-06-04 19:51:04.310 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000170790
+2026-06-04 19:51:05.900 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000170683
+2026-06-04 19:51:07.221 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000170782
+2026-06-04 19:51:34.817 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000166363
+2026-06-04 19:51:38.110 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000279000
+2026-06-04 19:51:52.479 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000179919
+2026-06-04 19:51:57.384 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000172640
+2026-06-04 19:52:27.503 [ERROR] __main__: Transcript fetch error for ENSG00000174970: 
+2026-06-04 19:52:29.367 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000206474
+2026-06-04 19:52:31.112 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000197309
+2026-06-04 19:52:33.031 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000255582
+2026-06-04 19:52:35.322 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000169208
+2026-06-04 19:52:45.526 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000254737
+2026-06-04 19:52:50.542 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000198674
+2026-06-04 19:52:51.893 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000182634
+2026-06-04 19:52:53.184 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000234560
+2026-06-04 19:53:03.320 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000236981
+2026-06-04 19:53:33.505 [ERROR] __main__: Transcript fetch error for ENSG00000186723: 
+2026-06-04 19:53:35.132 [WARNING] __main__: Transcript fetch HTTP 400 for ENSG00000171942

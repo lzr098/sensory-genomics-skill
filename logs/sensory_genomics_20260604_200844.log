@@ -1,0 +1,43 @@
+2026-06-04 20:08:44.684 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_200844.log
+2026-06-04 20:08:44.685 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_200844.log
+2026-06-04 20:08:44.713 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 20:08:44.713 [INFO] __main__: Precomputing coordinates for 334 unique genes
+2026-06-04 20:08:44.714 [INFO] __main__: Starting precompute for 334 sensory genes
+2026-06-04 20:08:54.917 [INFO] __main__: Lookup batch 1/4 done
+2026-06-04 20:09:25.507 [ERROR] __main__: Lookup batch error: 
+2026-06-04 20:09:25.508 [INFO] __main__: Lookup batch 2/4 done
+2026-06-04 20:09:45.897 [INFO] __main__: Lookup batch 3/4 done
+2026-06-04 20:09:47.431 [INFO] __main__: Lookup batch 4/4 done
+2026-06-04 20:09:47.431 [INFO] __main__: Resolved 228/334 genes to Ensembl IDs
+2026-06-04 20:09:47.432 [INFO] __main__: Fetching transcripts for 228 genes in batches of 20...
+2026-06-04 20:10:17.508 [ERROR] __main__: Transcript fetch error for ENSG00000174970: 
+2026-06-04 20:10:17.510 [ERROR] __main__: Transcript fetch error for ENSG00000255582: 
+2026-06-04 20:10:17.511 [ERROR] __main__: Transcript fetch error for ENSG00000172640: 
+2026-06-04 20:10:17.511 [ERROR] __main__: Transcript fetch error for ENSG00000179919: 
+2026-06-04 20:10:17.511 [ERROR] __main__: Transcript fetch error for ENSG00000183862: 
+2026-06-04 20:10:17.511 [ERROR] __main__: Transcript fetch error for ENSG00000279000: 
+2026-06-04 20:10:17.511 [ERROR] __main__: Transcript fetch error for ENSG00000166363: 
+2026-06-04 20:10:17.512 [ERROR] __main__: Transcript fetch error for ENSG00000169208: 
+2026-06-04 20:10:17.512 [ERROR] __main__: Transcript fetch error for ENSG00000254737: 
+2026-06-04 20:10:17.513 [INFO] __main__: Transcript batch 1/12 done (20 genes)
+2026-06-04 20:10:27.336 [INFO] __main__: Transcript batch 2/12 done (20 genes)
+2026-06-04 20:10:32.034 [INFO] __main__: Transcript batch 3/12 done (20 genes)
+2026-06-04 20:10:42.731 [INFO] __main__: Transcript batch 4/12 done (20 genes)
+2026-06-04 20:11:13.509 [ERROR] __main__: Transcript fetch error for ENSG00000197454: 
+2026-06-04 20:11:16.701 [INFO] __main__: Transcript batch 5/12 done (20 genes)
+2026-06-04 20:11:52.508 [ERROR] __main__: Transcript fetch error for ENSG00000172324: 
+2026-06-04 20:11:52.509 [INFO] __main__: Transcript batch 6/12 done (20 genes)
+2026-06-04 20:12:13.271 [INFO] __main__: Transcript batch 7/12 done (20 genes)
+2026-06-04 20:12:43.509 [ERROR] __main__: Transcript fetch error for ENSG00000279395: 
+2026-06-04 20:12:43.510 [INFO] __main__: Transcript batch 8/12 done (20 genes)
+2026-06-04 20:13:14.509 [ERROR] __main__: Transcript fetch error for ENSG00000179626: 
+2026-06-04 20:13:14.512 [INFO] __main__: Transcript batch 9/12 done (20 genes)
+2026-06-04 20:13:16.068 [WARNING] __main__: Transcript fetch HTTP 429 for ENSG00000188000
+2026-06-04 20:13:24.312 [INFO] __main__: Transcript batch 10/12 done (20 genes)
+2026-06-04 20:13:53.680 [INFO] __main__: Transcript batch 11/12 done (20 genes)
+2026-06-04 20:14:21.070 [INFO] __main__: Transcript batch 12/12 done (8 genes)
+2026-06-04 20:14:21.072 [INFO] __main__: Fetched coordinates: 1499 exons, 1387 CDS, 0 UTRs. Failed: 14 genes
+2026-06-04 20:14:21.082 [INFO] __main__: Wrote sensory_genes_exons.bed: 1499 unique intervals
+2026-06-04 20:14:21.088 [INFO] __main__: Wrote sensory_genes_cds.bed: 1387 unique intervals
+2026-06-04 20:14:21.088 [WARNING] __main__: No records for sensory_genes_utr.bed
+2026-06-04 20:14:21.089 [INFO] __main__: Precompute complete. Files written to /tmp/sensory_precompute

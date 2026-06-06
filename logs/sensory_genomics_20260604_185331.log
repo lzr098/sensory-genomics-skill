@@ -1,0 +1,6 @@
+2026-06-04 18:53:31.290 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185331.log
+2026-06-04 18:53:31.291 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185331.log
+2026-06-04 18:53:31.293 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185331.log
+2026-06-04 18:53:31.293 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185331.log
+2026-06-04 18:53:31.295 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185331.log
+2026-06-04 18:53:31.350 [ERROR] __main__: BED filter failed: Command '['bcftools', 'view', '-Oz', '-o', '/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpw93iff9i.vcf.gz', '-R', '/tmp/core_genes.bed', "/Users/zhaorongli/Documents/Documents - zhaorong's MacBook Air/合作项目/之江实验室/AML/女儿分析报告/女儿短读全vcf-ML150006935_L01_184.genotyper.vcf.gz"]' returned non-zero exit status 255.

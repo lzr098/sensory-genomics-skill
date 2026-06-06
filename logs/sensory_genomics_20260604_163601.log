@@ -1,0 +1,100 @@
+2026-06-04 16:36:01.311 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.321 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.321 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.341 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.344 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.361 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.363 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.660 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.664 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.666 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.667 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:01.667 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163601.log
+2026-06-04 16:36:07.082 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.108 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.132 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.156 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.192 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.242 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.296 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.350 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.386 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.417 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.443 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.473 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.499 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.528 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.552 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.575 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.598 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.620 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.642 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.664 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.686 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.708 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:07.793 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:36:07.795 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:36:07.796 [INFO] src.config_loader: Config loaded from /Users/zhaorongli/.workbuddy/skills/sensory-genomics/config.yaml
+2026-06-04 16:36:07.797 [INFO] src.config_loader: Config loaded from /private/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/pytest-of-root/pytest-11/test_load_empty_yaml0/empty.yaml
+2026-06-04 16:36:07.799 [INFO] src.config_loader: Config loaded from /private/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/pytest-of-root/pytest-11/test_custom_values0/custom.yaml
+2026-06-04 16:36:09.176 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.178 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:36:09.180 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.180 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.181 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.207 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.207 [INFO] src.gene_sets.filter: Sensory filter: 4 / 4 variants retained
+2026-06-04 16:36:09.234 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.261 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.286 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.288 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.288 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.314 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.315 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.342 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.343 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.343 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.343 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.375 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.376 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.376 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.376 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.440 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.441 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.441 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.441 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.468 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.494 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.518 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.542 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.567 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.592 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.616 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.617 [ERROR] src.gene_sets.loader: sensory_gene_sets.yaml not found at /nonexistent/path/sensory_gene_sets.yaml
+2026-06-04 16:36:09.619 [INFO] src.gene_sets.loader: Loaded gene sets: 2 genes across 1 subsystems
+2026-06-04 16:36:09.643 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.769 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.770 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.770 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.771 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.771 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.772 [WARNING] src.specialized.tas2r38: tas2r38_snps.json not found, using built-in defaults
+2026-06-04 16:36:09.772 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:36:09.773 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.773 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.774 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.774 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.774 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.775 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:36:09.775 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.799 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.800 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.826 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.827 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.849 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.849 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.871 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.872 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.894 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:36:09.894 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:36:09.916 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems

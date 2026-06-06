@@ -1,0 +1,104 @@
+2026-06-04 19:33:09.117 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.118 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.120 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.139 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.140 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.140 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.141 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.141 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.173 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.173 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.174 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.175 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.176 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_193309.log
+2026-06-04 19:33:09.205 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 19:33:09.205 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 19:33:09.206 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 19:33:09.206 [INFO] __main__: Pipeline started for /tmp/daughter_sensory.vcf.gz
+2026-06-04 19:33:09.207 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-04 19:33:09.309 [INFO] __main__: Stage 1 complete: 14291 variants after prefilter
+2026-06-04 19:33:09.309 [INFO] src.vep.client: VEP annotation started: 14291 variants, batch_size=200
+2026-06-04 19:33:16.359 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highlight/highlight.pack.js"></script>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title> - </title>
+	
+	<link href='/_asset/8f35166051019d4c43cb29867ae6f94a.css' rel='stylesheet'/>
+	
+	<style>
+    body {
+      padding-top: 60px; /* 60px to make the 
+2026-06-04 19:33:46.170 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highlight/highlight.pack.js"></script>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title> - </title>
+	
+	<link href='/_asset/8f35166051019d4c43cb29867ae6f94a.css' rel='stylesheet'/>
+	
+	<style>
+    body {
+      padding-top: 60px; /* 60px to make the 
+2026-06-04 19:34:10.883 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highlight/highlight.pack.js"></script>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title> - </title>
+	
+	<link href='/_asset/8f35166051019d4c43cb29867ae6f94a.css' rel='stylesheet'/>
+	
+	<style>
+    body {
+      padding-top: 60px; /* 60px to make the 
+2026-06-04 19:34:32.132 [ERROR] src.vep.client: VEP HTTP 500: 
+
+<!DOCTYPE html>
+
+
+
+<html lang="en">
+<head>
+        <script src="/static/js/20-prettify.js"></script>
+        <script src="/static/js/30-jquery-1.11.1.min.js"></script>
+	<script src="/static/js/highlight/highlight.pack.js"></script>
+
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<title> - </title>
+	
+	<link href='/_asset/8f35166051019d4c43cb29867ae6f94a.css' rel='stylesheet'/>
+	
+	<style>
+    body {
+      padding-top: 60px; /* 60px to make the 

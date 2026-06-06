@@ -1,0 +1,818 @@
+subsystems:
+  - name: vision
+    display_name: 视觉系统
+    genes:
+      - symbol: OPN1LW
+        function: 长波长视蛋白（红敏色素），色觉三色视觉的关键基因
+      - symbol: OPN1MW
+        function: 中波长视蛋白（绿敏色素），色觉三色视觉的关键基因
+      - symbol: OPN1SW
+        function: 短波长视蛋白（蓝敏色素），负责蓝紫光感知
+      - symbol: RHO
+        function: 视紫红质，杆状细胞光信号传导的关键蛋白
+      - symbol: PDE6A
+        function: 磷酸二酯酶6A，光传导级联反应的效应酶
+      - symbol: ABCA4
+        function: 视网膜色素上皮细胞转运蛋白，与黄斑变性相关
+      - symbol: EYS
+        function: 视网膜感光细胞外节结构蛋白，与视网膜色素变性相关
+      - symbol: GJA8
+        function: 缝隙连接蛋白，晶状体发育与透明性维持
+      - symbol: CRYAA
+        function: 晶状体 alpha-A 晶体蛋白，维持晶状体透明度
+      - symbol: OCA2
+        function: 黑色素体膜转运蛋白，影响虹膜色素沉着与视力
+      - symbol: TYRP1
+        function: 酪氨酸酶相关蛋白1，黑色素合成通路
+
+  - name: hearing
+    display_name: 听觉系统
+    genes:
+      - symbol: GJB2
+        function: 缝隙连接蛋白 Connexin-26，耳蜗钾离子循环的关键蛋白
+      - symbol: GJB6
+        function: 缝隙连接蛋白 Connexin-30，与 GJB2 协同维持内耳稳态
+      - symbol: MYO7A
+        function: 非传统肌球蛋白 VIIa，毛细胞静纤毛发育与维持
+      - symbol: CDH23
+        function: 钙黏蛋白23，毛细胞尖端链接结构蛋白
+      - symbol: OTOF
+        function: Otoferlin，内毛细胞突触囊泡释放的关键蛋白
+      - symbol: CABP2
+        function: 钙结合蛋白2，调节内毛细胞钙信号与突触传递
+      - symbol: SLC26A4
+        function: pendrin 阴离子交换蛋白，内耳内淋巴液离子平衡
+      - symbol: KCNQ4
+        function: 钾离子通道，外毛细胞电机械转导与稳态
+      - symbol: MT-RNR1
+        function: 线粒体12S核糖体RNA，氨基糖苷类抗生素致聋靶点
+      - symbol: MT-TS1
+        function: 线粒体丝氨酸tRNA，与非综合征性耳聋相关
+
+  - name: olfaction
+    display_name: 嗅觉系统
+    genes:
+      - symbol: OR2T11
+        function: 嗅觉受体，已知配体为含硫化合物（鱼腥味/葱蒜味）
+      - symbol: OR7D4
+        function: 嗅觉受体，已知配体为雄烯酮（猪骚味/尿骚味）
+      - symbol: OR2B11
+        function: 嗅觉受体，对花香类化合物敏感
+      - symbol: CNGA2
+        function: 环核苷酸门控阳离子通道，嗅觉信号转导核心组件
+      - symbol: ADCY3
+        function: 腺苷酸环化酶3，嗅觉受体下游 cAMP 信号生成
+      - symbol: OR1A1
+        function: 嗅觉受体
+      - symbol: OR1A2
+        function: 嗅觉受体
+      - symbol: OR1G1
+        function: 嗅觉受体
+      - symbol: OR1J2
+        function: 嗅觉受体
+      - symbol: OR1K1
+        function: 嗅觉受体
+      - symbol: OR2A1
+        function: 嗅觉受体
+      - symbol: OR2A4
+        function: 嗅觉受体
+      - symbol: OR2A5
+        function: 嗅觉受体
+      - symbol: OR2A7
+        function: 嗅觉受体
+      - symbol: OR2A12
+        function: 嗅觉受体
+      - symbol: OR2A14
+        function: 嗅觉受体
+      - symbol: OR2A25
+        function: 嗅觉受体
+      - symbol: OR2AG1
+        function: 嗅觉受体
+      - symbol: OR2AT4
+        function: 嗅觉受体
+      - symbol: OR2C1
+        function: 嗅觉受体
+      - symbol: OR2F1
+        function: 嗅觉受体
+      - symbol: OR2F2
+        function: 嗅觉受体
+      - symbol: OR2G2
+        function: 嗅觉受体
+      - symbol: OR2H2
+        function: 嗅觉受体
+      - symbol: OR2J2
+        function: 嗅觉受体
+      - symbol: OR2J3
+        function: 嗅觉受体，对薄荷醇类化合物敏感
+      - symbol: OR2K2
+        function: 嗅觉受体
+      - symbol: OR2L2
+        function: 嗅觉受体
+      - symbol: OR2L3
+        function: 嗅觉受体
+      - symbol: OR2L5
+        function: 嗅觉受体
+      - symbol: OR2L8
+        function: 嗅觉受体
+      - symbol: OR2L13
+        function: 嗅觉受体
+      - symbol: OR2M2
+        function: 嗅觉受体
+      - symbol: OR2M3
+        function: 嗅觉受体
+      - symbol: OR2M4
+        function: 嗅觉受体
+      - symbol: OR2M5
+        function: 嗅觉受体
+      - symbol: OR2M7
+        function: 嗅觉受体
+      - symbol: OR2S2
+        function: 嗅觉受体
+      - symbol: OR2T1
+        function: 嗅觉受体
+      - symbol: OR2T2
+        function: 嗅觉受体
+      - symbol: OR2T3
+        function: 嗅觉受体
+      - symbol: OR2T4
+        function: 嗅觉受体
+      - symbol: OR2T5
+        function: 嗅觉受体
+      - symbol: OR2T6
+        function: 嗅觉受体
+      - symbol: OR2T8
+        function: 嗅觉受体
+      - symbol: OR2T10
+        function: 嗅觉受体
+      - symbol: OR2T12
+        function: 嗅觉受体
+      - symbol: OR2T27
+        function: 嗅觉受体
+      - symbol: OR2T29
+        function: 嗅觉受体
+      - symbol: OR2T33
+        function: 嗅觉受体
+      - symbol: OR2T34
+        function: 嗅觉受体
+      - symbol: OR2T35
+        function: 嗅觉受体
+      - symbol: OR2V1
+        function: 嗅觉受体
+      - symbol: OR2V2
+        function: 嗅觉受体
+      - symbol: OR2W1
+        function: 嗅觉受体
+      - symbol: OR2W3
+        function: 嗅觉受体
+      - symbol: OR2Y1
+        function: 嗅觉受体
+      - symbol: OR2Z1
+        function: 嗅觉受体
+      - symbol: OR4A15
+        function: 嗅觉受体
+      - symbol: OR4A47
+        function: 嗅觉受体
+      - symbol: OR4C11
+        function: 嗅觉受体
+      - symbol: OR4C12
+        function: 嗅觉受体
+      - symbol: OR4C13
+        function: 嗅觉受体
+      - symbol: OR4C15
+        function: 嗅觉受体
+      - symbol: OR4C16
+        function: 嗅觉受体
+      - symbol: OR4C3
+        function: 嗅觉受体
+      - symbol: OR4C5
+        function: 嗅觉受体
+      - symbol: OR4C6
+        function: 嗅觉受体
+      - symbol: OR4D1
+        function: 嗅觉受体
+      - symbol: OR4D10
+        function: 嗅觉受体
+      - symbol: OR4D11
+        function: 嗅觉受体
+      - symbol: OR4D2
+        function: 嗅觉受体
+      - symbol: OR4D5
+        function: 嗅觉受体
+      - symbol: OR4D6
+        function: 嗅觉受体
+      - symbol: OR4D9
+        function: 嗅觉受体
+      - symbol: OR4E2
+        function: 嗅觉受体
+      - symbol: OR4F3
+        function: 嗅觉受体
+      - symbol: OR4F4
+        function: 嗅觉受体
+      - symbol: OR4F5
+        function: 嗅觉受体
+      - symbol: OR4F6
+        function: 嗅觉受体
+      - symbol: OR4F17
+        function: 嗅觉受体
+      - symbol: OR4K1
+        function: 嗅觉受体
+      - symbol: OR4K2
+        function: 嗅觉受体
+      - symbol: OR4K13
+        function: 嗅觉受体
+      - symbol: OR4K14
+        function: 嗅觉受体
+      - symbol: OR4K15
+        function: 嗅觉受体
+      - symbol: OR4L1
+        function: 嗅觉受体
+      - symbol: OR4M1
+        function: 嗅觉受体
+      - symbol: OR4M2
+        function: 嗅觉受体
+      - symbol: OR4N2
+        function: 嗅觉受体
+      - symbol: OR4N4
+        function: 嗅觉受体
+      - symbol: OR4N5
+        function: 嗅觉受体
+      - symbol: OR4P4
+        function: 嗅觉受体
+      - symbol: OR4Q3
+        function: 嗅觉受体
+      - symbol: OR4S1
+        function: 嗅觉受体
+      - symbol: OR4S2
+        function: 嗅觉受体
+      - symbol: OR4X1
+        function: 嗅觉受体
+      - symbol: OR4X2
+        function: 嗅觉受体
+      - symbol: OR5A1
+        function: 嗅觉受体，对β-紫罗兰酮敏感
+      - symbol: OR5A2
+        function: 嗅觉受体
+      - symbol: OR5AN1
+        function: 嗅觉受体
+      - symbol: OR5B2
+        function: 嗅觉受体
+      - symbol: OR5B3
+        function: 嗅觉受体
+      - symbol: OR5B12
+        function: 嗅觉受体
+      - symbol: OR5B17
+        function: 嗅觉受体
+      - symbol: OR5B21
+        function: 嗅觉受体
+      - symbol: OR5C1
+        function: 嗅觉受体
+      - symbol: OR5D13
+        function: 嗅觉受体
+      - symbol: OR5D14
+        function: 嗅觉受体
+      - symbol: OR5D16
+        function: 嗅觉受体
+      - symbol: OR5D18
+        function: 嗅觉受体
+      - symbol: OR5F1
+        function: 嗅觉受体
+      - symbol: OR5H1
+        function: 嗅觉受体
+      - symbol: OR5H2
+        function: 嗅觉受体
+      - symbol: OR5H6
+        function: 嗅觉受体
+      - symbol: OR5H14
+        function: 嗅觉受体
+      - symbol: OR5H15
+        function: 嗅觉受体
+      - symbol: OR5I1
+        function: 嗅觉受体
+      - symbol: OR5J2
+        function: 嗅觉受体
+      - symbol: OR5K1
+        function: 嗅觉受体
+      - symbol: OR5K2
+        function: 嗅觉受体
+      - symbol: OR5L1
+        function: 嗅觉受体
+      - symbol: OR5L2
+        function: 嗅觉受体
+      - symbol: OR5M1
+        function: 嗅觉受体
+      - symbol: OR5M3
+        function: 嗅觉受体
+      - symbol: OR5M8
+        function: 嗅觉受体
+      - symbol: OR5M9
+        function: 嗅觉受体
+      - symbol: OR5M10
+        function: 嗅觉受体
+      - symbol: OR5M11
+        function: 嗅觉受体
+      - symbol: OR5P2
+        function: 嗅觉受体
+      - symbol: OR5P3
+        function: 嗅觉受体
+      - symbol: OR5R1
+        function: 嗅觉受体
+      - symbol: OR5T1
+        function: 嗅觉受体
+      - symbol: OR5T2
+        function: 嗅觉受体
+      - symbol: OR5T3
+        function: 嗅觉受体
+      - symbol: OR5V1
+        function: 嗅觉受体
+      - symbol: OR5W2
+        function: 嗅觉受体
+      - symbol: OR6A2
+        function: 嗅觉受体，对香菜醛敏感（影响香菜味感知）
+      - symbol: OR6B1
+        function: 嗅觉受体
+      - symbol: OR6B2
+        function: 嗅觉受体
+      - symbol: OR6B3
+        function: 嗅觉受体
+      - symbol: OR6C1
+        function: 嗅觉受体
+      - symbol: OR6C2
+        function: 嗅觉受体
+      - symbol: OR6C3
+        function: 嗅觉受体
+      - symbol: OR6C4
+        function: 嗅觉受体
+      - symbol: OR6C6
+        function: 嗅觉受体
+      - symbol: OR6C65
+        function: 嗅觉受体
+      - symbol: OR6C68
+        function: 嗅觉受体
+      - symbol: OR6C70
+        function: 嗅觉受体
+      - symbol: OR6C74
+        function: 嗅觉受体
+      - symbol: OR6C75
+        function: 嗅觉受体
+      - symbol: OR6C76
+        function: 嗅觉受体
+      - symbol: OR6K2
+        function: 嗅觉受体
+      - symbol: OR6K3
+        function: 嗅觉受体
+      - symbol: OR6K6
+        function: 嗅觉受体
+      - symbol: OR6M1
+        function: 嗅觉受体
+      - symbol: OR6N1
+        function: 嗅觉受体
+      - symbol: OR6N2
+        function: 嗅觉受体
+      - symbol: OR6P1
+        function: 嗅觉受体
+      - symbol: OR6Q1
+        function: 嗅觉受体
+      - symbol: OR6S1
+        function: 嗅觉受体
+      - symbol: OR6T1
+        function: 嗅觉受体
+      - symbol: OR6V1
+        function: 嗅觉受体
+      - symbol: OR6X1
+        function: 嗅觉受体
+      - symbol: OR6Y1
+        function: 嗅觉受体
+      - symbol: OR7A2
+        function: 嗅觉受体
+      - symbol: OR7A5
+        function: 嗅觉受体
+      - symbol: OR7A10
+        function: 嗅觉受体
+      - symbol: OR7A17
+        function: 嗅觉受体
+      - symbol: OR7C1
+        function: 嗅觉受体
+      - symbol: OR7C2
+        function: 嗅觉受体
+      - symbol: OR7D2
+        function: 嗅觉受体
+      - symbol: OR7E24
+        function: 嗅觉受体
+      - symbol: OR7G1
+        function: 嗅觉受体
+      - symbol: OR7G2
+        function: 嗅觉受体
+      - symbol: OR7G3
+        function: 嗅觉受体
+      - symbol: OR8A1
+        function: 嗅觉受体
+      - symbol: OR8B2
+        function: 嗅觉受体
+      - symbol: OR8B3
+        function: 嗅觉受体
+      - symbol: OR8B4
+        function: 嗅觉受体
+      - symbol: OR8B8
+        function: 嗅觉受体
+      - symbol: OR8B12
+        function: 嗅觉受体
+      - symbol: OR8D1
+        function: 嗅觉受体
+      - symbol: OR8D2
+        function: 嗅觉受体
+      - symbol: OR8D4
+        function: 嗅觉受体
+      - symbol: OR8G1
+        function: 嗅觉受体
+      - symbol: OR8G2
+        function: 嗅觉受体
+      - symbol: OR8G5
+        function: 嗅觉受体
+      - symbol: OR8H1
+        function: 嗅觉受体
+      - symbol: OR8H2
+        function: 嗅觉受体
+      - symbol: OR8H3
+        function: 嗅觉受体
+      - symbol: OR8I2
+        function: 嗅觉受体
+      - symbol: OR8J1
+        function: 嗅觉受体
+      - symbol: OR8J2
+        function: 嗅觉受体
+      - symbol: OR8J3
+        function: 嗅觉受体
+      - symbol: OR8K1
+        function: 嗅觉受体
+      - symbol: OR8K3
+        function: 嗅觉受体
+      - symbol: OR8K5
+        function: 嗅觉受体
+      - symbol: OR8S1
+        function: 嗅觉受体
+      - symbol: OR8U1
+        function: 嗅觉受体
+      - symbol: OR8U8
+        function: 嗅觉受体
+      - symbol: OR8U9
+        function: 嗅觉受体
+      - symbol: OR9A2
+        function: 嗅觉受体
+      - symbol: OR9A4
+        function: 嗅觉受体
+      - symbol: OR9G1
+        function: 嗅觉受体
+      - symbol: OR9G3
+        function: 嗅觉受体
+      - symbol: OR9G4
+        function: 嗅觉受体
+      - symbol: OR9I1
+        function: 嗅觉受体
+      - symbol: OR9K2
+        function: 嗅觉受体
+      - symbol: OR9Q1
+        function: 嗅觉受体
+      - symbol: OR9Q2
+        function: 嗅觉受体
+      - symbol: OR10A2
+        function: 嗅觉受体
+      - symbol: OR10A3
+        function: 嗅觉受体
+      - symbol: OR10A4
+        function: 嗅觉受体
+      - symbol: OR10A5
+        function: 嗅觉受体
+      - symbol: OR10A6
+        function: 嗅觉受体
+      - symbol: OR10A7
+        function: 嗅觉受体
+      - symbol: OR10AD1
+        function: 嗅觉受体
+      - symbol: OR10AG1
+        function: 嗅觉受体
+      - symbol: OR10C1
+        function: 嗅觉受体
+      - symbol: OR10D3
+        function: 嗅觉受体
+      - symbol: OR10G2
+        function: 嗅觉受体
+      - symbol: OR10G3
+        function: 嗅觉受体
+      - symbol: OR10G4
+        function: 嗅觉受体
+      - symbol: OR10G6
+        function: 嗅觉受体
+      - symbol: OR10G7
+        function: 嗅觉受体
+      - symbol: OR10G8
+        function: 嗅觉受体
+      - symbol: OR10G9
+        function: 嗅觉受体
+      - symbol: OR10H1
+        function: 嗅觉受体
+      - symbol: OR10H2
+        function: 嗅觉受体
+      - symbol: OR10H3
+        function: 嗅觉受体
+      - symbol: OR10H4
+        function: 嗅觉受体
+      - symbol: OR10H5
+        function: 嗅觉受体
+      - symbol: OR10J1
+        function: 嗅觉受体
+      - symbol: OR10J3
+        function: 嗅觉受体
+      - symbol: OR10J4
+        function: 嗅觉受体
+      - symbol: OR10J5
+        function: 嗅觉受体
+      - symbol: OR10K1
+        function: 嗅觉受体
+      - symbol: OR10K2
+        function: 嗅觉受体
+      - symbol: OR10P1
+        function: 嗅觉受体
+      - symbol: OR10Q1
+        function: 嗅觉受体
+      - symbol: OR10R2
+        function: 嗅觉受体
+      - symbol: OR10S1
+        function: 嗅觉受体
+      - symbol: OR10T2
+        function: 嗅觉受体
+      - symbol: OR10V1
+        function: 嗅觉受体
+      - symbol: OR10W1
+        function: 嗅觉受体
+      - symbol: OR10X1
+        function: 嗅觉受体
+      - symbol: OR10Z1
+        function: 嗅觉受体
+      - symbol: OR11A1
+        function: 嗅觉受体
+      - symbol: OR11G2
+        function: 嗅觉受体
+      - symbol: OR11H1
+        function: 嗅觉受体
+      - symbol: OR11H2
+        function: 嗅觉受体
+      - symbol: OR11H4
+        function: 嗅觉受体
+      - symbol: OR11H6
+        function: 嗅觉受体
+      - symbol: OR11H7
+        function: 嗅觉受体
+      - symbol: OR11L1
+        function: 嗅觉受体
+      - symbol: OR12D2
+        function: 嗅觉受体
+      - symbol: OR12D3
+        function: 嗅觉受体
+      - symbol: OR13A1
+        function: 嗅觉受体
+      - symbol: OR13C2
+        function: 嗅觉受体
+      - symbol: OR13C3
+        function: 嗅觉受体
+      - symbol: OR13C4
+        function: 嗅觉受体
+      - symbol: OR13C5
+        function: 嗅觉受体
+      - symbol: OR13C8
+        function: 嗅觉受体
+      - symbol: OR13C9
+        function: 嗅觉受体
+      - symbol: OR13D1
+        function: 嗅觉受体
+      - symbol: OR13F1
+        function: 嗅觉受体
+      - symbol: OR13G1
+        function: 嗅觉受体
+      - symbol: OR13H1
+        function: 嗅觉受体
+      - symbol: OR13J1
+        function: 嗅觉受体
+      - symbol: OR14A2
+        function: 嗅觉受体
+      - symbol: OR14A16
+        function: 嗅觉受体
+      - symbol: OR14C36
+        function: 嗅觉受体
+      - symbol: OR14I1
+        function: 嗅觉受体
+      - symbol: OR14J1
+        function: 嗅觉受体
+      - symbol: OR14K1
+        function: 嗅觉受体
+      - symbol: OR14L1
+        function: 嗅觉受体
+      - symbol: OR51A2
+        function: 嗅觉受体
+      - symbol: OR51A4
+        function: 嗅觉受体
+      - symbol: OR51A7
+        function: 嗅觉受体
+      - symbol: OR51B2
+        function: 嗅觉受体
+      - symbol: OR51B4
+        function: 嗅觉受体
+      - symbol: OR51B5
+        function: 嗅觉受体
+      - symbol: OR51B6
+        function: 嗅觉受体
+      - symbol: OR51E1
+        function: 嗅觉受体
+      - symbol: OR51E2
+        function: 嗅觉受体
+      - symbol: OR51F1
+        function: 嗅觉受体
+      - symbol: OR51F2
+        function: 嗅觉受体
+      - symbol: OR51G1
+        function: 嗅觉受体
+      - symbol: OR51G2
+        function: 嗅觉受体
+      - symbol: OR51H1
+        function: 嗅觉受体
+      - symbol: OR51I1
+        function: 嗅觉受体
+      - symbol: OR51I2
+        function: 嗅觉受体
+      - symbol: OR51J1
+        function: 嗅觉受体
+      - symbol: OR51L1
+        function: 嗅觉受体
+      - symbol: OR51M1
+        function: 嗅觉受体
+      - symbol: OR51Q1
+        function: 嗅觉受体
+      - symbol: OR51S1
+        function: 嗅觉受体
+      - symbol: OR51T1
+        function: 嗅觉受体
+      - symbol: OR51V1
+        function: 嗅觉受体
+      - symbol: OR52A1
+        function: 嗅觉受体
+      - symbol: OR52A4
+        function: 嗅觉受体
+      - symbol: OR52A5
+        function: 嗅觉受体
+      - symbol: OR52B2
+        function: 嗅觉受体
+      - symbol: OR52B4
+        function: 嗅觉受体
+      - symbol: OR52B6
+        function: 嗅觉受体
+      - symbol: OR52D1
+        function: 嗅觉受体
+      - symbol: OR52E2
+        function: 嗅觉受体
+      - symbol: OR52E4
+        function: 嗅觉受体
+      - symbol: OR52E6
+        function: 嗅觉受体
+      - symbol: OR52E8
+        function: 嗅觉受体
+      - symbol: OR52H1
+        function: 嗅觉受体
+      - symbol: OR52I1
+        function: 嗅觉受体
+      - symbol: OR52I2
+        function: 嗅觉受体
+      - symbol: OR52J3
+        function: 嗅觉受体
+      - symbol: OR52K1
+        function: 嗅觉受体
+      - symbol: OR52K2
+        function: 嗅觉受体
+      - symbol: OR52L1
+        function: 嗅觉受体
+      - symbol: OR52M1
+        function: 嗅觉受体
+      - symbol: OR52N1
+        function: 嗅觉受体
+      - symbol: OR52N2
+        function: 嗅觉受体
+      - symbol: OR52N4
+        function: 嗅觉受体
+      - symbol: OR52N5
+        function: 嗅觉受体
+      - symbol: OR52P1
+        function: 嗅觉受体
+      - symbol: OR52R1
+        function: 嗅觉受体
+      - symbol: OR52W1
+        function: 嗅觉受体
+      - symbol: OR56A1
+        function: 嗅觉受体
+      - symbol: OR56A3
+        function: 嗅觉受体
+      - symbol: OR56A4
+        function: 嗅觉受体
+      - symbol: OR56A5
+        function: 嗅觉受体
+      - symbol: OR56B1
+        function: 嗅觉受体
+      - symbol: OR56B4
+        function: 嗅觉受体
+      - symbol: OR56M1
+        function: 嗅觉受体
+      - symbol: OR56M2
+        function: 嗅觉受体
+
+  - name: taste
+    display_name: 味觉系统
+    genes:
+      - symbol: TAS2R38
+        function: 苦味受体，决定苯硫脲（PTC）等苦味化合物感知能力
+      - symbol: TAS1R2
+        function: 甜味受体亚基，与 TAS1R3 形成异二聚体感知甜味
+      - symbol: TAS1R3
+        function: 甜味/鲜味受体共同亚基
+      - symbol: TAS1R1
+        function: 鲜味受体亚基，与 TAS1R3 形成异二聚体感知鲜味
+      - symbol: SCNN1A
+        function: 上皮钠通道 α 亚基，咸味感知关键通道
+      - symbol: SCNN1B
+        function: 上皮钠通道 β 亚基
+      - symbol: SCNN1G
+        function: 上皮钠通道 γ 亚基
+      - symbol: OTOP1
+        function: 质子通道 Otopetrin-1，酸味感知核心蛋白
+      - symbol: OTOP2
+        function: 质子通道 Otopetrin-2，酸味感知相关
+      - symbol: OTOP3
+        function: 质子通道 Otopetrin-3，酸味感知相关
+      - symbol: TAS2R16
+        function: 苦味受体，水杨苷（阿司匹林相关）苦味感知
+      - symbol: TAS2R19
+        function: 苦味受体，奎宁类苦味感知
+
+  - name: pigmentation
+    display_name: 色素沉着系统
+    genes:
+      - symbol: HERC2
+        function: E3泛素连接酶，通过调控 OCA2 影响虹膜色素沉着（瞳孔颜色）
+      - symbol: SLC45A2
+        function: 黑色素体膜转运蛋白，影响黑色素合成量（色素深浅）
+      - symbol: SLC24A4
+        function: 钾钠钙交换蛋白，影响眼色色素沉着
+      - symbol: SLC24A5
+        function: 钾钠钙交换蛋白，影响皮肤和眼色素沉着
+      - symbol: IRF4
+        function: 干扰素调节因子4，影响眼色、雀斑与毛发色素
+
+  - name: metabolism
+    display_name: 代谢特征
+    genes:
+      - symbol: CYP1A2
+        function: 细胞色素P450酶，咖啡因代谢速率的关键酶
+      - symbol: LCT
+        function: 乳糖酶，决定乳糖耐受能力
+      - symbol: ALDH2
+        function: 乙醛脱氢酶2，酒精代谢中乙醛氧化为乙酸
+      - symbol: ADH1B
+        function: 乙醇脱氢酶1B，酒精代谢第一步的关键酶
+
+  - name: muscle
+    display_name: 肌肉特征
+    genes:
+      - symbol: ACTN3
+        function: α-辅肌动蛋白3，快肌纤维功能蛋白，影响爆发力与耐力
+
+  - name: hair
+    display_name: 毛发特征
+    genes:
+      - symbol: EDAR
+        function: 外胚层发育不良受体，影响毛发密度、直卷与汗腺发育
+
+  - name: somatosensation
+    display_name: 触觉 / 痛觉 / 温度觉系统
+    genes:
+      - symbol: SCN9A
+        function: 电压门控钠通道 Nav1.7，痛觉传导的关键通道
+      - symbol: SCN10A
+        function: 电压门控钠通道 Nav1.8，伤害性感受器动作电位产生
+      - symbol: SCN11A
+        function: 电压门控钠通道 Nav1.9，慢性疼痛与炎症痛调制
+      - symbol: TRPV1
+        function: 瞬时受体电位通道，热痛感受（>43°C）与辣椒素受体
+      - symbol: TRPM8
+        function: 瞬时受体电位通道，冷感受（<25°C）与薄荷醇受体
+      - symbol: PIEZO1
+        function: 机械敏感离子通道，触觉与本体感觉
+      - symbol: PIEZO2
+        function: 机械敏感离子通道，触觉、本体感觉与触觉辨别
+      - symbol: NGF
+        function: 神经生长因子，伤害性感受器发育与维持
+      - symbol: NTRK1
+        function: TrkA 受体，NGF 信号转导，先天性无痛症关键基因
+      - symbol: GRPR
+        function: 胃泌素释放肽受体，脊髓水平瘙痒信号传导
+      - symbol: IL31RA
+        function: 白细胞介素31受体，瘙痒信号与特应性皮炎相关
+      - symbol: OPRM1
+        function: μ-阿片受体，痛觉调制与愉悦感传导
+      - symbol: COMT
+        function: 儿茶酚-O-甲基转移酶，多巴胺与肾上腺素代谢，影响痛觉敏感性

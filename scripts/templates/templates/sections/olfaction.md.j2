@@ -1,0 +1,91 @@
+{# 嗅觉系统章节 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+## 4. 嗅觉系统
+
+嗅觉系统负责气味分子的识别和信号转导。嗅觉受体（OR）基因家族是人类最大的基因家族之一，约 400 个功能性受体。
+
+> ⚠️ **已知局限**：OR 基因-配体对应关系目前仅部分明确，大量 OR 基因的配体尚未发现。因此，"特定嗅觉受体缺失"的标注仅表示基因层面的预测，不代表实际无法感知某种气味。
+
+### 4.1 已知配体的嗅觉受体（Tier A）
+
+以下 OR 基因已有文献报道的配体对应关系，纯合功能缺失可能影响特定气味感知。
+
+{% if or_tiers %}
+{% set tier_a = or_tiers | selectattr("tier", "equalto", "A") | list %}
+{% if tier_a %}
+{% for or_result in tier_a %}
+#### {{ or_result.gene_symbol }}
+
+- **已知配体**：{{ or_result.known_ligand_zh or "未知" }}
+- **影响评估**：{{ or_result.assessment.level | level_badge }}
+- **影响依据**：{{ or_result.assessment.rationale_zh or "无" }}
+
+{% if or_result.variant %}
+| 位置 | 参考>替代 | 基因型 | 后果 |
+|------|----------|--------|------|
+| {{ or_result.variant.chrom }}:{{ or_result.variant.pos }} | {{ or_result.variant.ref }}>{{ or_result.variant.alt }} | {{ or_result.variant.gt }} | {{ or_result.variant.consequence or "N/A" }} |
+{% endif %}
+
+> 🔬 **说明**：{{ or_result.gene_symbol }} 的纯合功能缺失可能导致对 {{ or_result.known_ligand_zh or "特定气味" }} 的感知能力下降。这属于"特定嗅觉受体缺失"，不等同于疾病。
+
+{% endfor %}
+{% else %}
+*未发现 Tier A 级别的 OR 基因功能缺失。*
+{% endif %}
+{% else %}
+*未发现需要关注的 OR 基因变异。*
+{% endif %}
+
+### 4.2 其他纯合 LoF OR 基因（Tier B）
+
+以下 OR 基因存在纯合功能缺失变异，但配体尚未明确。
+
+{% if or_tiers %}
+{% set tier_b = or_tiers | selectattr("tier", "equalto", "B") | list %}
+{% if tier_b %}
+| 基因 | 后果类型 | 影响评估 |
+|------|---------|---------|
+{% for or_result in tier_b %}
+| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.assessment.level | level_badge }} |
+{% endfor %}
+{% else %}
+*未发现 Tier B 级别的 OR 基因功能缺失。*
+{% endif %}
+{% else %}
+*无数据。*
+{% endif %}
+
+### 4.3 其余 OR 基因（Tier C）
+
+<details>
+<summary>点击展开 Tier C OR 基因列表（纯合 LoF，附录参考）</summary>
+
+{% if or_tiers %}
+{% set tier_c = or_tiers | selectattr("tier", "equalto", "C") | list %}
+{% if tier_c %}
+| 基因 | 后果类型 | 影响评估 |
+|------|---------|---------|
+{% for or_result in tier_c %}
+| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.assessment.level | level_badge }} |
+{% endfor %}
+{% else %}
+*无 Tier C 级别数据。*
+{% endif %}
+{% else %}
+*无数据。*
+{% endif %}
+
+</details>
+
+### 4.4 嗅觉信号转导
+
+嗅觉受体下游信号通路基因。
+
+{% for card in gene_cards if card.gene_symbol in ["CNGA2", "ADCY3"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 CNGA2/ADCY3 上发现需要关注的变异。*
+{% endfor %}
+
+---

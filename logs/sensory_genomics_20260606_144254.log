@@ -1,0 +1,311 @@
+2026-06-06 14:42:54.962 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_144254.log
+2026-06-06 14:42:54.979 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_144254.log
+2026-06-06 14:42:54.981 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_144254.log
+2026-06-06 14:42:54.986 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_144254.log
+2026-06-06 14:42:56.576 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 6931 intervals across 23 chromosomes (bisect indexed)
+2026-06-06 14:42:56.577 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 38 intervals across 19 chromosomes (bisect indexed)
+2026-06-06 14:46:48.561 [INFO] src.gene_sets.filter: Sensory filter: 9278 / 9404 variants retained
+2026-06-06 14:46:49.832 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:49.864 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:49.890 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:49.896 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:49.899 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.003 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.039 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.141 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:50.141 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:50.195 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.295 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:50.679 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.723 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.733 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:50.796 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.816 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:50.827 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:50.872 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.094 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.107 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.115 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.219 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.291 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.294 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.316 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.322 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.556 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.584 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.586 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:51.590 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.595 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.736 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:51.795 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:52.016 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.183 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:52.282 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:52.515 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.538 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.565 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.622 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.624 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.625 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:52.933 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:52.993 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:53.200 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:53.327 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.328 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.381 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.434 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.506 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.726 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.813 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.818 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:46:53.954 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:54.043 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:54.184 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:54.238 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:54.321 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.644 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:54.704 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:46:54.821 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.853 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.883 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.931 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.937 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:54.964 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:55.280 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:55.364 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:55.428 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:55.657 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:57.025 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:57.026 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:46:57.638 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:57.681 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:57.737 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:57.823 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:58.453 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:58.482 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:58.509 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:58.550 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:58.619 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:58.701 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:58.941 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.059 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.128 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.170 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.236 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.251 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.300 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.304 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.614 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.683 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.719 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.758 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.781 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:46:59.826 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:46:59.872 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.161 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.265 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.391 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.671 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.764 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:00.764 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:01.039 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:01.345 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:01.471 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:01.558 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:01.625 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:01.993 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:02.133 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:02.211 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:02.517 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:02.869 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:03.153 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:03.494 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:03.978 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:04.098 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:04.441 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:04.584 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:04.666 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:04.809 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:05.951 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:06.031 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:06.044 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:06.139 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:06.445 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:06.519 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:06.772 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:06.816 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.281 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:07.341 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:07.372 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:07.383 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:07.392 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.444 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.461 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:07.517 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.553 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.570 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:07.938 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:07.976 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:08.076 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.102 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:08.158 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:08.161 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.354 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:08.435 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:08.709 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.768 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.812 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:08.824 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.874 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.877 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:08.886 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.038 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.152 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.252 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.255 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.378 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.657 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:09.657 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:09.657 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:09.657 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.658 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.658 [ERROR] src.enrichment.client_base: gtex request error: Cannot connect to host gtexportal.org:443 ssl:default [None]
+2026-06-06 14:47:09.676 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:09.696 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 1s...
+2026-06-06 14:47:09.717 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:09.782 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:09.873 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.905 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:09.973 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:10.400 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:10.426 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:10.476 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:10.720 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:10.845 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:10.904 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:10.967 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:10.999 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 2s...
+2026-06-06 14:47:11.032 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:11.091 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.104 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:11.119 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.144 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:11.328 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.361 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.413 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.438 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 4s...
+2026-06-06 14:47:11.451 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:11.457 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:11.886 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:12.302 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:12.358 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:12.644 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:12.784 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:12.807 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:12.873 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:13.167 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:13.257 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:13.303 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:13.889 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:13.897 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:13.901 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:13.961 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:14.037 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.110 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.111 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.161 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:14.263 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.266 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.425 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:14.704 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.917 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:14.942 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.310 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.319 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.342 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.365 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.387 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.390 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.495 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.539 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.578 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.664 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:15.678 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.702 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:15.883 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:15.992 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.098 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.136 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.172 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.761 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.809 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.826 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:16.869 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:16.900 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.256 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.282 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:17.443 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:17.480 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.570 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.609 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.711 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:17.797 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.162 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.246 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.358 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:18.360 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.401 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:18.406 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.464 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.613 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.753 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:18.875 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.009 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.022 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:19.057 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.218 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.307 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.486 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:19.672 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.730 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:19.855 [ERROR] src.enrichment.client_base: gnomad HTTP 400: Bad Request
+2026-06-06 14:47:20.143 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.455 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.456 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.502 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.675 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.717 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.757 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:20.900 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:21.178 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:21.316 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:21.688 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:21.892 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:21.924 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:22.020 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:22.187 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:22.603 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:22.678 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:22.717 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:22.820 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:22.904 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:22.965 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:22.972 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:23.135 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:23.381 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:23.750 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:23.785 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:23.805 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:24.179 [WARNING] src.enrichment.client_base: gnomad rate limited (429), retrying in 8s...
+2026-06-06 14:47:25.274 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:25.422 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:26.141 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:26.635 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:27.104 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:27.354 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:27.945 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:27.952 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:28.212 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:28.242 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:29.722 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity
+2026-06-06 14:47:29.889 [ERROR] src.enrichment.client_base: gtex HTTP 422: Unprocessable Entity

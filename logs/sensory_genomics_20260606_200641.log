@@ -1,0 +1,16 @@
+2026-06-06 20:06:41.709 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.730 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.730 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.732 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.755 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.985 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.988 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.988 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.989 [INFO] src.key_snps: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:41.990 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_200641.log
+2026-06-06 20:06:53.573 [INFO] src.config_loader: Config loaded from /Users/zhaorongli/.workbuddy/skills/sensory-genomics/config.yaml
+2026-06-06 20:06:53.614 [INFO] src.gene_sets.loader: Loaded gene sets: 391 genes across 9 subsystems
+2026-06-06 20:06:53.615 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 382 intervals across 23 chromosomes (bisect indexed)
+2026-06-06 20:06:53.624 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 6931 intervals across 23 chromosomes (bisect indexed)
+2026-06-06 20:06:53.625 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 382 intervals across 23 chromosomes (bisect indexed)
+2026-06-06 20:09:09.649 [INFO] src.gene_sets.filter: Sensory filter: 23812 / 23821 variants retained (22547 unique variants x genes)

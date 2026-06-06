@@ -1,0 +1,254 @@
+2026-06-04 16:40:54.215 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.230 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.230 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.231 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.248 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.381 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.383 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.383 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.384 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.401 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.402 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.402 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.402 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.403 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.438 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.438 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.441 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.441 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.442 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_164054.log
+2026-06-04 16:40:54.750 [INFO] __main__: BED-filtered VCF: /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpdo0zdo2_.vcf.gz -> 2707 variants
+2026-06-04 16:40:54.752 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 16:40:54.774 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 16:40:54.775 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 16:40:54.775 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 16:40:54.775 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 16:40:54.775 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 397 intervals across 25 chromosomes
+2026-06-04 16:40:54.776 [INFO] __main__: Pipeline started for /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpdo0zdo2_.vcf.gz
+2026-06-04 16:40:54.778 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-04 16:40:54.796 [INFO] __main__: Stage 1 complete: 2597 variants after prefilter
+2026-06-04 16:40:54.796 [INFO] src.vep.client: VEP annotation started: 2597 variants, batch_size=100
+2026-06-04 16:41:25.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11114010-11114010:1/T?content-type=application/json
+2026-06-04 16:41:25.448 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11118228-11118229:1/-?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11147212-11147212:1/T?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11111949-11111949:1/G?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11154068-11154070:1/-?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11120520-11120520:1/A?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11109993-11109993:1/A?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11164334-11164335:1/-?content-type=application/json
+2026-06-04 16:41:25.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11167807-11167807:1/T?content-type=application/json
+2026-06-04 16:41:26.451 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11169874-11169874:1/G?content-type=application/json
+2026-06-04 16:41:29.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11177992-11177992:1/A?content-type=application/json
+2026-06-04 16:41:34.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11218106-11218106:1/T?content-type=application/json
+2026-06-04 16:41:57.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11111949-11111949:1/G?content-type=application/json
+2026-06-04 16:41:57.448 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11147212-11147212:1/T?content-type=application/json
+2026-06-04 16:41:57.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11109993-11109993:1/A?content-type=application/json
+2026-06-04 16:41:57.450 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11120520-11120520:1/A?content-type=application/json
+2026-06-04 16:41:57.450 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11167807-11167807:1/T?content-type=application/json
+2026-06-04 16:41:57.450 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11118228-11118229:1/-?content-type=application/json
+2026-06-04 16:41:57.451 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11154068-11154070:1/-?content-type=application/json
+2026-06-04 16:41:58.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11169874-11169874:1/G?content-type=application/json
+2026-06-04 16:42:17.070 [INFO] src.vep.client: VEP batch 1/26 done
+2026-06-04 16:42:47.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11244526-11244526:1/G?content-type=application/json
+2026-06-04 16:42:47.447 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11244185-11244185:1/G?content-type=application/json
+2026-06-04 16:42:47.447 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11237705-11237705:1/C?content-type=application/json
+2026-06-04 16:42:47.448 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11236137-11236138:1/-?content-type=application/json
+2026-06-04 16:42:53.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24907571-24907571:1/G?content-type=application/json
+2026-06-04 16:42:53.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24898466-24898466:1/C?content-type=application/json
+2026-06-04 16:42:55.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24910443-24910443:1/T?content-type=application/json
+2026-06-04 16:42:55.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24908617-24908617:1/C?content-type=application/json
+2026-06-04 16:42:56.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24917063-24917063:1/T?content-type=application/json
+2026-06-04 16:42:56.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24917276-24917276:1/G?content-type=application/json
+2026-06-04 16:43:19.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11236137-11236138:1/-?content-type=application/json
+2026-06-04 16:43:19.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:11244526-11244526:1/G?content-type=application/json
+2026-06-04 16:43:50.995 [INFO] src.vep.client: VEP batch 2/26 done
+2026-06-04 16:44:21.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24951960-24951960:1/C?content-type=application/json
+2026-06-04 16:44:24.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24963243-24963243:1/G?content-type=application/json
+2026-06-04 16:44:28.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243486202-243486205:1/-?content-type=application/json
+2026-06-04 16:44:30.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243487684-243487684:1/C?content-type=application/json
+2026-06-04 16:44:31.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243490976-243490976:1/G?content-type=application/json
+2026-06-04 16:44:31.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243492562-243492562:1/T?content-type=application/json
+2026-06-04 16:44:53.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:24951960-24951960:1/C?content-type=application/json
+2026-06-04 16:44:58.888 [INFO] src.vep.client: VEP batch 3/26 done
+2026-06-04 16:45:29.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243583100-243583100:1/C?content-type=application/json
+2026-06-04 16:45:44.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243613188-243613190:1/-?content-type=application/json
+2026-06-04 16:45:49.446 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243619244-243619244:1/C?content-type=application/json
+2026-06-04 16:45:49.447 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243618885-243618888:1/-?content-type=application/json
+2026-06-04 16:45:49.447 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243618789-243618789:1/C?content-type=application/json
+2026-06-04 16:45:51.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243623033-243623033:1/C?content-type=application/json
+2026-06-04 16:45:51.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243622924-243622924:1/T?content-type=application/json
+2026-06-04 16:45:54.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243641637-243641637:1/C?content-type=application/json
+2026-06-04 16:46:01.447 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243583100-243583100:1/C?content-type=application/json
+2026-06-04 16:46:21.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243619244-243619244:1/C?content-type=application/json
+2026-06-04 16:46:30.695 [INFO] src.vep.client: VEP batch 4/26 done
+2026-06-04 16:47:03.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243669028-243669028:1/G?content-type=application/json
+2026-06-04 16:47:06.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243673848-243673848:1/T?content-type=application/json
+2026-06-04 16:47:18.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243703553-243703553:1/A?content-type=application/json
+2026-06-04 16:47:24.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243720429-243720430:1/-?content-type=application/json
+2026-06-04 16:47:26.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243729670-243729670:1/C?content-type=application/json
+2026-06-04 16:47:26.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243731480-243731480:1/G?content-type=application/json
+2026-06-04 16:47:30.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243741064-243741064:1/G?content-type=application/json
+2026-06-04 16:47:51.904 [INFO] src.vep.client: VEP batch 5/26 done
+2026-06-04 16:48:15.893 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:48:22.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243788848-243788848:1/G?content-type=application/json
+2026-06-04 16:48:22.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243760150-243760150:1/T?content-type=application/json
+2026-06-04 16:48:22.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243776774-243776774:1/T?content-type=application/json
+2026-06-04 16:48:22.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243759927-243759927:1/G?content-type=application/json
+2026-06-04 16:48:22.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243757766-243757766:1/TTT?content-type=application/json
+2026-06-04 16:48:26.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243801690-243801690:1/T?content-type=application/json
+2026-06-04 16:48:30.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/1:243813535-243813535:1/A?content-type=application/json
+2026-06-04 16:48:44.663 [INFO] src.vep.client: VEP batch 6/26 done
+2026-06-04 16:49:18.032 [ERROR] src.vep.client: VEP HTTP 503 for https://rest.ensembl.org/vep/human/region/22:41499050-41499050:1/C?content-type=application/json: <html><body><h1>503 Service Unavailable</h1>
+No server is available to handle this request.
+</body></html>
+
+2026-06-04 16:49:18.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41456728-41456728:1/C?content-type=application/json
+2026-06-04 16:49:21.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41467036-41467037:1/-?content-type=application/json
+2026-06-04 16:49:21.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41464860-41464860:1/A?content-type=application/json
+2026-06-04 16:49:22.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41469805-41469805:1/A?content-type=application/json
+2026-06-04 16:49:23.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41470934-41470934:1/G?content-type=application/json
+2026-06-04 16:49:53.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/22:41467036-41467037:1/-?content-type=application/json
+2026-06-04 16:49:56.792 [INFO] src.vep.client: VEP batch 7/26 done
+2026-06-04 16:50:27.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38845758-38845758:1/T?content-type=application/json
+2026-06-04 16:50:27.443 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38853071-38853071:1/A?content-type=application/json
+2026-06-04 16:50:27.445 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38845303-38845304:1/-?content-type=application/json
+2026-06-04 16:50:28.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38854418-38854418:1/C?content-type=application/json
+2026-06-04 16:50:30.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38857458-38857458:1/T?content-type=application/json
+2026-06-04 16:50:32.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38858725-38858725:1/A?content-type=application/json
+2026-06-04 16:50:41.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38870661-38870661:1/G?content-type=application/json
+2026-06-04 16:50:42.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38878713-38878713:1/A?content-type=application/json
+2026-06-04 16:50:43.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38879622-38879623:1/-?content-type=application/json
+2026-06-04 16:50:43.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38881526-38881526:1/T?content-type=application/json
+2026-06-04 16:50:44.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38882183-38882183:1/T?content-type=application/json
+2026-06-04 16:50:44.442 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38882145-38882145:1/G?content-type=application/json
+2026-06-04 16:50:45.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38885608-38885608:1/T?content-type=application/json
+2026-06-04 16:50:46.444 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38888219-38888219:1/T?content-type=application/json
+2026-06-04 16:50:48.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38890600-38890601:1/-?content-type=application/json
+2026-06-04 16:50:49.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38890603-38890603:1/C?content-type=application/json
+2026-06-04 16:50:50.449 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38891168-38891168:1/G?content-type=application/json
+2026-06-04 16:50:52.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38892172-38892181:1/-?content-type=application/json
+2026-06-04 16:50:59.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38845303-38845304:1/-?content-type=application/json
+2026-06-04 16:51:00.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38854418-38854418:1/C?content-type=application/json
+2026-06-04 16:51:04.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38858725-38858725:1/A?content-type=application/json
+2026-06-04 16:51:14.439 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38878713-38878713:1/A?content-type=application/json
+2026-06-04 16:51:16.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38882145-38882145:1/G?content-type=application/json
+2026-06-04 16:51:17.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/5:38885608-38885608:1/T?content-type=application/json
+2026-06-04 16:51:24.431 [INFO] src.vep.client: VEP batch 8/26 done
+2026-06-04 16:51:25.480 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:25.589 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:25.640 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:25.776 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:25.924 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:25.972 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:26.043 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:26.883 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:26.886 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:27.842 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:27.870 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:27.901 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:27.933 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:28.029 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:51:36.773 [INFO] src.vep.client: VEP batch 9/26 done
+2026-06-04 16:52:07.439 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/7:80456911-80456911:1/C?content-type=application/json
+2026-06-04 16:52:07.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/3:179207228-179207228:1/G?content-type=application/json
+2026-06-04 16:52:10.441 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/7:80486632-80486633:1/-?content-type=application/json
+2026-06-04 16:52:12.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/7:80512929-80512929:1/G?content-type=application/json
+2026-06-04 16:52:13.440 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/7:81701064-81701064:1/G?content-type=application/json
+2026-06-04 16:52:21.339 [INFO] src.vep.client: VEP batch 10/26 done
+2026-06-04 16:52:38.919 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:52:42.884 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:52:53.985 [INFO] src.vep.client: VEP batch 11/26 done
+2026-06-04 16:53:33.760 [INFO] src.vep.client: VEP batch 12/26 done
+2026-06-04 16:53:39.003 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.469 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.550 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.739 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.763 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.797 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.874 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:53:45.947 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:54:06.813 [INFO] src.vep.client: VEP batch 13/26 done
+2026-06-04 16:54:37.816 [INFO] src.vep.client: VEP batch 14/26 done
+2026-06-04 16:54:57.840 [INFO] src.vep.client: VEP batch 15/26 done
+2026-06-04 16:55:27.596 [INFO] src.vep.client: VEP batch 16/26 done
+2026-06-04 16:55:54.824 [INFO] src.vep.client: VEP batch 17/26 done
+2026-06-04 16:56:04.940 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:56:25.412 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/11:68436157-68436157:1/C?content-type=application/json
+2026-06-04 16:56:25.413 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/16:2055890-2055891:1/-?content-type=application/json
+2026-06-04 16:56:37.410 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:43081462-43081462:1/T?content-type=application/json
+2026-06-04 16:56:38.410 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:43084767-43084767:1/A?content-type=application/json
+2026-06-04 16:56:39.411 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:43091822-43091823:1/-?content-type=application/json
+2026-06-04 16:56:40.410 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:43096756-43096756:1/T?content-type=application/json
+2026-06-04 16:56:57.408 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/11:68436157-68436157:1/C?content-type=application/json
+2026-06-04 16:56:57.410 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/16:2055890-2055891:1/-?content-type=application/json
+2026-06-04 16:57:07.110 [INFO] src.vep.client: VEP batch 18/26 done
+2026-06-04 16:57:09.868 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:09.869 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:09.955 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:12.891 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:13.930 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:13.958 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:13.982 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:57:45.407 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:43111239-43111239:1/G?content-type=application/json
+2026-06-04 16:57:47.892 [INFO] src.vep.client: VEP batch 19/26 done
+2026-06-04 16:58:06.786 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:58:08.820 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:58:26.407 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:69325044-69325045:1/-?content-type=application/json
+2026-06-04 16:58:26.408 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:69323520-69323521:1/-?content-type=application/json
+2026-06-04 16:58:27.407 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:69327066-69327066:1/G?content-type=application/json
+2026-06-04 16:58:28.407 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/10:69332267-69332267:1/G?content-type=application/json
+2026-06-04 16:58:31.865 [INFO] src.vep.client: VEP batch 20/26 done
+2026-06-04 16:58:42.938 [WARNING] src.vep.client: VEP rate limited (429), retrying in 1s...
+2026-06-04 16:59:07.407 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:10134987-10134987:1/A?content-type=application/json
+2026-06-04 16:59:19.287 [INFO] src.vep.client: VEP batch 21/26 done
+2026-06-04 16:59:54.406 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:10205599-10205599:1/G?content-type=application/json
+2026-06-04 17:00:04.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:10215508-10215508:1/A?content-type=application/json
+2026-06-04 17:00:08.031 [INFO] src.vep.client: VEP batch 22/26 done
+2026-06-04 17:00:38.405 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:10229142-10229142:1/C?content-type=application/json
+2026-06-04 17:00:38.409 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:18152365-18152365:1/T?content-type=application/json
+2026-06-04 17:00:38.412 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:10226045-10226046:1/-?content-type=application/json
+2026-06-04 17:00:38.413 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/19:18153061-18153061:1/T?content-type=application/json
+2026-06-04 17:00:53.847 [INFO] src.vep.client: VEP batch 23/26 done
+2026-06-04 17:01:24.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:38466894-38466895:1/-?content-type=application/json
+2026-06-04 17:01:31.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60687303-60687304:1/-?content-type=application/json
+2026-06-04 17:01:41.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60704284-60704284:1/C?content-type=application/json
+2026-06-04 17:01:42.206 [ERROR] src.vep.client: VEP HTTP 503 for https://rest.ensembl.org/vep/human/region/8:60739585-60739585:1/A?content-type=application/json: <html><body><h1>503 Service Unavailable</h1>
+No server is available to handle this request.
+</body></html>
+
+2026-06-04 17:01:48.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60733085-60733085:1/T?content-type=application/json
+2026-06-04 17:02:20.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60733085-60733085:1/T?content-type=application/json
+2026-06-04 17:02:42.762 [INFO] src.vep.client: VEP batch 24/26 done
+2026-06-04 17:03:24.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60796941-60796941:1/G?content-type=application/json
+2026-06-04 17:03:25.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60799811-60799811:1/C?content-type=application/json
+2026-06-04 17:03:25.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60801686-60801686:1/G?content-type=application/json
+2026-06-04 17:03:27.402 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60806158-60806158:1/C?content-type=application/json
+2026-06-04 17:03:28.403 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60806961-60806961:1/G?content-type=application/json
+2026-06-04 17:03:57.402 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60799811-60799811:1/C?content-type=application/json
+2026-06-04 17:03:57.404 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60801686-60801686:1/G?content-type=application/json
+2026-06-04 17:04:30.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60801686-60801686:1/G?content-type=application/json
+2026-06-04 17:04:30.403 [INFO] src.vep.client: VEP batch 25/26 done
+2026-06-04 17:05:01.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60815028-60815028:1/G?content-type=application/json
+2026-06-04 17:05:01.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60816113-60816117:1/-?content-type=application/json
+2026-06-04 17:05:01.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60815350-60815350:1/A?content-type=application/json
+2026-06-04 17:05:02.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60843510-60843510:1/G?content-type=application/json
+2026-06-04 17:05:03.401 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60851517-60851517:1/G?content-type=application/json
+2026-06-04 17:05:04.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60855349-60855349:1/A?content-type=application/json
+2026-06-04 17:05:06.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/8:60867661-60867661:1/C?content-type=application/json
+2026-06-04 17:05:11.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/9:132913896-132913896:1/G?content-type=application/json
+2026-06-04 17:05:17.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/9:132939933-132939933:1/T?content-type=application/json
+2026-06-04 17:05:17.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/9:132939882-132939882:1/C?content-type=application/json
+2026-06-04 17:05:17.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/9:132933474-132933474:1/T?content-type=application/json
+2026-06-04 17:05:19.400 [ERROR] src.vep.client: VEP request timeout for https://rest.ensembl.org/vep/human/region/9:132945400-132945400:1/T?content-type=application/json
+2026-06-04 17:05:39.842 [INFO] src.vep.client: VEP batch 26/26 done
+2026-06-04 17:05:39.843 [INFO] src.vep.client: VEP annotation completed: 2597 results
+2026-06-04 17:05:39.891 [INFO] __main__: Stage 2 complete: 2597 variants annotated
+2026-06-04 17:05:39.894 [INFO] __main__: Stage 2.5 complete: BED mapped 34 variants to genes
+2026-06-04 17:05:39.895 [INFO] src.gene_sets.filter: Sensory filter: 0 / 2597 variants retained
+2026-06-04 17:05:39.896 [INFO] __main__: Stage 3 complete: 0 sensory variants
+2026-06-04 17:05:39.896 [INFO] __main__: Stage 4 complete: 0 gene cards
+2026-06-04 17:05:39.896 [INFO] __main__: Stage 5 complete: TAS2R38=no, MT=0, OR=0
+2026-06-04 17:05:39.896 [INFO] __main__: Stage 6 complete: enriched 0 genes
+2026-06-04 17:05:39.901 [INFO] __main__: Stage 7 complete: report built
+2026-06-04 17:05:39.901 [INFO] __main__: Pipeline completed successfully
+2026-06-04 17:05:39.963 [INFO] __main__: Reports saved: markdown=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_170539.md, json=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_170539.json

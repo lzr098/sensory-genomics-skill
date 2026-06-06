@@ -1,0 +1,33 @@
+2026-06-06 12:34:48.021 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.036 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.039 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.040 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.041 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.342 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.344 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.348 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.352 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.352 [INFO] src.vep.hybrid_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.353 [INFO] main: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:34:48.490 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_123448.log
+2026-06-06 12:35:01.145 [INFO] main: BED-filtered VCF: /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpe3xxwfc2.vcf.gz -> 24609 variants
+2026-06-06 12:35:01.661 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-06 12:35:01.662 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-06 12:35:01.673 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-06 12:35:01.677 [INFO] main: Loaded precomputed transcript map: 384 genes
+2026-06-06 12:35:01.693 [INFO] main: Loaded exon BED for strict filtering
+2026-06-06 12:35:01.696 [INFO] main: Using LocalVepClient (Docker offline)
+2026-06-06 12:35:01.704 [INFO] main: Pipeline started for /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpe3xxwfc2.vcf.gz
+2026-06-06 12:35:01.724 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-06 12:35:02.715 [INFO] main: Stage 1 complete: 23821 variants after prefilter
+2026-06-06 12:35:02.744 [INFO] src.vep.local_client: Running local VEP for 23821 variants via Docker
+2026-06-06 12:36:20.363 [INFO] src.vep.local_client: Local VEP annotated 23821 variants
+2026-06-06 12:36:20.538 [INFO] main: Stage 2 complete: 23821 variants annotated
+2026-06-06 12:36:20.542 [INFO] main: Stage 2.5 complete: BED mapped 101 variants to genes
+2026-06-06 12:36:20.617 [INFO] main: Stage 3 complete: 22507 sensory variants
+2026-06-06 12:36:20.857 [INFO] main: Stage 4 complete: 367 gene cards
+2026-06-06 12:36:20.964 [INFO] main: Stage 5 complete: TAS2R38=yes, MT=0, OR=11031
+2026-06-06 12:36:20.964 [INFO] main: Stage 6 complete: enriched 0 genes
+2026-06-06 12:36:20.966 [INFO] main: Stage 7 complete: report built
+2026-06-06 12:36:20.966 [INFO] main: Pipeline completed successfully
+2026-06-06 12:36:22.165 [INFO] main: Reports saved: markdown=/Users/zhaorongli/WorkBuddy/2026-06-06-10-32-52/output_v3/sensory_report_20260606_123621.md, json=/Users/zhaorongli/WorkBuddy/2026-06-06-10-32-52/output_v3/sensory_report_20260606_123621.json

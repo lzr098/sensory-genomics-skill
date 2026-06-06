@@ -1,0 +1,35 @@
+2026-06-04 19:15:48.153 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.175 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.176 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.177 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.204 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.505 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.514 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.518 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.589 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.595 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.595 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.598 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.599 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.722 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.724 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.728 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.728 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.737 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_191548.log
+2026-06-04 19:15:48.742 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 19:15:48.791 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 19:15:48.792 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 19:15:48.795 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 19:15:48.799 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 19:15:48.799 [INFO] __main__: Pipeline started for /tmp/daughter_vcf.vcf.gz
+2026-06-04 19:15:48.814 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-04 19:17:21.889 [INFO] __main__: Stage 1 complete: 0 variants after prefilter
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 2 complete: 0 variants annotated
+2026-06-04 19:17:21.890 [INFO] src.gene_sets.filter: Sensory filter: 0 / 0 variants retained
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 3 complete: 0 sensory variants
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 4 complete: 0 gene cards
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 5 complete: TAS2R38=no, MT=0, OR=0
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 6 complete: enriched 0 genes
+2026-06-04 19:17:21.890 [INFO] __main__: Stage 7 complete: report built
+2026-06-04 19:17:21.890 [INFO] __main__: Pipeline completed successfully
+2026-06-04 19:17:21.958 [INFO] __main__: Reports saved: markdown=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_191721.md, json=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_191721.json

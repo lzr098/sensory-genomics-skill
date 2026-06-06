@@ -1,0 +1,24 @@
+vep:
+  source: "auto"              # 可选: "auto" (默认, 本地优先+自动fallback) | "local_docker" | "rest_api"
+  base_url: "https://rest.ensembl.org"
+  batch_size: 200
+  rate_limit: 5
+  max_retries: 3
+  timeout: 60
+  cache_dir: "~/.workbuddy/tools/vep/cache"  # local_docker / auto 模式下使用
+
+filter:
+  min_qual: 30
+  min_dp: 10
+  pass_only: true
+
+cache:
+  db_path: "~/.workbuddy/skills/sensory-genomics/cache.sqlite"
+  default_ttl_days: 30
+
+rate_limits:
+  ensembl: 5
+  ncbi: 3
+  uniprot: 10
+
+precompute_db: "/Users/zhaorongli/.workbuddy/skills/sensory-genomics/assets/data/sensory_variants_vep.sqlite"

@@ -1,0 +1,23 @@
+{
+  "sample_id": "ML150006935_L01_184",
+  "sex": "F",
+  "ref_genome": "GRCh38",
+  "analysis_date": "2026-06-04T16:45:08.786198",
+  "subsystems": [
+    "vision",
+    "hearing",
+    "olfaction",
+    "taste",
+    "somatosensation"
+  ],
+  "gene_cards": [],
+  "tas2r38": null,
+  "mitochondrial": null,
+  "or_tiers": null,
+  "executive_summary": {
+    "subsystem_counts": {},
+    "key_findings": []
+  },
+  "data_availability": {},
+  "disclaimer_zh": "【重要声明】本报告仅基于基因组变异数据进行描述性分析，不构成医学诊断，不可替代专业医疗建议或临床检查。报告中的\"影响\"描述仅表示基因层面的功能预测，不等同于临床表现或疾病状态。感官能力受基因、环境、生活方式等多因素影响，基因型与表型之间不存在简单的一一对应关系。如报告中有高风险发现，建议咨询遗传咨询师或相关专科医生。未成年人应在监护人陪同下解读报告。"
+}

@@ -1,0 +1,83 @@
+{# 附录 - v5 格式：Tier C OR 表 + 无关基因 + gnomAD + 建议补充 #}
+
+## 11. 附录
+
+### A. 技术参数
+
+| 项目 | 值 |
+|------|-----|
+| 原始变异数 | {{ report.executive_summary.subsystem_counts.get("total", "N/A") if report.executive_summary else "N/A" }} |
+| 感官基因区域变异 | {{ gene_cards | map(attribute='variants') | map('length') | sum }} |
+| 关键功能变异 | {{ gene_cards | map(attribute='key_variants') | map('length') | sum }} |
+| 涉及基因 | {{ gene_cards | length }} |
+| VEP 注释源 | 本地 Docker VEP (离线, --everything) |
+| 参考基因组 | {{ ref_genome }} |
+| gnomAD 版本 | r4 (via VEP colocated_variants) |
+
+### B. gnomAD 频率参考
+
+以下为本报告中关键变异的人群频率参考：
+
+| 基因 | 变异 | rsID | Exome AF | Genome AF | Flags |
+|------|------|------|----------|-----------|-------|
+{% for ref in gnomad_refs %}
+| {{ ref.gene }} | {{ ref.variant }} | {{ ref.rsid }} | {{ "%.1f%%" % (ref.exome_af * 100) if ref.exome_af is not none else "N/A" }} | {{ "%.1f%%" % (ref.genome_af * 100) if ref.genome_af is not none else "N/A" }} | {{ ref.flags or "—" }} |
+{% else %}
+| — | — | — | — | — | — |
+{% endfor %}
+
+> **频率解读**：AF > 5% 为常见多态性；AF 1-5% 为低频变异；AF < 1% 为罕见变异。高频变异（AF > 40%）通常与严重遗传病无关。
+
+### C. 无关或轻微影响基因（折叠）
+
+以下基因在本样本中有检出变异，但影响评估为"无影响"或"可能轻微影响”，不在主报告中详细展示：
+
+<details>
+<summary>点击展开 — {{ mild_cards | length }} 个基因</summary>
+
+| 基因 | 子系统 | 评估 | 变异数 | 关键变异 |
+|------|--------|------|--------|---------|
+{% for card in mild_cards %}
+{% set top_v = card.key_variants | key_variants(1) %}
+| {{ card.gene_symbol }} | {{ card.subsystem or "N/A" }} | {{ card.assessment.level | level_badge }} | {{ card.variants | length }} | {% if top_v %}{{ top_v[0].chrom }}:{{ top_v[0].pos }} {{ top_v[0].ref }}>{{ top_v[0].alt }} {% if top_v[0].rsid %}({{ top_v[0].rsid }}){% endif %}{% else %}—{% endif %} |
+{% endfor %}
+
+</details>
+
+### D. 建议补充分析
+
+| 补充项目 | 关键基因/SNP | 当前状态 |
+|---------|------------|---------|
+| 瞳孔颜色 | HERC2 rs12913832, OCA2 rs1800407 | ❌ 关键 SNP 缺失 |
+| 苦味敏感度 | TAS2R38 rs713598, rs10246939 | ❌ 关键 SNP 缺失 |
+| 咖啡因代谢 | CYP1A2 rs762551 | ⚠️ 基因区域有变异但非关键 SNP |
+| 酒精代谢 | ALDH2 rs671, ADH1B rs1229984 | ⚠️ 基因区域有变异但非关键 SNP |
+| 乳糖耐受 | MCM6/LCT rs4988235 | ⚠️ 基因区域有变异但非关键 SNP |
+| 肌肉类型 | ACTN3 rs1815739 | ⚠️ 基因区域有变异但非关键 SNP |
+| 卷发表型 | EDAR | ⚠️ 基因区域有变异但非关键 SNP |
+
+> 当前分析覆盖 9 个子系统共 391 个基因。
+
+### E. 全部变异 JSON
+
+原始分析数据以 JSON 格式保存，包含本次分析中发现的全部感官基因变异及其完整评估结果。
+
+> 详细 JSON 数据见同目录下的 `.json` 输出文件。
+
+### F. OR 基因 Tier C 列表
+
+以下 OR 基因存在纯合 LoF 变异，但配体未知或影响评估为轻微，不在主报告中详细展示：
+
+{% if or_tier_c %}
+| 基因 | 后果类型 | 影响评估 |
+|------|---------|---------|
+{% for or_result in or_tier_c %}
+| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.assessment.level | level_badge }} |
+{% endfor %}
+{% else %}
+*无 Tier C 级别数据。*
+{% endif %}
+
+---
+
+*报告生成时间：{{ analysis_date }} | 感官基因组学分析 Skill v0.5.0*

@@ -1,0 +1,9 @@
+2026-06-06 10:22:27.608 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_102227.log
+2026-06-06 10:22:27.609 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_102227.log
+2026-06-06 10:22:27.609 [INFO] src.vep.hybrid_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_102227.log
+2026-06-06 10:22:30.084 [INFO] src.vep.hybrid_client: HybridVepClient: Docker + image + cache ready → using local
+2026-06-06 10:22:30.084 [INFO] src.vep.hybrid_client: HybridVepClient: force_source=rest
+2026-06-06 10:22:30.314 [INFO] src.vep.hybrid_client: HybridVepClient: Docker + image + cache ready → using local
+2026-06-06 10:22:30.319 [INFO] src.vep.local_client: Running local VEP for 2 variants via Docker
+2026-06-06 10:22:31.188 [INFO] src.vep.local_client: Local VEP annotated 2 variants
+2026-06-06 10:22:31.188 [INFO] src.vep.hybrid_client: HybridVepClient: annotated 2 variants via LOCAL

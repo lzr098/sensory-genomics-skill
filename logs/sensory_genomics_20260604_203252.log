@@ -1,0 +1,23 @@
+2026-06-04 20:32:52.480 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_203252.log
+2026-06-04 20:32:52.481 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_203252.log
+2026-06-04 20:32:52.506 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 20:32:52.506 [INFO] __main__: Precomputing coordinates for 42 unique genes
+2026-06-04 20:32:52.506 [INFO] __main__: Starting precompute for 42 sensory genes
+2026-06-04 20:33:21.913 [INFO] __main__: Lookup batch 1/1 done
+2026-06-04 20:33:21.915 [INFO] __main__: Resolved 42/42 genes to Ensembl IDs
+2026-06-04 20:33:21.915 [INFO] __main__: Fetching transcripts for 42 genes in batches of 20...
+2026-06-04 20:33:58.509 [ERROR] __main__: Transcript fetch error for ENSG00000102076: 
+2026-06-04 20:33:58.510 [ERROR] __main__: Transcript fetch error for ENSG00000268221: 
+2026-06-04 20:33:58.515 [INFO] __main__: Transcript batch 1/3 done (20 genes)
+2026-06-04 20:34:29.509 [ERROR] __main__: Transcript fetch error for ENSG00000166828: 
+2026-06-04 20:34:29.511 [ERROR] __main__: Transcript fetch error for ENSG00000169432: 
+2026-06-04 20:34:29.511 [ERROR] __main__: Transcript fetch error for ENSG00000168356: 
+2026-06-04 20:34:29.511 [ERROR] __main__: Transcript fetch error for ENSG00000115155: 
+2026-06-04 20:34:29.512 [ERROR] __main__: Transcript fetch error for ENSG00000154864: 
+2026-06-04 20:34:29.515 [INFO] __main__: Transcript batch 2/3 done (20 genes)
+2026-06-04 20:34:33.399 [INFO] __main__: Transcript batch 3/3 done (2 genes)
+2026-06-04 20:34:33.399 [INFO] __main__: Fetched coordinates: 3541 exons, 2961 CDS, 0 UTRs. Failed: 7 genes
+2026-06-04 20:34:33.413 [INFO] __main__: Wrote sensory_genes_exons.bed: 3541 unique intervals
+2026-06-04 20:34:33.421 [INFO] __main__: Wrote sensory_genes_cds.bed: 2961 unique intervals
+2026-06-04 20:34:33.422 [WARNING] __main__: No records for sensory_genes_utr.bed
+2026-06-04 20:34:33.423 [INFO] __main__: Precompute complete. Files written to /Users/zhaorongli/WorkBuddy/2026-06-04-12-52-25/assets/data

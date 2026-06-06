@@ -1,0 +1,90 @@
+2026-06-04 18:55:29.237 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.249 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.249 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.249 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.261 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.387 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.389 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.389 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.395 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.407 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.408 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.408 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.408 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.409 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.446 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.446 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.447 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.448 [INFO] __main__: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.449 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_185529.log
+2026-06-04 18:55:29.715 [INFO] __main__: BED-filtered VCF: /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpirxth7rf.vcf.gz -> 23 variants
+2026-06-04 18:55:29.717 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-04 18:55:29.739 [INFO] src.gene_sets.loader: Loaded gene sets: 376 genes across 5 subsystems
+2026-06-04 18:55:29.739 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-04 18:55:29.739 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-04 18:55:29.740 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-04 18:55:29.740 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 38 intervals across 19 chromosomes
+2026-06-04 18:55:29.740 [INFO] __main__: Pipeline started for /var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmpirxth7rf.vcf.gz
+2026-06-04 18:55:29.742 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-04 18:55:29.743 [INFO] __main__: Stage 1 complete: 23 variants after prefilter
+2026-06-04 18:55:29.743 [INFO] src.vep.client: VEP annotation started: 23 variants, batch_size=10
+2026-06-04 18:55:29.746 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247450176-247450176:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:29.746 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247448734-247448734:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:29.746 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247449133-247449133:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:29.746 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451315-247451315:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:29.746 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247450586-247450586:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:30.752 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451959-247451960:1/-?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:30.753 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452478-247452478:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:30.753 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452585-247452585:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:30.753 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452168-247452168:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:30.753 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451391-247451391:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.755 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247448734-247448734:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.755 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247450176-247450176:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.755 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247450586-247450586:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.757 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451315-247451315:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.757 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247449133-247449133:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.758 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452585-247452585:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.758 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451959-247451960:1/-?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.758 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452168-247452168:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.758 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452478-247452478:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.759 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247451391-247451391:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.759 [INFO] src.vep.client: VEP batch 1/3 done
+2026-06-04 18:55:31.760 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452741-247452741:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.760 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453277-247453277:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.760 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453144-247453144:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.760 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452798-247452798:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:31.760 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453017-247453017:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:32.765 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453500-247453500:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:32.765 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453734-247453734:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:32.766 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453431-247453431:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:32.766 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453464-247453464:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:32.766 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453421-247453421:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.771 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452798-247452798:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.772 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453017-247453017:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.772 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453277-247453277:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.772 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247452741-247452741:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.772 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453144-247453144:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.774 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453500-247453500:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.775 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453421-247453421:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.776 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453464-247453464:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.776 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453734-247453734:1/T?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.776 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453431-247453431:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.776 [INFO] src.vep.client: VEP batch 2/3 done
+2026-06-04 18:55:33.779 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453832-247453832:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.779 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247454074-247454074:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:33.779 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247454095-247454095:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:34.782 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247453832-247453832:1/A?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:34.783 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247454095-247454095:1/C?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:34.783 [ERROR] src.vep.client: VEP request error for https://rest.ensembl.org/vep/human/region/1:247454074-247454074:1/G?content-type=application/json: Cannot connect to host 127.0.0.1:50962 ssl:default [Connect call failed ('127.0.0.1', 50962)]
+2026-06-04 18:55:34.783 [INFO] src.vep.client: VEP batch 3/3 done
+2026-06-04 18:55:34.783 [INFO] src.vep.client: VEP annotation completed: 23 results
+2026-06-04 18:55:34.783 [INFO] __main__: Stage 2 complete: 23 variants annotated
+2026-06-04 18:55:34.784 [INFO] __main__: Stage 2.5 complete: BED mapped 23 variants to genes
+2026-06-04 18:55:34.784 [INFO] src.gene_sets.filter: Sensory filter: 23 / 23 variants retained
+2026-06-04 18:55:34.784 [INFO] __main__: Stage 3 complete: 23 sensory variants
+2026-06-04 18:55:34.784 [INFO] __main__: Stage 4 complete: 1 gene cards
+2026-06-04 18:55:34.785 [INFO] __main__: Stage 5 complete: TAS2R38=no, MT=0, OR=23
+2026-06-04 18:55:34.785 [INFO] __main__: Stage 6 complete: enriched 0 genes
+2026-06-04 18:55:34.785 [INFO] __main__: Stage 7 complete: report built
+2026-06-04 18:55:34.785 [INFO] __main__: Pipeline completed successfully
+2026-06-04 18:55:34.829 [INFO] __main__: Reports saved: markdown=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_185534.md, json=/Users/zhaorongli/.workbuddy/skills/sensory-genomics/output/sensory_report_20260604_185534.json

@@ -1,0 +1,36 @@
+2026-06-06 13:19:31.119 [INFO] src.assessment.inheritance: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.145 [INFO] src.gene_sets.loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.146 [INFO] src.assessment.engine: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.148 [INFO] src.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.188 [INFO] src.enrichment.cache: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.707 [INFO] src.enrichment.client_base: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.713 [INFO] src.gene_sets.bed_mapper: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.714 [INFO] src.gene_sets.filter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.719 [INFO] src.report.json_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.798 [INFO] src.report.markdown_generator: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.802 [INFO] src.specialized.mitochondrial: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.805 [INFO] src.specialized.or_tiers: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.806 [INFO] src.specialized.tas2r38: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.807 [INFO] src.report.report_context: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.889 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.890 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.892 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.893 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.894 [INFO] src.vep.hybrid_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.894 [INFO] src.main: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:31.895 [INFO] sensory_genomics: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_131931.log
+2026-06-06 13:19:43.096 [ERROR] src.main: BED filter failed: Command '['bcftools', 'view', '-Oz', '-o', '/var/folders/g5/gdb7vzxd6_5fwkmkt6j_nrx00000gn/T/tmp0t9c051p.vcf.gz', '-R', '/tmp/core_genes.bed', '/tmp/daughter.vcf.gz']' returned non-zero exit status 255.
+2026-06-06 13:19:43.107 [INFO] src.config_loader: Config loaded from config.yaml
+2026-06-06 13:19:43.160 [INFO] src.gene_sets.loader: Loaded gene sets: 391 genes across 9 subsystems
+2026-06-06 13:19:43.162 [INFO] src.specialized.tas2r38: Loaded TAS2R38 SNP definitions: 3 SNPs
+2026-06-06 13:19:43.163 [INFO] src.specialized.mitochondrial: Loaded mitochondrial variant database: 8 entries
+2026-06-06 13:19:43.163 [INFO] src.specialized.or_tiers: Loaded OR ligand map: 11 entries
+2026-06-06 13:19:43.164 [INFO] src.main: Loaded precomputed transcript map: 384 genes
+2026-06-06 13:19:43.173 [INFO] src.gene_sets.bed_mapper: Loaded BED regions: 6931 intervals across 23 chromosomes (bisect indexed)
+2026-06-06 13:19:43.173 [INFO] src.main: Loaded exon BED for strict filtering
+2026-06-06 13:19:43.173 [INFO] src.main: Using LocalVepClient (Docker offline)
+2026-06-06 13:19:43.174 [INFO] src.main: Pipeline started for /tmp/daughter.vcf.gz
+2026-06-06 13:19:43.179 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-06 13:21:05.429 [INFO] src.main: Stage 1 complete: 4880173 variants after prefilter
+2026-06-06 13:21:10.565 [INFO] src.vep.local_client: Running local VEP for 4880173 variants via Docker
+2026-06-06 13:31:10.619 [ERROR] src.vep.local_client: VEP Docker timed out after 600s

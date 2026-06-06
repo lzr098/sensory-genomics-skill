@@ -1,0 +1,11 @@
+2026-06-06 15:43:28.321 [INFO] src.vcf.parser: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:28.323 [INFO] src.vcf.prefilter: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:28.325 [INFO] src.vep.client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:28.327 [INFO] src.vep.local_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:28.327 [INFO] src.vep.hybrid_client: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:28.327 [INFO] src.main: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260606_154328.log
+2026-06-06 15:43:30.014 [INFO] src.main: Loaded precomputed transcript map: 384 genes
+2026-06-06 15:43:30.071 [INFO] src.main: Loaded exon BED for strict filtering
+2026-06-06 15:43:30.071 [INFO] src.main: Using LocalVepClient (Docker offline)
+2026-06-06 15:43:30.127 [INFO] src.vcf.parser: Parsing VCF for sample: ML150006935_L01_184
+2026-06-06 15:43:32.235 [INFO] src.vep.local_client: Running local VEP for 23821 variants via Docker

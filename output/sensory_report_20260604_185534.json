@@ -1,0 +1,1472 @@
+{
+  "sample_id": "ML150006935_L01_184",
+  "sex": "F",
+  "ref_genome": "GRCh38",
+  "analysis_date": "2026-06-04T18:55:34.785819",
+  "subsystems": [
+    "olfaction"
+  ],
+  "gene_cards": [
+    {
+      "gene_symbol": "OR2B11",
+      "sensory_function_zh": "嗅觉受体，对花香类化合物敏感",
+      "variants": [
+        {
+          "chrom": "1",
+          "pos": 247448734,
+          "ref": "G",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 66,
+          "qual": 2489.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247448734 G C",
+            "seq_region_name": "1",
+            "start": 247448734,
+            "allele_string": "G/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247449133,
+          "ref": "A",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 77,
+          "qual": 2824.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247449133 A T",
+            "seq_region_name": "1",
+            "start": 247449133,
+            "allele_string": "A/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247450176,
+          "ref": "T",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 57,
+          "qual": 1900.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247450176 T C",
+            "seq_region_name": "1",
+            "start": 247450176,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247450586,
+          "ref": "C",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 58,
+          "qual": 2160.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247450586 C T",
+            "seq_region_name": "1",
+            "start": 247450586,
+            "allele_string": "C/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247451315,
+          "ref": "C",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 44,
+          "qual": 1583.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247451315 C T",
+            "seq_region_name": "1",
+            "start": 247451315,
+            "allele_string": "C/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247451391,
+          "ref": "C",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 38,
+          "qual": 1398.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247451391 C T",
+            "seq_region_name": "1",
+            "start": 247451391,
+            "allele_string": "C/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247451959,
+          "ref": "GA",
+          "alt": "G",
+          "gt": "1/1",
+          "dp": 47,
+          "qual": 1533.030029296875,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247451959 GA G",
+            "seq_region_name": "1",
+            "start": 247451959,
+            "allele_string": "GA/G",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247452168,
+          "ref": "T",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 88,
+          "qual": 3260.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247452168 T C",
+            "seq_region_name": "1",
+            "start": 247452168,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247452478,
+          "ref": "A",
+          "alt": "G",
+          "gt": "1/1",
+          "dp": 67,
+          "qual": 2299.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247452478 A G",
+            "seq_region_name": "1",
+            "start": 247452478,
+            "allele_string": "A/G",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247452585,
+          "ref": "T",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 70,
+          "qual": 2343.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247452585 T C",
+            "seq_region_name": "1",
+            "start": 247452585,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247452741,
+          "ref": "G",
+          "alt": "A",
+          "gt": "1/1",
+          "dp": 76,
+          "qual": 2794.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247452741 G A",
+            "seq_region_name": "1",
+            "start": 247452741,
+            "allele_string": "G/A",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247452798,
+          "ref": "G",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 59,
+          "qual": 1974.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247452798 G C",
+            "seq_region_name": "1",
+            "start": 247452798,
+            "allele_string": "G/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453017,
+          "ref": "T",
+          "alt": "C",
+          "gt": "0/1",
+          "dp": 72,
+          "qual": 926.6400146484375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453017 T C",
+            "seq_region_name": "1",
+            "start": 247453017,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453144,
+          "ref": "A",
+          "alt": "G",
+          "gt": "1/1",
+          "dp": 62,
+          "qual": 2283.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453144 A G",
+            "seq_region_name": "1",
+            "start": 247453144,
+            "allele_string": "A/G",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453277,
+          "ref": "G",
+          "alt": "A",
+          "gt": "1/1",
+          "dp": 71,
+          "qual": 2609.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453277 G A",
+            "seq_region_name": "1",
+            "start": 247453277,
+            "allele_string": "G/A",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453421,
+          "ref": "T",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 66,
+          "qual": 2885.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453421 T C",
+            "seq_region_name": "1",
+            "start": 247453421,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453431,
+          "ref": "G",
+          "alt": "A",
+          "gt": "1/1",
+          "dp": 65,
+          "qual": 2838.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453431 G A",
+            "seq_region_name": "1",
+            "start": 247453431,
+            "allele_string": "G/A",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453464,
+          "ref": "T",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 69,
+          "qual": 2239.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453464 T C",
+            "seq_region_name": "1",
+            "start": 247453464,
+            "allele_string": "T/C",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453500,
+          "ref": "C",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 66,
+          "qual": 2478.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453500 C T",
+            "seq_region_name": "1",
+            "start": 247453500,
+            "allele_string": "C/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453734,
+          "ref": "G",
+          "alt": "T",
+          "gt": "1/1",
+          "dp": 53,
+          "qual": 1904.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453734 G T",
+            "seq_region_name": "1",
+            "start": 247453734,
+            "allele_string": "G/T",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247453832,
+          "ref": "G",
+          "alt": "A",
+          "gt": "1/1",
+          "dp": 44,
+          "qual": 1588.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247453832 G A",
+            "seq_region_name": "1",
+            "start": 247453832,
+            "allele_string": "G/A",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247454074,
+          "ref": "T",
+          "alt": "G",
+          "gt": "1/1",
+          "dp": 30,
+          "qual": 1297.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247454074 T G",
+            "seq_region_name": "1",
+            "start": 247454074,
+            "allele_string": "T/G",
+            "transcript_consequences": []
+          }
+        },
+        {
+          "chrom": "1",
+          "pos": 247454095,
+          "ref": "G",
+          "alt": "C",
+          "gt": "1/1",
+          "dp": 31,
+          "qual": 1304.06005859375,
+          "filter_status": "",
+          "gene_symbol": "OR2B11",
+          "consequence": "",
+          "hgvsc": null,
+          "hgvsp": null,
+          "protein_domain": null,
+          "protein_topology": null,
+          "af_gnomad": null,
+          "raw_vep": {
+            "input": "1 247454095 G C",
+            "seq_region_name": "1",
+            "start": 247454095,
+            "allele_string": "G/C",
+            "transcript_consequences": []
+          }
+        }
+      ],
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      },
+      "special_logic_type": null,
+      "enrichment_data": {}
+    }
+  ],
+  "tas2r38": null,
+  "mitochondrial": null,
+  "or_tiers": [
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247448734,
+        "ref": "G",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 66,
+        "qual": 2489.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247448734 G C",
+          "seq_region_name": "1",
+          "start": 247448734,
+          "allele_string": "G/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247449133,
+        "ref": "A",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 77,
+        "qual": 2824.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247449133 A T",
+          "seq_region_name": "1",
+          "start": 247449133,
+          "allele_string": "A/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247450176,
+        "ref": "T",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 57,
+        "qual": 1900.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247450176 T C",
+          "seq_region_name": "1",
+          "start": 247450176,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247450586,
+        "ref": "C",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 58,
+        "qual": 2160.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247450586 C T",
+          "seq_region_name": "1",
+          "start": 247450586,
+          "allele_string": "C/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247451315,
+        "ref": "C",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 44,
+        "qual": 1583.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247451315 C T",
+          "seq_region_name": "1",
+          "start": 247451315,
+          "allele_string": "C/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247451391,
+        "ref": "C",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 38,
+        "qual": 1398.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247451391 C T",
+          "seq_region_name": "1",
+          "start": 247451391,
+          "allele_string": "C/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247451959,
+        "ref": "GA",
+        "alt": "G",
+        "gt": "1/1",
+        "dp": 47,
+        "qual": 1533.030029296875,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247451959 GA G",
+          "seq_region_name": "1",
+          "start": 247451959,
+          "allele_string": "GA/G",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247452168,
+        "ref": "T",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 88,
+        "qual": 3260.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247452168 T C",
+          "seq_region_name": "1",
+          "start": 247452168,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247452478,
+        "ref": "A",
+        "alt": "G",
+        "gt": "1/1",
+        "dp": 67,
+        "qual": 2299.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247452478 A G",
+          "seq_region_name": "1",
+          "start": 247452478,
+          "allele_string": "A/G",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247452585,
+        "ref": "T",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 70,
+        "qual": 2343.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247452585 T C",
+          "seq_region_name": "1",
+          "start": 247452585,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247452741,
+        "ref": "G",
+        "alt": "A",
+        "gt": "1/1",
+        "dp": 76,
+        "qual": 2794.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247452741 G A",
+          "seq_region_name": "1",
+          "start": 247452741,
+          "allele_string": "G/A",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247452798,
+        "ref": "G",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 59,
+        "qual": 1974.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247452798 G C",
+          "seq_region_name": "1",
+          "start": 247452798,
+          "allele_string": "G/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453017,
+        "ref": "T",
+        "alt": "C",
+        "gt": "0/1",
+        "dp": 72,
+        "qual": 926.6400146484375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453017 T C",
+          "seq_region_name": "1",
+          "start": 247453017,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": false,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式不匹配，但变异本身可能影响蛋白功能",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453144,
+        "ref": "A",
+        "alt": "G",
+        "gt": "1/1",
+        "dp": 62,
+        "qual": 2283.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453144 A G",
+          "seq_region_name": "1",
+          "start": 247453144,
+          "allele_string": "A/G",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453277,
+        "ref": "G",
+        "alt": "A",
+        "gt": "1/1",
+        "dp": 71,
+        "qual": 2609.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453277 G A",
+          "seq_region_name": "1",
+          "start": 247453277,
+          "allele_string": "G/A",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453421,
+        "ref": "T",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 66,
+        "qual": 2885.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453421 T C",
+          "seq_region_name": "1",
+          "start": 247453421,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453431,
+        "ref": "G",
+        "alt": "A",
+        "gt": "1/1",
+        "dp": 65,
+        "qual": 2838.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453431 G A",
+          "seq_region_name": "1",
+          "start": 247453431,
+          "allele_string": "G/A",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453464,
+        "ref": "T",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 69,
+        "qual": 2239.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453464 T C",
+          "seq_region_name": "1",
+          "start": 247453464,
+          "allele_string": "T/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453500,
+        "ref": "C",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 66,
+        "qual": 2478.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453500 C T",
+          "seq_region_name": "1",
+          "start": 247453500,
+          "allele_string": "C/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453734,
+        "ref": "G",
+        "alt": "T",
+        "gt": "1/1",
+        "dp": 53,
+        "qual": 1904.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453734 G T",
+          "seq_region_name": "1",
+          "start": 247453734,
+          "allele_string": "G/T",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247453832,
+        "ref": "G",
+        "alt": "A",
+        "gt": "1/1",
+        "dp": 44,
+        "qual": 1588.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247453832 G A",
+          "seq_region_name": "1",
+          "start": 247453832,
+          "allele_string": "G/A",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247454074,
+        "ref": "T",
+        "alt": "G",
+        "gt": "1/1",
+        "dp": 30,
+        "qual": 1297.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247454074 T G",
+          "seq_region_name": "1",
+          "start": 247454074,
+          "allele_string": "T/G",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    },
+    {
+      "tier": "C",
+      "gene_symbol": "OR2B11",
+      "known_ligand_zh": "多种花香类化合物",
+      "variant": {
+        "chrom": "1",
+        "pos": 247454095,
+        "ref": "G",
+        "alt": "C",
+        "gt": "1/1",
+        "dp": 31,
+        "qual": 1304.06005859375,
+        "filter_status": "",
+        "gene_symbol": "OR2B11",
+        "consequence": "",
+        "hgvsc": null,
+        "hgvsp": null,
+        "protein_domain": null,
+        "protein_topology": null,
+        "af_gnomad": null,
+        "raw_vep": {
+          "input": "1 247454095 G C",
+          "seq_region_name": "1",
+          "start": 247454095,
+          "allele_string": "G/C",
+          "transcript_consequences": []
+        }
+      },
+      "assessment": {
+        "level": "可能轻微影响",
+        "protein_impact": "非编码或调控区域变异",
+        "gene_certainty": "中",
+        "zygosity_match": true,
+        "inheritance_pattern": "隐性纯合",
+        "rationale_zh": "蛋白影响: 非编码或调控区域变异；基因功能确定性: 中；遗传模式: 隐性纯合；基因型与遗传模式匹配",
+        "limitation_note": null
+      }
+    }
+  ],
+  "executive_summary": {
+    "subsystem_counts": {},
+    "key_findings": []
+  },
+  "data_availability": {
+    "OR2B11": {
+      "gnomad_af": "N/A",
+      "clinvar": "N/A",
+      "spliceai": "N/A",
+      "cadd": "N/A",
+      "topology": "N/A"
+    }
+  },
+  "disclaimer_zh": "【重要声明】本报告仅基于基因组变异数据进行描述性分析，不构成医学诊断，不可替代专业医疗建议或临床检查。报告中的\"影响\"描述仅表示基因层面的功能预测，不等同于临床表现或疾病状态。感官能力受基因、环境、生活方式等多因素影响，基因型与表型之间不存在简单的一一对应关系。如报告中有高风险发现，建议咨询遗传咨询师或相关专科医生。未成年人应在监护人陪同下解读报告。"
+}

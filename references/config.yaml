@@ -1,0 +1,66 @@
+# 感官基因组学分析 Skill — 默认运行时配置
+skill:
+  name: sensory-genomics
+  version: "0.1.0"
+
+# VEP 注释配置
+vep:
+  source: local_docker          # rest_api | local_docker
+                             # rest_api: 使用 Ensembl VEP REST API（需要联网）
+                             # local_docker: 使用本地 Docker VEP（完全离线，需先下载 cache）
+  cache_dir: ~/.workbuddy/tools/vep/cache  # local_docker 模式下的 cache 路径
+  base_url: https://rest.ensembl.org
+  batch_size: 200
+  rate_limit: 5             # req/s (low concurrency, high timeout for proxy)
+  max_retries: 1
+  timeout: 90
+
+# VCF 预过滤阈值
+filter:
+  min_qual: 30
+  min_dp: 10
+  pass_only: true
+
+# 缓存配置
+cache:
+  db_path: ~/.workbuddy/skills/sensory-genomics/cache.sqlite
+  default_ttl_days: 30
+
+# 预计算 VEP 注释数据库（可选）
+# 运行 scripts/src/precompute_vep_db.py 生成，可大幅减少 VEP API 调用
+precompute_db: assets/data/sensory_variants_vep.sqlite
+
+# 限速配置（外部 API）
+rate_limits:
+  ensembl: 15               # req/s
+  ncbi: 3                   # req/s
+  uniprot: 10               # req/s
+
+# 报告输出
+output:
+  default_dir: ~/.workbuddy/skills/sensory-genomics/output/
+  formats:
+    - markdown
+    - json
+
+# 分析范围（默认全部子系统）
+subsystems:
+  - vision
+  - hearing
+  - olfaction
+  - taste
+  - somatosensation
+
+# 参考信息展示开关
+reference_info:
+  show_gnomad_af: true
+  show_clinvar: true
+  show_spliceai: true
+  show_cadd: true
+  show_topology: true
+
+# 日志
+logging:
+  level: INFO
+  file_prefix: sensory_genomics
+  format: "%(asctime)s [%(levelname)s] %(name)s: %(message)s"

@@ -1,0 +1,67 @@
+{# 听觉系统章节 #}
+{% from "macros/gene_card.md.j2" import render_gene_card %}
+
+## 3. 听觉系统
+
+听觉系统负责声波的接收、机械传导和神经信号转换。本章节涵盖缝隙连接蛋白、毛细胞机械传导、突触囊泡释放、离子稳态及线粒体相关基因。
+
+### 3.1 缝隙连接蛋白（GJB2 / GJB6）
+
+缝隙连接蛋白在耳蜗钾离子循环中起关键作用。
+
+{% for card in gene_cards if card.gene_symbol in ["GJB2", "GJB6"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 GJB2/GJB6 上发现需要关注的变异。*
+{% endfor %}
+
+### 3.2 毛细胞机械传导
+
+毛细胞静纤毛结构和机械电转导相关基因。
+
+{% for card in gene_cards if card.gene_symbol in ["MYO7A", "CDH23"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 MYO7A/CDH23 上发现需要关注的变异。*
+{% endfor %}
+
+### 3.3 突触囊泡释放
+
+内毛细胞突触传递相关基因。
+
+{% for card in gene_cards if card.gene_symbol in ["OTOF", "CABP2"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 OTOF/CABP2 上发现需要关注的变异。*
+{% endfor %}
+
+### 3.4 离子稳态
+
+内耳内淋巴液离子平衡相关基因。
+
+{% for card in gene_cards if card.gene_symbol in ["SLC26A4", "KCNQ4"] %}
+{{ render_gene_card(card) }}
+{% else %}
+*未在 SLC26A4/KCNQ4 上发现需要关注的变异。*
+{% endfor %}
+
+### 3.5 线粒体耳聋与药物风险
+
+线粒体基因变异可能导致氨基糖苷类抗生素相关的听力损失风险增加。
+
+{% if mitochondrial %}
+{% for mt in mitochondrial %}
+#### {{ mt.variant_name }}（{{ mt.gene }}）
+
+- **异质性水平**：{{ "%.1f" % (mt.heteroplasmy * 100) }}%
+- **风险等级**：{{ mt.risk_level | risk_badge }}
+- **药物警告**：{{ mt.drug_warning_zh }}
+
+> ⚠️ **建议**：如携带线粒体致聋相关变异，请在使用抗生素前明确告知医生，避免使用氨基糖苷类药物。
+
+{% endfor %}
+{% else %}
+*未在 MT-RNR1/MT-TS1 上发现已知的致聋相关变异。*
+{% endif %}
+
+---

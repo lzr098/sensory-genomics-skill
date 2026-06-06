@@ -1,0 +1,2 @@
+2026-06-04 16:34:52.036 [INFO] scripts.config_loader: Logger initialized. Log file: /Users/zhaorongli/.workbuddy/skills/sensory-genomics/logs/sensory_genomics_20260604_163452.log
+2026-06-04 16:34:52.059 [WARNING] scripts.config_loader: Config file not found at /Users/zhaorongli/.workbuddy/skills/sensory-genomics/config.yaml, using defaults.

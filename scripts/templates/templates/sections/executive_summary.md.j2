@@ -1,0 +1,34 @@
+{# 执行摘要 #}
+## 1. 执行摘要
+
+### 1.1 样本信息
+
+| 项目 | 内容 |
+|------|------|
+| 样本 ID | {{ sample_id or "未提供" }} |
+| 性别 | {{ "男性" if sex == "M" else "女性" }} |
+| 参考基因组 | {{ ref_genome }} |
+| 分析日期 | {{ analysis_date }} |
+| 分析范围 | {{ ", ".join(subsystems) }} |
+
+### 1.2 感官能力概览
+
+{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "触觉/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢特征", "muscle": "肌肉特征", "hair": "毛发特征"} %}
+
+| 感官系统 | 完全丧失 | 显著影响 | 部分影响 | 可能轻微影响 | 无影响 | 关键发现 |
+|---------|---------|---------|---------|-------------|--------|---------|
+{% for subsystem in subsystems %}
+| {{ subsys_names.get(subsystem, subsystem) }} | 0 | 0 | 0 | 0 | — | 待评估 |
+{% endfor %}
+
+### 1.3 值得关注的发现
+
+{% if executive_summary and executive_summary.key_findings %}
+{% for finding in executive_summary.key_findings %}
+- {{ finding }}
+{% endfor %}
+{% else %}
+- 暂无高优先级发现
+{% endif %}
+
+---
