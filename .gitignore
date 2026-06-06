@@ -9,6 +9,10 @@ __pycache__/
 # Ignore large data files that should be managed via Git LFS
 assets/data/sensory_variants_vep.sqlite
 assets/data/*.bed
+scripts/data/*.bed
+scripts/data/*.sqlite
+scripts/src/data/*.bed
+scripts/src/data/*.sqlite
 references/vep_cache/
 
 # macOS

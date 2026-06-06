@@ -1,5 +1,5 @@
 {# 基因卡片宏 - v5 基因维度格式：每个基因只展示关键功能变异 #}
-{% macro render_gene_card(card, max_variants=3) %}
+{% macro render_gene_card(card, max_variants=3, phenotypic_impacts={}) %}
 {% set top_vars = card.key_variants | key_variants(max_variants) %}
 
 ### {{ card.gene_symbol }}{% if top_vars and top_vars[0].rsid %} — {{ top_vars[0].rsid }}{% endif %}
@@ -12,6 +12,11 @@
 
 {% if card.assessment.rationale_zh %}
 **影响依据**：{{ card.assessment.rationale_zh }}
+{% endif %}
+
+{% set impact = phenotypic_impacts.get(card.gene_symbol, "") %}
+{% if impact %}
+**表型影响推断**：{{ impact }}
 {% endif %}
 
 {% if card.protein_impact_summary %}

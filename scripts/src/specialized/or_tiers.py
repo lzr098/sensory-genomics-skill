@@ -99,6 +99,7 @@ class ORTierClassifier:
                 tier=best_tier,
                 gene_symbol=gene,
                 known_ligand_zh=known_ligand,
+                odor_description_zh=ligand_info.get("odor_description_zh"),
                 variant=best_variant,
                 assessment=best_assessment,
             )

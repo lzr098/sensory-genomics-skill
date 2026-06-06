@@ -1,59 +1,85 @@
-{# 嗅觉系统章节 - v5：Tier C 移到附录 #}
+{# 嗅觉系统章节 - v6: 配体感知描述，去除影响程度评分 #}
 {% from "macros/gene_card.md.j2" import render_gene_card %}
 
 ## 4. 嗅觉系统
 
 嗅觉系统负责气味分子的识别和信号转导。嗅觉受体（OR）基因家族是人类最大的基因家族之一，约 400 个功能性受体。
 
-> ⚠️ **已知局限**：OR 基因-配体对应关系目前仅部分明确，大量 OR 基因的配体尚未发现。因此，"特定嗅觉受体缺失"的标注仅表示基因层面的预测，不代表实际无法感知某种气味。
+> ⚠️ **重要说明**：嗅觉是一种高度冗余的多基因系统。同一种气味通常可由多个不同的 OR 基因识别，单个 OR 基因的失活极少导致"完全闻不到"某种气味。以下列出的 OR 基因变异仅表示在分子层面该受体可能功能受损，实际嗅觉体验的变化通常是微妙的——可能表现为对特定气味的敏感度降低、辨识度下降，或在低浓度下更难察觉，而非完全丧失。
 
-### 4.1 已知配体的嗅觉受体（Tier A）
+### 4.1 已知配体的嗅觉受体变异
 
-以下 OR 基因已有文献报道的配体对应关系，功能变异可能影响特定气味感知。
+以下 OR 基因已有文献报道的配体对应关系，且在本样本中检出功能丧失（LoF）变异。
 
-{% if or_tier_a %}
-{% for or_result in or_tier_a %}
+{% if or_tiers %}
+{% set tier_a = or_tiers | selectattr("tier", "equalto", "A") | list %}
+{% if tier_a %}
+{% for or_result in tier_a %}
 #### {{ or_result.gene_symbol }}
 
-- **已知配体**：{{ or_result.known_ligand_zh or "未知" }}
-- **影响评估**：{{ or_result.assessment.level | level_badge }}
-- **影响依据**：{{ or_result.assessment.rationale_zh or "无" }}
+- **负责识别的气味分子**：{{ or_result.known_ligand_zh or "未知" }}
+- **气味特征**：{{ or_result.odor_description_zh or "—" }}
+- **变异后果**：{{ or_result.variant.consequence or "N/A" }} | 基因型：{{ or_result.variant.gt }}
 
-{% if or_result.variant %}
-| 位置 | 参考>替代 | 基因型 | 后果 |
-|------|----------|--------|------|
-| {{ or_result.variant.chrom }}:{{ or_result.variant.pos }} | {{ or_result.variant.ref }}>{{ or_result.variant.alt }} | {{ or_result.variant.gt }} | {{ or_result.variant.consequence or "N/A" }} |
-{% endif %}
-
-> 🔬 **说明**：{{ or_result.gene_symbol }} 的 {% if or_result.variant.is_homozygous %}**纯合**功能缺失{% else %}**杂合错义**变异{% endif %}可能{% if not or_result.variant.is_homozygous %}不{% endif %}影响对 {{ or_result.known_ligand_zh or "特定气味" }} 的感知能力。{% if not or_result.variant.is_homozygous %}杂合状态下，野生型等位基因通常提供正常的受体功能，实际影响需通过嗅觉测试验证。{% else %}这属于"特定嗅觉受体缺失"，不等同于疾病。{% endif %}
+> 🔬 **嗅觉影响推断**：{{ or_result.gene_symbol }} 负责识别 **{{ or_result.known_ligand_zh or "特定气味分子" }}**（{{ or_result.odor_description_zh or "气味特征待研究" }}）。由于人类嗅觉系统存在广泛的受体冗余，该受体单个失活通常不会导致完全无法感知此类气味，但可能使对该气味的**敏感度降低**或在低浓度下**辨识度下降**。实际生活中可能表现为：对含该气味分子的食物/环境气味反应较常人稍弱，但通常不易自我察觉。
 
 {% endfor %}
 {% else %}
-*未发现 Tier A 级别的 OR 基因功能缺失。*
+*未发现已知配体 OR 基因的功能丧失变异。*
+{% endif %}
+{% else %}
+*未发现需要关注的 OR 基因变异。*
 {% endif %}
 
-### 4.2 其他纯合 LoF OR 基因（Tier B）
+### 4.2 配体未明确的 OR 基因变异
 
-以下 OR 基因存在纯合功能缺失变异，但配体尚未明确。
+以下 OR 基因在本样本中检出纯合功能丧失变异，但目前尚无文献报道其具体识别的气味分子（配体未知）。
 
-{% if or_tier_b %}
-| 基因 | 后果类型 | 影响评估 |
-|------|---------|---------|
-{% for or_result in or_tier_b %}
-| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.assessment.level | level_badge }} |
+{% if or_tiers %}
+{% set tier_b = or_tiers | selectattr("tier", "equalto", "B") | list %}
+{% if tier_b %}
+| 基因 | 变异后果 | 基因型 | 说明 |
+|------|---------|--------|------|
+{% for or_result in tier_b %}
+| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.variant.gt }} | 配体尚未明确，无法推断具体气味影响 |
+{% endfor %}
+
+> 这些 OR 基因的功能丧失在分子层面成立，但由于缺乏配体信息，无法关联到具体的气味感知变化。考虑到嗅觉系统的冗余性，单个未知配体 OR 的失活对整体嗅觉功能的影响通常难以察觉。
+{% else %}
+*未发现配体未明确但存在纯合 LoF 的 OR 基因。*
+{% endif %}
+{% else %}
+*无数据。*
+{% endif %}
+
+### 4.3 其余 OR 基因变异（附录参考）
+
+<details>
+<summary>点击展开 — 其余检出纯合 LoF 的 OR 基因列表（配体未知或优先级较低）</summary>
+
+{% if or_tiers %}
+{% set tier_c = or_tiers | selectattr("tier", "equalto", "C") | list %}
+{% if tier_c %}
+| 基因 | 变异后果 | 基因型 |
+|------|---------|--------|
+{% for or_result in tier_c %}
+| {{ or_result.gene_symbol }} | {{ or_result.variant.consequence or "N/A" }} | {{ or_result.variant.gt }} |
 {% endfor %}
 {% else %}
-*未发现 Tier B 级别的 OR 基因功能缺失。*
+*无 Tier C 级别数据。*
+{% endif %}
+{% else %}
+*无数据。*
 {% endif %}
 
-> 📋 Tier C OR 基因（{{ or_tier_c | length }} 个）详见[附录 F](#f-or-基因-tier-c-列表)。
+</details>
 
-### 4.3 嗅觉信号转导
+### 4.4 嗅觉信号转导通路
 
-嗅觉受体下游信号通路基因。
+嗅觉受体下游的信号通路基因（非 OR 基因）。这些基因的功能丧失可能影响整体嗅觉能力，因为它们是所有 OR 信号的共同通路。
 
 {% for card in gene_cards if card.gene_symbol in ["CNGA2", "ADCY3"] %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% else %}
 *未在 CNGA2/ADCY3 上发现需要关注的变异。*
 {% endfor %}

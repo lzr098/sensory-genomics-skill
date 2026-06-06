@@ -87,6 +87,7 @@ class MarkdownReportGenerator:
                     "level": level,
                     "rationale": card.assessment.rationale_zh[:80] if card.assessment.rationale_zh else "",
                     "variants": var_info,
+                    "phenotypic_impact": self._infer_phenotypic_impact(card.gene_symbol, card.subsystem, level, top_vars),
                 })
 
         # 构建综合特征档案
@@ -160,10 +161,17 @@ class MarkdownReportGenerator:
             "lof_gof_variants": self._collect_lof_gof_variants(report.gene_cards),
             # All analyzed genes list for appendix
             "all_genes_list": sorted(report.gene_cards, key=lambda c: c.gene_symbol),
+            # Phenotypic impact mapping for gene cards
+            "phenotypic_impacts": {
+                card.gene_symbol: self._infer_phenotypic_impact(
+                    card.gene_symbol, card.subsystem, card.assessment.level,
+                    self._get_top_variants(card.variants, n=2)
+                )
+                for card in report.gene_cards
+            },
         }
 
-    @staticmethod
-    def _collect_lof_gof_variants(gene_cards: List[GeneCard]) -> List[Dict[str, Any]]:
+    def _collect_lof_gof_variants(self, gene_cards: List[GeneCard]) -> List[Dict[str, Any]]:
         """收集所有 LOF/GOF 变异."""
         lof_gof = []
         for card in gene_cards:
@@ -184,6 +192,10 @@ class MarkdownReportGenerator:
                         "subsystem": card.subsystem,
                         "variant": v,
                         "type": "LOF" if is_lof else "GOF候选",
+                        "phenotypic_impact": self._infer_phenotypic_impact(
+                            card.gene_symbol, card.subsystem,
+                            "完全丧失" if is_lof else "部分影响", [v]
+                        ),
                     })
         # Sort: LOF first, then by consequence severity
         def sort_key(item: Dict[str, Any]) -> int:
@@ -198,6 +210,126 @@ class MarkdownReportGenerator:
                 return 3
             return 4
         return sorted(lof_gof, key=sort_key)
+
+    @staticmethod
+    def _infer_phenotypic_impact(gene: str, subsystem: str, level: str, variants: List[Variant]) -> str:
+        """根据基因和变异推断对表型的具体影响.
+
+        返回一段中文描述，解释该基因功能改变在实际表型上可能意味着什么。
+        """
+        # 获取最严重后果类型
+        worst_cons = ""
+        for v in variants:
+            c = v.consequence or ""
+            if "frameshift" in c or "stop_gained" in c or "stop_lost" in c:
+                worst_cons = "lof"
+                break
+            elif "missense" in c:
+                worst_cons = "missense"
+            elif worst_cons == "":
+                worst_cons = c
+
+        # 听觉系统
+        if gene == "CDH23":
+            return "钙黏蛋白23是毛细胞尖端链接（tip link）的核心结构蛋白。双等位基因失活 → 尖端链接断裂 → 毛细胞机械-电转导丧失 → 感音神经性听力损失（符合 DFNB12 / Usher 1D 表型）。"
+        if gene == "MYO7A":
+            return "非传统肌球蛋白 VIIa 参与毛细胞静纤毛发育与维持。功能受损 → 静纤毛束结构异常 → 听力下降，可能伴随前庭功能障碍（平衡感减退、眩晕倾向）。"
+        if gene == "GJB2":
+            return "Connexin-26 是耳蜗钾离子循环的关键缝隙连接蛋白。功能丧失 → 耳蜗内电位无法维持 → 感音神经性聋（DFNB1），通常表现为语前重度-极重度听力损失。"
+        if gene == "OTOF":
+            return "Otoferlin 是内毛细胞突触囊泡释放的关键蛋白。双等位基因失活 → 声音信号无法从耳蜗传向听神经 → 听觉神经病变（ANSD），表现为听阈正常或轻度升高但言语识别极差。"
+        if gene == "SLC26A4":
+            return "Pendrin 负责内耳内淋巴液离子平衡。功能严重受损 → 内淋巴积水 → 大前庭导水管综合征（EVA），表现为波动性听力下降，头部外伤或气压变化可诱发/加重聋。"
+        if gene in ("MT-RNR1", "MT-TS1"):
+            return "线粒体基因变异 → 氨基糖苷类抗生素（庆大霉素、链霉素等）耳毒性敏感性显著增加 → 低剂量即可导致不可逆的感音神经性聋。"
+
+        # 体感/痛觉
+        if gene == "SCN9A":
+            return "Nav1.7 电压门控钠通道是痛觉信号传导的关键分子。功能改变 → 痛觉阈值偏移：功能丧失型可导致先天性无痛症（极罕见），功能增强型可导致原发性红斑性肢痛症（烧灼痛）。本样本为杂合错义，更可能表现为痛觉敏感度异常。"
+        if gene == "SCN10A":
+            return "Nav1.8 钠通道主要表达于伤害性感受器。功能改变 → 炎症性疼痛和慢性疼痛的易感性可能发生变化。"
+        if gene == "OPRM1":
+            return "μ-阿片受体是内源性阿片肽和外源性阿片类药物（吗啡、芬太尼等）的主要作用靶点。纯合功能丧失 → 内源性镇痛系统受损 → 对阿片类镇痛药的反应可能显著减弱，术后/癌痛镇痛方案可能需要调整。"
+        if gene == "TRPV1":
+            return "TRPV1 是辣椒素受体兼热敏感受器。功能变异 → 对辣椒等辛辣食物的灼热感耐受度、以及对高温伤害的感知阈值可能发生变化。"
+        if gene == "TRPM8":
+            return "TRPM8 是冷敏感受器和薄荷醇受体。功能变异 → 对低温环境的冷感敏感度、以及对薄荷清凉感的感知可能发生变化。"
+        if gene == "PIEZO2":
+            return "PIEZO2 是机械敏感离子通道，负责触觉分辨和本体感觉。功能严重受损 → 触觉精细度下降、本体感觉减退（闭眼时难以判断肢体位置）、共济失调步态。"
+
+        # 视觉
+        if gene in ("OPN1LW", "OPN1MW"):
+            return "红/绿视蛋白基因位于 X 染色体。男性为单倍体，任何功能缺失变异都可能导致红绿色觉异常（红色弱/绿色弱或全色盲）。本样本为男性，需关注。"
+        if gene == "OPN1SW":
+            return "蓝视蛋白基因。功能丧失 → 蓝黄色觉异常（tritanopia），表现为蓝/黄颜色辨别困难，但红/绿色觉正常。"
+        if gene == "RHO":
+            return "视紫红质是杆状细胞光信号传导的核心蛋白。功能严重受损 → 视网膜色素变性（RP）或先天性静止性夜盲（CSNB），表现为夜盲、进行性视野缩小。"
+        if gene == "ABCA4":
+            return "ABCA4 负责视网膜色素上皮细胞中类视黄醇代谢产物的转运。双等位基因严重功能受损 → Stargardt 病（青少年黄斑变性）或锥杆细胞营养不良，表现为中心视力进行性下降。"
+        if gene == "EYS":
+            return "EYS 是视网膜感光细胞外节结构蛋白。双等位基因功能丧失 → 视网膜色素变性（RP25），表现为夜盲和进行性周边视野丧失。"
+        if gene in ("GJA8", "CRYAA"):
+            return "晶状体结构/代谢蛋白。功能严重受损 → 先天性白内障，表现为婴幼儿期即出现的晶状体混浊和视力障碍。"
+
+        # 味觉
+        if gene == "TAS2R38":
+            return "苦味受体 TAS2R38 的基因型决定了对苯硫脲（PTC）等苦味物质的敏感度。PAV/PAV（味觉敏感型）→ 对苦味高度敏感；AVI/AVI（味觉迟钝型）→ 对苦味不敏感；杂合型 → 中间表型。"
+        if gene in ("TAS1R2", "TAS1R3"):
+            return "TAS1R2/TAS1R3 构成甜味受体。功能严重受损 → 对糖类甜味物质的感知能力下降，可能表现为'食不知甜'。"
+        if gene == "TAS1R1":
+            return "TAS1R1 与 TAS1R3 构成鲜味受体。功能严重受损 → 对谷氨酸（味精）等鲜味物质的感知能力下降。"
+        if gene in ("SCNN1A", "SCNN1B", "SCNN1G"):
+            return "上皮钠通道（ENaC）亚基，负责咸味感知。功能严重受损 → 对咸味的敏感度下降，可能偏好更咸的食物。"
+        if gene == "OTOP1":
+            return "OTOP1 是质子通道，负责酸味感知。功能严重受损 → 对酸性物质的酸味感知能力下降。"
+
+        # 色素沉着
+        if gene == "OCA2":
+            return "OCA2 是黑色素体膜转运蛋白，影响黑色素合成量。功能严重受损 → 眼皮肤白化病 II 型（OCA2），表现为极浅色皮肤、浅色头发、蓝/灰/淡褐色虹膜，伴眼球震颤和视力低下。"
+        if gene == "HERC2":
+            return "HERC2 调控 OCA2 基因表达。功能严重受损 → 通过下调 OCA2 间接导致色素减少，表现为浅色虹膜（蓝/绿色眼）和浅色皮肤。"
+        if gene in ("TYRP1", "TYR"):
+            return "酪氨酸酶相关蛋白，黑色素合成通路的关键酶。功能严重受损 → 眼皮肤白化病 I/III 型，表现为极浅色皮肤和毛发，伴严重视力障碍。"
+        if gene in ("SLC45A2", "SLC24A5"):
+            return "黑色素体 pH 调节蛋白 / 钾离子交换蛋白，影响黑色素合成效率。功能严重受损 → 皮肤/毛发色素显著变浅，表现为白化病或极浅色表型。"
+
+        # 代谢
+        if gene == "CYP1A2":
+            return "CYP1A2 是咖啡因代谢的主要酶。快代谢型（AA）→ 咖啡因清除快，耐受性好，不易因咖啡因导致心悸或失眠；慢代谢型（AC/CC）→ 咖啡因半衰期长，少量摄入即可能引起焦虑、失眠。"
+        if gene == "ALDH2":
+            return "乙醛脱氢酶2是酒精代谢的关键酶。正常活性型（GG）→ 饮酒后乙醛可迅速代谢为乙酸，不易出现面部潮红和不适；活性降低型（GA/AA）→ 乙醛蓄积 → 饮酒后快速面部潮红、心悸、恶心（东亚人群中常见）。"
+        if gene == "ADH1B":
+            return "乙醇脱氢酶2催化乙醇氧化为乙醛。快速氧化型（AG/GG）→ 饮酒后乙醛迅速生成，可能更快出现醉酒感；慢速氧化型（AA）→ 乙醇代谢较慢。"
+        if gene == "LCT":
+            return "LCT 编码乳糖酶。乳糖酶持久型（CT/TT）→ 成年后乳糖酶持续表达，可正常消化乳制品；非持久型（CC）→ 成年后乳糖酶活性下降 → 摄入乳制品后可能出现腹胀、腹泻、肠鸣（乳糖不耐受）。"
+
+        # 肌肉
+        if gene == "ACTN3":
+            return "ACTN3（α-肌动蛋白-3）主要存在于快肌纤维 IIx 型。R577X 无义变异纯合（XX）→ 快肌纤维功能下降 → 爆发力/短跑/力量型运动能力降低，但耐力运动表现可能不受影响甚至略有优势（'耐力基因型'）。杂合（RX）→ 中间表型。"
+
+        # 毛发
+        if gene == "EDAR":
+            return "EDAR 参与外胚层衍生物（毛发、牙齿、汗腺、乳腺）的发育。东亚典型变异（370A）→ 直发、粗发、汗腺发达、乳腺导管密度增加；功能严重受损 → 可能表现为毛发稀疏/卷曲、汗腺发育不全、牙齿发育异常。"
+        if gene == "ABCC11":
+            return "ABCC11 参与大汗腺分泌物的转运。功能丧失型（AA）→ 干耳垢（片状）、腋下体味较轻（大汗腺分泌减少），在东亚人群中极为常见；功能正常型（GG）→ 湿耳垢、体味较明显。"
+
+        # 嗅觉 — OR 基因
+        if gene.startswith("OR"):
+            return "嗅觉受体（OR）基因负责识别特定气味分子。由于人类嗅觉系统存在大量冗余受体（约400个），单个 OR 基因失活通常不会导致完全无法感知某种气味，但可能降低对该气味分子的敏感度或辨识度。多个相关 OR 同时失活时才可能产生可察觉的嗅觉缺陷。"
+
+        # 嗅觉信号转导
+        if gene in ("CNGA2", "ADCY3"):
+            return "CNGA2/ADCY3 是嗅觉信号转导通路的核心组件（cAMP 信号级联）。功能严重受损 → 可能导致先天性嗅觉丧失（anosmia）或嗅觉显著减退，因为所有 OR 信号都依赖此通路传递。"
+
+        # 默认描述
+        if level == "完全丧失":
+            return f"{gene} 功能完全丧失 → 该基因所参与的{subsystem or '感官'}功能可能严重受损，具体表型取决于该基因在通路中的位置和冗余性。"
+        elif level == "显著影响":
+            return f"{gene} 功能显著受损 → 该基因所参与的{subsystem or '感官'}功能可能出现明显异常，建议在相关临床表型上加以关注。"
+        elif level == "部分影响":
+            return f"{gene} 功能部分受损 → 该基因所参与的{subsystem or '感官'}功能可能有轻微影响，但由于系统冗余或其他代偿机制，实际表型变化可能不明显。"
+        return "表型影响待进一步分析。"
+
 
     @staticmethod
     def _get_top_variants(variants: List[Variant], n: int = 3) -> List[Variant]:

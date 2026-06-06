@@ -50,10 +50,15 @@
 以下变异具有明确的蛋白功能后果（移码、无义、剪接位点破坏，或高 CADD 错义），可能影响基因功能：
 
 {% if lof_gof_variants %}
-| 基因 | 子系统 | 变异类型 | 位置 | 后果 | 基因型 | 备注 |
-|------|--------|---------|------|------|--------|------|
+| 基因 | 子系统 | 变异类型 | 位置 | 后果 | 基因型 | 表型影响 |
+|------|--------|---------|------|------|--------|---------|
 {% for item in lof_gof_variants %}
-| **{{ item.gene }}** | {{ item.subsystem or "N/A" }} | {{ item.type }} | {{ item.variant.chrom }}:{{ item.variant.pos }} | {{ item.variant.consequence[:35] if item.variant.consequence else "N/A" }} | {{ item.variant.gt }} | {% if item.variant.amino_acid_change %}{{ item.variant.amino_acid_change }}{% else %}—{% endif %} |
+| **{{ item.gene }}** | {{ item.subsystem or "N/A" }} | {{ item.type }} | {{ item.variant.chrom }}:{{ item.variant.pos }} | {{ item.variant.consequence[:35] if item.variant.consequence else "N/A" }} | {{ item.variant.gt }} | {{ item.phenotypic_impact[:50] if item.phenotypic_impact else "—" }}... |
+{% endfor %}
+
+> **表型影响说明**：
+{% for item in lof_gof_variants %}
+> - **{{ item.gene }}** ({{ item.variant.chrom }}:{{ item.variant.pos }})：{{ item.phenotypic_impact }}
 {% endfor %}
 {% else %}
 > 未检出明确的 LOF/GOF 级别变异。
@@ -71,7 +76,7 @@
 {% endfor %}
 
 {% for card in high_impact_cards %}
-{{ render_gene_card(card, max_variants=5) }}
+{{ render_gene_card(card, max_variants=5, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 未检出评估为"显著影响"或"完全丧失"级别的基因。
@@ -89,7 +94,7 @@
 {% set vision_cards = subsys_cards.get("vision", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if vision_cards %}
 {% for card in vision_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 视觉系统未检出评估为"部分影响"及以上的基因。
@@ -102,7 +107,7 @@
 {% set hearing_cards = subsys_cards.get("hearing", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if hearing_cards %}
 {% for card in hearing_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 听觉系统未检出评估为"部分影响"及以上的基因。
@@ -115,7 +120,7 @@
 {% set soma_cards = subsys_cards.get("somatosensation", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if soma_cards %}
 {% for card in soma_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 体感系统未检出评估为"部分影响"及以上的基因。
@@ -125,34 +130,40 @@
 {% if "olfaction" in subsystems %}
 ### 3.4 嗅觉系统
 
-> 嗅觉系统涉及约 400 个 OR 基因，以下仅展示分级为 Tier A/B 或评估为"部分影响"及以上的结果。完整 OR 基因列表见附录。
+> 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因失活通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。以下列出检出功能丧失（LoF）变异的 OR 基因，按配体已知程度分层。
 
 {% set olf_cards = subsys_cards.get("olfaction", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if olf_cards %}
 {% for card in olf_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
-> 嗅觉系统未检出评估为"部分影响"及以上的 OR 基因。
+> 嗅觉信号转导通路基因（CNGA2/ADCY3 等）未检出评估为"部分影响"及以上的变异。
 {% endif %}
 
 {% if or_tier_a %}
-#### OR Tier A（已知配体 + 纯合 LoF）
+#### 已知配体的 OR 变异（Tier A）
 
-| 基因 | 已知配体 | 后果 | 影响评估 |
-|------|---------|------|---------|
+以下 OR 基因有明确配体对应关系，且检出功能丧失变异：
+
+| 基因 | 识别的气味分子 | 气味特征 | 变异后果 | 基因型 |
+|------|--------------|---------|---------|--------|
 {% for ot in or_tier_a %}
-| {{ ot.gene_symbol }} | {{ ot.known_ligand_zh or "未知" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.assessment.level | level_badge }} |
+| {{ ot.gene_symbol }} | {{ ot.known_ligand_zh or "未知" }} | {{ ot.odor_description_zh or "—" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} |
 {% endfor %}
+
+> 🔬 **嗅觉影响推断**：上述 OR 基因单个失活通常不会导致完全无法感知对应气味，但可能使对该气味的**敏感度降低**或在低浓度下**辨识度下降**。实际生活中不易自我察觉。
 {% endif %}
 
 {% if or_tier_b %}
-#### OR Tier B（已知配体 + 杂合 LoF 或复合影响）
+#### 配体未明确的 OR 变异（Tier B）
 
-| 基因 | 已知配体 | 后果 | 影响评估 |
-|------|---------|------|---------|
+以下 OR 基因检出纯合功能丧失变异，但配体尚未明确：
+
+| 基因 | 变异后果 | 基因型 | 说明 |
+|------|---------|--------|------|
 {% for ot in or_tier_b %}
-| {{ ot.gene_symbol }} | {{ ot.known_ligand_zh or "未知" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.assessment.level | level_badge }} |
+| {{ ot.gene_symbol }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | 配体未知，无法推断具体气味影响 |
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -179,7 +190,7 @@
 {% set taste_cards = subsys_cards.get("taste", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if taste_cards %}
 {% for card in taste_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -219,7 +230,7 @@
 {% set pigment_cards = subsys_cards.get("pigmentation", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if pigment_cards %}
 {% for card in pigment_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 色素沉着相关基因未检出评估为"部分影响"及以上的功能变异。
@@ -228,7 +239,7 @@
 {% set hair_cards = subsys_cards.get("hair", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if hair_cards %}
 {% for card in hair_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 毛发特征相关基因未检出评估为"部分影响"及以上的功能变异。
@@ -239,7 +250,7 @@
 {% set meta_cards = subsys_cards.get("metabolism", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if meta_cards %}
 {% for card in meta_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 代谢相关基因未检出评估为"部分影响"及以上的功能变异。
@@ -248,7 +259,7 @@
 {% set muscle_cards = subsys_cards.get("muscle", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if muscle_cards %}
 {% for card in muscle_cards %}
-{{ render_gene_card(card) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
 {% endfor %}
 {% else %}
 > 肌肉特征相关基因未检出评估为"部分影响"及以上的功能变异。

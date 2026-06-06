@@ -168,6 +168,7 @@ class ORTierResult(BaseModel):
     tier: Literal["A", "B", "C"] = Field(..., description="分级")
     gene_symbol: str = Field(..., description="OR 基因符号")
     known_ligand_zh: Optional[str] = Field(None, description="已知配体（中文）")
+    odor_description_zh: Optional[str] = Field(None, description="气味描述（中文）")
     variant: Variant = Field(..., description="相关变异")
     assessment: ImpactAssessment = Field(default_factory=ImpactAssessment, description="功能影响评估")
 

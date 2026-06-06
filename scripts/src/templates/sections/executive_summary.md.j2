@@ -27,10 +27,10 @@
 
 {% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢特征", "muscle": "肌肉特征", "hair": "毛发特征"} %}
 
-| 感官领域 | 关键发现 | 特征推断 |
-|---------|---------|---------|
+| 感官领域 | 关键发现 | 表型影响推断 |
+|---------|---------|-------------|
 {% for finding in key_findings %}
-| {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.gene }}: {{ finding.level }} | {{ finding.rationale[:50] if finding.rationale else "" }}... |
+| {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.gene }}: {{ finding.level | level_badge }} | {{ finding.phenotypic_impact[:60] if finding.phenotypic_impact else "" }}... |
 {% else %}
 | — | 无高风险发现 | 各感官系统未检出需要关注的致病性变异 |
 {% endfor %}
@@ -39,7 +39,9 @@
 
 {% if key_findings %}
 {% for finding in key_findings %}
-- **{{ finding.gene }}** ({{ subsys_names.get(finding.subsystem, finding.subsystem) }}) — {{ finding.level | level_badge }}：{{ finding.rationale }}
+- **{{ finding.gene }}** ({{ subsys_names.get(finding.subsystem, finding.subsystem) }}) — {{ finding.level | level_badge }}
+  - **分子依据**：{{ finding.rationale }}
+  - **表型推断**：{{ finding.phenotypic_impact }}
 {% endfor %}
 {% else %}
 - 暂无高优先级发现。所有感官相关基因均未检出完全丧失或显著影响级别的功能改变变异。
