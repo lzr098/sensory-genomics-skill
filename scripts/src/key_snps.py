@@ -167,10 +167,13 @@ class KeySNPInferrer:
 
             # Look up phenotype
             pmap = info.get("phenotype_map", {})
-            pheno = pmap.get(gt, {})
+            # Build a normalized lookup map with sorted genotype keys
+            sorted_pmap = { "".join(sorted(k)): v for k, v in pmap.items() }
+            pheno = sorted_pmap.get("".join(sorted(gt)), {})
             if not pheno:
-                # Try with just first alt for 2-alt SNPs
-                # Fallback: use closest match or generic
+                # Fallback: try original key (for backward compatibility)
+                pheno = pmap.get(gt, {})
+            if not pheno:
                 logger.debug("No exact phenotype for %s genotype %s", rsid, gt)
                 pheno = {
                     "label": "未知表型",
