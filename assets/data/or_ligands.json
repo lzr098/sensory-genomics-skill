@@ -1,71 +1,512 @@
 {
   "description": "OR 基因已知配体映射表（Tier A）。记录已有文献报道的 OR-配体对应关系。",
+  "updated": "2025-06-07",
+  "source": "Frontiers in Molecular Biosciences 2025 (Wang et al.); Mainland et al. 2015; Keller et al. 2007; 及其他独立 deorphaning 研究",
+  "total_genes": 84,
   "ligands": [
     {
-      "gene_symbol": "OR2T11",
-      "ligand_zh": "甲硫醇 / 二甲基硫醚",
-      "odor_description_zh": "鱼腥味、葱蒜味、海洋气味",
-      "reference": "Mainland et al., Nature Neuroscience 2015"
+      "gene_symbol": "ADCY3",
+      "ligand_zh": "腺苷酸环化酶3，嗅觉受体下游 cAMP 信号生成",
+      "odor_description_zh": "详见文献",
+      "reference": "非配体结合型"
     },
     {
-      "gene_symbol": "OR7D4",
-      "ligand_zh": "雄烯酮（5α-androst-16-en-3-one）",
-      "odor_description_zh": "猪骚味、尿骚味、麝香",
-      "reference": "Keller et al., Nature 2007"
+      "gene_symbol": "CNGA2",
+      "ligand_zh": "环核苷酸门控阳离子通道，嗅觉信号转导核心组件",
+      "odor_description_zh": "详见文献",
+      "reference": "非配体结合型"
     },
     {
-      "gene_symbol": "OR2J3",
-      "ligand_zh": "薄荷醇",
-      "odor_description_zh": "薄荷清凉气味",
-      "reference": "McRae et al., Chemical Senses 2012"
+      "gene_symbol": "OR10A3",
+      "ligand_zh": "suberic acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Kang et al. 2022"
     },
     {
-      "gene_symbol": "OR5A1",
-      "ligand_zh": "β-紫罗兰酮",
-      "odor_description_zh": "紫罗兰花香、覆盆子",
-      "reference": "Jaeger et al., Chemical Senses 2013"
+      "gene_symbol": "OR10A6",
+      "ligand_zh": "3-phenyl propyl propionate, citronellol, nerol, linalool, geraniol, α-cinnamyl alcohol, cyclamen ald...",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Nakanishi et al. 2023; Duroux et al. 2020"
     },
     {
-      "gene_symbol": "OR6A2",
-      "ligand_zh": "香菜醛（E-2-癸烯醛）",
-      "odor_description_zh": "香菜/肥皂味",
-      "reference": "Eriksson et al., Flavour 2012"
+      "gene_symbol": "OR10G3",
+      "ligand_zh": "vanillin, ethyl vanillin",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023"
     },
     {
-      "gene_symbol": "OR2B11",
-      "ligand_zh": "多种花香类化合物",
-      "odor_description_zh": "花香",
-      "reference": "Sanz et al., BMC Genomics 2005"
+      "gene_symbol": "OR10G4",
+      "ligand_zh": "guaiacol, vanillin, ethyl vanillin, quinoline, coumarin",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Mainland et al. 2014; Ben Khemis and Ben Lamine 2021"
+    },
+    {
+      "gene_symbol": "OR10G7",
+      "ligand_zh": "eugenol, acetophenone",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Tham et al. 2019"
+    },
+    {
+      "gene_symbol": "OR10G9",
+      "ligand_zh": "ethyl vanillin",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR10H1",
+      "ligand_zh": "sandranol",
+      "odor_description_zh": "详见文献",
+      "reference": "Weber et al. 2018"
+    },
+    {
+      "gene_symbol": "OR10J5",
+      "ligand_zh": "lyral",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Cuisin et al. 2023; Ben Khemis et al. 2022"
+    },
+    {
+      "gene_symbol": "OR10S1",
+      "ligand_zh": "1-dodecanol, 1-octanol, geraniol, heptanoic acid, lilial, nonanal, octanoic acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Yoi et al. 2019"
+    },
+    {
+      "gene_symbol": "OR11A1",
+      "ligand_zh": "2-ethyl fenchol",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR11H4",
+      "ligand_zh": "phenyl ethyl alcohol, phenyl propyl alcohol, isovaleric acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Duroux et al. 2020; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR11H6",
+      "ligand_zh": "isovaleric acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR11H7",
+      "ligand_zh": "isovaleric acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Menshe et al. 2007"
     },
     {
       "gene_symbol": "OR1A1",
-      "ligand_zh": "香茅醛",
+      "ligand_zh": "(+)-carvone, (S)-(-)-citronellal, helional, heptanal, octanal, nonanal, hydroxy-citronellal, citral,...",
       "odor_description_zh": "柠檬/柑橘类气味",
-      "reference": "Braun et al., Journal of Biological Chemistry 2010"
+      "reference": "Mainland et al. 2015; Silva Teixeira et al. 2016"
+    },
+    {
+      "gene_symbol": "OR1A2",
+      "ligand_zh": "(S)-(-)-citronellal, helional, heptanal, octanal, nonanal, hydroxy-citronellal, citral, 4-decenal, o...",
+      "odor_description_zh": "详见文献",
+      "reference": "Silva Teixeira et al. 2016"
+    },
+    {
+      "gene_symbol": "OR1C1",
+      "ligand_zh": "linalool（芳樟醇）",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR1D2",
+      "ligand_zh": "3-octen-2-one, undecanal, bourgeoal",
+      "odor_description_zh": "详见文献",
+      "reference": "Yosinaga et al. 2022; Kalbe et al. 2016"
+    },
+    {
+      "gene_symbol": "OR1E3",
+      "ligand_zh": "acetophenone（苯乙酮）",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
     },
     {
       "gene_symbol": "OR1G1",
-      "ligand_zh": "多种脂肪醛",
+      "ligand_zh": "methyl salicylate（水杨酸甲酯）, 2-undecanone, ethyl isobutyrate, tridecanal, isoamyl acetate, octylamine, ...",
       "odor_description_zh": "脂肪/蜡质气味",
-      "reference": "Braun et al., Journal of Biological Chemistry 2010"
+      "reference": "Mei et al. 2023; Trytin et al. 2014; Sann et al. 2008"
+    },
+    {
+      "gene_symbol": "OR1L3",
+      "ligand_zh": "vanillin（香草醛）, α-damascone",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2A25",
+      "ligand_zh": "geranyl acetate",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2A4",
+      "ligand_zh": "cyclohexyl salicylate, isononyl alcohol",
+      "odor_description_zh": "详见文献",
+      "reference": "Tsai et al. 2016"
+    },
+    {
+      "gene_symbol": "OR2A42",
+      "ligand_zh": "α-pinene, farnesol",
+      "odor_description_zh": "详见文献",
+      "reference": "Yasi et al. 2019"
+    },
+    {
+      "gene_symbol": "OR2A7",
+      "ligand_zh": "cyclohexyl salicylate, α-pinene, dodecanoic acid, lilial, octanoic acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Tsai et al. 2016"
+    },
+    {
+      "gene_symbol": "OR2AG1",
+      "ligand_zh": "amyl butyrate",
+      "odor_description_zh": "详见文献",
+      "reference": "Kalbe et al. 2016"
+    },
+    {
+      "gene_symbol": "OR2AG2",
+      "ligand_zh": "citronellol, nerol, cis-3-hexenol, linalool, geraniol, α-cinnamyl alcohol, phenyl ethyl alcohol, phe...",
+      "odor_description_zh": "详见文献",
+      "reference": "Duroux et al. 2020"
     },
     {
       "gene_symbol": "OR2AT4",
-      "ligand_zh": "檀香油醇（Sandalore）",
+      "ligand_zh": "sandalore",
       "odor_description_zh": "檀香木香气",
-      "reference": "Busse et al., Journal of Investigative Dermatology 2014"
+      "reference": "Edelkamp et al. 2023"
+    },
+    {
+      "gene_symbol": "OR2B11",
+      "ligand_zh": "quinolone, coumarin",
+      "odor_description_zh": "花香",
+      "reference": "Ben Khemis and Ben Lamine 2021"
+    },
+    {
+      "gene_symbol": "OR2B3",
+      "ligand_zh": "eugenyl acetate, nerolidol, β-ionone",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2C1",
+      "ligand_zh": "octanethiol, heptanethiol, nonanethiol",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Yuan et al. 2023"
+    },
+    {
+      "gene_symbol": "OR2G2",
+      "ligand_zh": "methyl isobutyrate, cinnamaldehyde, vanillin, α-damascone",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2H2",
+      "ligand_zh": "tridecanal, nerol",
+      "odor_description_zh": "详见文献",
+      "reference": "Kim et al. 2023; Weidinger et al. 2021"
+    },
+    {
+      "gene_symbol": "OR2J2",
+      "ligand_zh": "cis-3-hexen-1-ol, 1-heptanol, 1-octanol, 1-nonanol, 1-decanol, coumarin, ethyl vanillin",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR2J3",
+      "ligand_zh": "cis-3-hexen-1-ol, helional, geranyl acetate, cinnamaldehyde",
+      "odor_description_zh": "薄荷清凉气味",
+      "reference": "Mainland et al. 2015; Murae et al. 2012; Kalbe et al. 2017; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR2L13",
+      "ligand_zh": "1-dodecanol, octanoic acid, undecanal",
+      "odor_description_zh": "详见文献",
+      "reference": "Yasi et al. 2019"
+    },
+    {
+      "gene_symbol": "OR2M3",
+      "ligand_zh": "3-mercapto-2-methylpentan-1-ol",
+      "odor_description_zh": "详见文献",
+      "reference": "Hang et al. 2019; Noe et al. 2017"
+    },
+    {
+      "gene_symbol": "OR2M4",
+      "ligand_zh": "fructone, cinnamaldehyde, vanillin, nerolidol, α-damascone, estragole, cresyl methyl ether",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2M7",
+      "ligand_zh": "geraniol, (-)-β-citronellol",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR2T10",
+      "ligand_zh": "methyl isobutyrate, terpinyl acetate, cinnamaldehyde, vanillin, α-damascone",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR2T11",
+      "ligand_zh": "tert-butylthiol, ethyl mercaptan",
+      "odor_description_zh": "鱼腥味、葱蒜味、海洋气味",
+      "reference": "Li et al. 2016"
+    },
+    {
+      "gene_symbol": "OR2T4",
+      "ligand_zh": "α-pinene, farnesol, lilial, p-cymene, undecanal",
+      "odor_description_zh": "详见文献",
+      "reference": "Yasi et al. 2019"
+    },
+    {
+      "gene_symbol": "OR2W1",
+      "ligand_zh": "cis-3-hexen-1-ol, furfuryl sulfide, furfuryl disulfide, benzyl methyl disulfide, furfuryl methyl dis...",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Ben Khemis et al. 2023; Oh 2021"
+    },
+    {
+      "gene_symbol": "OR2W3",
+      "ligand_zh": "tridecanal, nerol",
+      "odor_description_zh": "详见文献",
+      "reference": "Weidinger et al. 2021; Huang et al. 2020"
+    },
+    {
+      "gene_symbol": "OR3A1",
+      "ligand_zh": "lilial, foluver, helional, cyclamal, tripropylene glycol mono methylether, methyl-phenyl-pentanal, m...",
+      "odor_description_zh": "详见文献",
+      "reference": "Silva Teixeira et al. 2016"
+    },
+    {
+      "gene_symbol": "OR3A4",
+      "ligand_zh": "2-methylisoborneol",
+      "odor_description_zh": "详见文献",
+      "reference": "Son et al. 2015"
+    },
+    {
+      "gene_symbol": "OR4D1",
+      "ligand_zh": "5α-androst-16-en-3-one（雄烯酮类）",
+      "odor_description_zh": "详见文献",
+      "reference": "Hartmann et al. 2013"
+    },
+    {
+      "gene_symbol": "OR4D6",
+      "ligand_zh": "β-ionone, galaxolide",
+      "odor_description_zh": "详见文献",
+      "reference": "Jeger et al. 2013; Li et al. 2022"
+    },
+    {
+      "gene_symbol": "OR4D9",
+      "ligand_zh": "β-ionone",
+      "odor_description_zh": "详见文献",
+      "reference": "Jeger et al. 2013"
+    },
+    {
+      "gene_symbol": "OR4E2",
+      "ligand_zh": "amyl acetate",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2014"
+    },
+    {
+      "gene_symbol": "OR4M1",
+      "ligand_zh": "asprosin",
+      "odor_description_zh": "详见文献",
+      "reference": "Ovali and Boegeryk 2022"
+    },
+    {
+      "gene_symbol": "OR4Q3",
+      "ligand_zh": "eugenol（丁香酚）",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR51A7",
+      "ligand_zh": "β-ionone",
+      "odor_description_zh": "详见文献",
+      "reference": "Murayama et al. 2023"
+    },
+    {
+      "gene_symbol": "OR51B4",
+      "ligand_zh": "trocan",
+      "odor_description_zh": "详见文献",
+      "reference": "Weber et al. 2017"
+    },
+    {
+      "gene_symbol": "OR51B5",
+      "ligand_zh": "isononyl alcohol, dodecanoic acid, farnesol",
+      "odor_description_zh": "详见文献",
+      "reference": "Mantensois et al. 2016; Yoi et al. 2019"
     },
     {
       "gene_symbol": "OR51E1",
-      "ligand_zh": "丙酸",
+      "ligand_zh": "isovaleric acid, butyrate, cyclobutanecarboxylic acid, 2-methylbutyric acid, nonanoic acid, decanoic...",
       "odor_description_zh": "奶酪/酸腐味",
-      "reference": "Braun et al., European Journal of Cell Biology 2007"
+      "reference": "Mainland et al. 2015; Xu and Pluznick 2002; Bushalid et al. 2018; Massberg et al. 2016"
     },
     {
       "gene_symbol": "OR51E2",
-      "ligand_zh": "吲哚 / 粪臭素",
+      "ligand_zh": "β-ionone, propionate, acetate",
       "odor_description_zh": "花香（低浓度）/ 粪便味（高浓度）",
-      "reference": "Gelis et al., Journal of Biological Chemistry 2016"
+      "reference": "Murayama et al. 2023; Xu et al. 2022; Billesbolle et al. 2023"
+    },
+    {
+      "gene_symbol": "OR51L1",
+      "ligand_zh": "allyl phenyl acetate, hexanoic acid",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR51S1",
+      "ligand_zh": "geosmin（土臭素）",
+      "odor_description_zh": "详见文献",
+      "reference": "Son et al. 2015"
+    },
+    {
+      "gene_symbol": "OR52D1",
+      "ligand_zh": "ethyl heptanoate, methyl octanoate, 1-nonanol, 2-nonanol, 3-nonanone, 3-octanone",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR52H1",
+      "ligand_zh": "2,3-butanedione",
+      "odor_description_zh": "详见文献",
+      "reference": "Zeng et al. 2023"
+    },
+    {
+      "gene_symbol": "OR52J3",
+      "ligand_zh": "2,3-butanedione",
+      "odor_description_zh": "详见文献",
+      "reference": "Zeng et al. 2023"
+    },
+    {
+      "gene_symbol": "OR56A1",
+      "ligand_zh": "undecanal（十一醛）",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR56A4",
+      "ligand_zh": "decyl aldehyde, undecanal",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR56A5",
+      "ligand_zh": "undecanal",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR5A1",
+      "ligand_zh": "β-ionone",
+      "odor_description_zh": "紫罗兰花香、覆盆子",
+      "reference": "Jeger et al. 2013; Li et al. 2022"
+    },
+    {
+      "gene_symbol": "OR5A2",
+      "ligand_zh": "cyclopentadec-4-en-1-one, 16-hexadecanolide, isomuscone, 5-cyclohexadecen, oxalide, 11-oxahexadecano...",
+      "odor_description_zh": "详见文献",
+      "reference": "Yoshikawa et al. 2022; Jeger et al. 2013"
+    },
+    {
+      "gene_symbol": "OR5AN1",
+      "ligand_zh": "musk ketone, musk xylene, muscone, delta muscone, xylol",
+      "odor_description_zh": "详见文献",
+      "reference": "Trimmer et al. 2023; Ben Khemis et al. 2021"
+    },
+    {
+      "gene_symbol": "OR5B17",
+      "ligand_zh": "eugenyl acetate, florazone",
+      "odor_description_zh": "详见文献",
+      "reference": "Gonzalez-Kristeller et al. 2015"
+    },
+    {
+      "gene_symbol": "OR5D18",
+      "ligand_zh": "eugenol, isoeugenol",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR5K1",
+      "ligand_zh": "eugenol, methyl trimethylthiazoline, 2,3,5-trimethylpyrazine, 2,5-dihydro-2,4,5-trimethylthiazoline",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Ben Khemis et al. 2023; Marcinek et al. 2021"
+    },
+    {
+      "gene_symbol": "OR5M3",
+      "ligand_zh": "pentadecanal, furaneol, homofuraneol",
+      "odor_description_zh": "详见文献",
+      "reference": "Mei et al. 2023; Haag et al. 2021"
+    },
+    {
+      "gene_symbol": "OR5P3",
+      "ligand_zh": "coumarin, 1-hexanol, 1-heptanol, (-)-carvone, (+)-carvone, acetophenone, 1-octanol, celery ketone",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR6A2",
+      "ligand_zh": "octanal（辛醛）; 与 cilantro aldehyde (trans-2-decenal / E-2-decenal) 及 decanal 遗传关联密切",
+      "odor_description_zh": "香菜/肥皂味",
+      "reference": "Orecchioni et al. 2022; Eriksson et al. 2012; Wang et al. 2026 (Cell)"
+    },
+    {
+      "gene_symbol": "OR6M1",
+      "ligand_zh": "anthraquinone, rutin",
+      "odor_description_zh": "详见文献",
+      "reference": "Choi et al. 2021"
+    },
+    {
+      "gene_symbol": "OR6P1",
+      "ligand_zh": "2,5-dimethyl-3(2H)-furanone, anisaldehyde",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR7A5",
+      "ligand_zh": "4-hydroxy-2,5-dimethyl-3(2H)-furanone",
+      "odor_description_zh": "详见文献",
+      "reference": "Hartmann et al. 2013"
+    },
+    {
+      "gene_symbol": "OR7C1",
+      "ligand_zh": "4,16-androstadien-3-one, anisaldehyde",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023; Keller et al. 2007 (Supp. Table S1: androstenone response = ..."
+    },
+    {
+      "gene_symbol": "OR7D4",
+      "ligand_zh": "5α-androst-16-en-3-one, androstenone, androstadienone",
+      "odor_description_zh": "猪骚味、尿骚味、麝香",
+      "reference": "Mainland et al. 2015; Zhou et al. 2023; Keller et al. 2007 (Supp. Table S1: androstenone response = ..."
+    },
+    {
+      "gene_symbol": "OR8B3",
+      "ligand_zh": "(+)-carvone",
+      "odor_description_zh": "详见文献",
+      "reference": "Zhou et al. 2023"
+    },
+    {
+      "gene_symbol": "OR8D1",
+      "ligand_zh": "caramel furanone",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR8K3",
+      "ligand_zh": "(+)-menthol",
+      "odor_description_zh": "详见文献",
+      "reference": "Mainland et al. 2015"
+    },
+    {
+      "gene_symbol": "OR9Q2",
+      "ligand_zh": "4-methylphenol, 4-ethylphenol",
+      "odor_description_zh": "详见文献",
+      "reference": "Hang et al. 2023"
     }
   ]
 }

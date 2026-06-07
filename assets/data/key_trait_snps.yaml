@@ -1,6 +1,17 @@
 # 关键性状关联 SNP 数据库
 # 用于从 VCF 推断参考基因型（REF/REF）的表型含义
 # 格式：每个 SNP 包含位置、等位基因、基因型-表型映射
+# 
+# VCF 兼容性说明：
+#   - chrom/pos/ref/alt 直接对应标准 VCF 的 #CHROM/POS/REF/ALT 列
+#   - 基因型映射规则：VCF GT 0/0 -> REF/REF, 0/1 -> REF/ALT, 1/1 -> ALT/ALT
+#   - 多等位基因位点（alt 数组长度>1）：0/2 对应 alt[1], 1/2 对应 alt[0]/alt[1]
+#   - indel 位点建议使用 bcftools norm 左对齐标准化后的 VCF 进行匹配
+#   - 本文件坐标基于 GRCh38，与标准 genotype VCF 的 1-based 坐标一致
+#
+# 扩充说明（2025-06）：
+#   新增睡眠/节律、经典趣味/体感、外貌/生理特征、运动/认知等范畴
+#   部分位点坐标建议通过 dbSNP/Ensembl VEP 二次验证
 
 snps:
   # === 色素沉着 ===
@@ -623,3 +634,280 @@ snps:
         label: "浅色头发"
         description: "SLC45A2变异纯合，黑色素转运效率显著降低，头发颜色较浅"
     notes: "SLC45A2 p.Glu272Lys (E272K)，与欧洲人头发颜色变异相关，与rs16891982协同影响色素表型"
+
+  # ==================== 睡眠/昼夜节律（扩充）====================
+  rs1801260:
+    gene: CLOCK
+    chrom: "4"
+    pos: 55435202
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "标准昼夜节律"
+        description: "CLOCK 3111T标准型，昼夜节律功能正常，晨型/夜型标准"
+      TC:
+        label: "夜型倾向"
+        description: "携带一个CLOCK变异等位基因，昼夜节律周期轻度延长，夜型倾向"
+      CT:
+        label: "夜型倾向"
+        description: "携带一个CLOCK变异等位基因，昼夜节律周期轻度延长，夜型倾向"
+      CC:
+        label: "明显夜型倾向"
+        description: "CLOCK 3111C纯合，昼夜节律周期延长，明显夜型/晚睡倾向"
+    notes: "CLOCK 3111T>C (rs1801260)，位于3'UTR，C等位基因与延迟睡眠相位、夜型倾向、代谢综合征风险相关"
+
+  rs121912617:
+    gene: BHLHE41
+    chrom: "12"
+    pos: 26122364
+    ref: "G"
+    alt: ["C"]
+    phenotype_map:
+      GG:
+        label: "标准睡眠需求"
+        description: "BHLHE41 Pro384标准型，睡眠需求正常（7-8小时）"
+      GC:
+        label: "短睡眠倾向"
+        description: "携带一个BHLHE41短睡眠等位基因，自然短睡眠倾向（6-6.5小时）"
+      CG:
+        label: "短睡眠倾向"
+        description: "携带一个BHLHE41短睡眠等位基因，自然短睡眠倾向（6-6.5小时）"
+      CC:
+        label: "家族性自然短睡眠"
+        description: "BHLHE41 Arg384纯合，家族性自然短睡眠表型，睡眠需求显著降低"
+    notes: "BHLHE41 (DEC2) p.Pro384Arg (P384R)，与家族性自然短睡眠(FNSS)相关，罕见功能变异，人群频率<1%"
+
+  rs2304672:
+    gene: PER2
+    chrom: "2"
+    pos: 238363475
+    ref: "C"
+    alt: ["G"]
+    phenotype_map:
+      CC:
+        label: "标准睡眠时型"
+        description: "PER2 5'UTR标准型，睡眠时型标准，昼夜节律功能正常"
+      CG:
+        label: "睡眠时型轻度改变"
+        description: "携带一个PER2变异等位基因，睡眠时型和昼夜节律轻度改变"
+      GC:
+        label: "睡眠时型轻度改变"
+        description: "携带一个PER2变异等位基因，睡眠时型和昼夜节律轻度改变"
+      GG:
+        label: "睡眠时型改变"
+        description: "PER2变异纯合，睡眠时型和昼夜节律功能可能改变，与睡眠障碍风险相关"
+    notes: "PER2 5'UTR rs2304672 (111C>G)，与睡眠时型、睡眠质量和昼夜节律相关，GRCh38坐标建议通过dbSNP验证"
+
+  # ==================== 经典趣味/体感（扩充）====================
+  rs713598:
+    gene: TAS2R38
+    chrom: "7"
+    pos: 141973545
+    ref: "C"
+    alt: ["G"]
+    phenotype_map:
+      CC:
+        label: "PTC苦味不敏感"
+        description: "TAS2R38 Ala49标准型，PTC/PROP苦味感知不敏感"
+      CG:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      GC:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      GG:
+        label: "PTC苦味敏感"
+        description: "TAS2R38 Pro49纯合，PTC/PROP苦味感知敏感（超级味觉者倾向）"
+    notes: "TAS2R38 p.Ala49Pro (A49P)，三个经典位点之一，C=Ala(non-taster), G=Pro(taster)。需与rs1726866、rs10246939组合解读单倍型(PAV/AVI)"
+
+  rs1726866:
+    gene: TAS2R38
+    chrom: "7"
+    pos: 141972905
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "PTC苦味敏感"
+        description: "TAS2R38 Ala262标准型，PTC苦味感知敏感"
+      GA:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      AG:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      AA:
+        label: "PTC苦味不敏感"
+        description: "TAS2R38 Val262纯合，PTC苦味感知不敏感"
+    notes: "TAS2R38 p.Ala262Val (A262V)，三个经典位点之二，G=Ala(taster), A=Val(non-taster)。需与rs713598、rs10246939组合解读"
+
+  rs10246939:
+    gene: TAS2R38
+    chrom: "7"
+    pos: 141972804
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "PTC苦味不敏感"
+        description: "TAS2R38 Ile296标准型，PTC苦味感知不敏感"
+      TC:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      CT:
+        label: "PTC苦味中等敏感"
+        description: "携带一个TAS2R38变异等位基因，PTC苦味感知中等"
+      CC:
+        label: "PTC苦味敏感"
+        description: "TAS2R38 Val296纯合，PTC苦味感知敏感"
+    notes: "TAS2R38 p.Ile296Val (I296V)，三个经典位点之三，T=Ile(non-taster), C=Val(taster)。组合单倍型：PAV(Pro-Ala-Val)=敏感，AVI(Ala-Val-Ile)=不敏感"
+
+  rs8065080:
+    gene: TRPV1
+    chrom: "17"
+    pos: 3589000
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "标准辣椒素敏感"
+        description: "TRPV1 Ile585标准型，辣椒素/热痛感受正常，对辛辣食物敏感"
+      AG:
+        label: "辣椒素耐受中等"
+        description: "携带一个TRPV1变异等位基因，辣椒素敏感度降低，辛辣食物耐受中等"
+      GA:
+        label: "辣椒素耐受中等"
+        description: "携带一个TRPV1变异等位基因，辣椒素敏感度降低，辛辣食物耐受中等"
+      GG:
+        label: "辣椒素耐受"
+        description: "TRPV1 Val585纯合，辣椒素受体功能降低，对辛辣食物/热痛耐受度高"
+    notes: "TRPV1 p.Ile585Val (I585V, rs8065080)，位于编码区，G=Val降低受体功能，与辣椒素耐受、热痛阈值升高相关。GRCh38坐标建议验证"
+
+  # ==================== 外貌/生理特征（扩充）====================
+  rs1160312:
+    gene: EDA2R
+    chrom: "20"
+    pos: 22069865
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "标准头发密度"
+        description: "20p11.22标准等位基因，头发密度标准，雄激素性脱发风险正常"
+      AG:
+        label: "头发密度轻度降低"
+        description: "携带一个20p11.22风险等位基因，头发密度可能轻度降低"
+      GA:
+        label: "头发密度轻度降低"
+        description: "携带一个20p11.22风险等位基因，头发密度可能轻度降低"
+      GG:
+        label: "头发稀疏倾向"
+        description: "20p11.22风险等位基因纯合，头发稀疏/发际线后移风险增加"
+    notes: "20p11.22 rs1160312，雄激素性脱发最强GWAS位点之一，G等位基因与男性型脱发风险增加1.6倍相关。描述为头发密度倾向，非疾病诊断"
+
+  rs642961:
+    gene: IRF6
+    chrom: "1"
+    pos: 209789016
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "标准嘴唇厚度"
+        description: "IRF6标准型，嘴唇厚度标准"
+      AG:
+        label: "嘴唇厚度中等"
+        description: "携带一个IRF6变异等位基因，嘴唇厚度可能中等"
+      GA:
+        label: "嘴唇厚度中等"
+        description: "携带一个IRF6变异等位基因，嘴唇厚度可能中等"
+      GG:
+        label: "薄唇倾向"
+        description: "IRF6变异纯合，嘴唇厚度可能较薄，与唇裂/腭裂风险相关"
+    notes: "IRF6 rs642961，与正常嘴唇厚度变异和唇裂/腭裂风险相关。GRCh38坐标建议通过dbSNP验证"
+
+  rs4880:
+    gene: SOD2
+    chrom: "6"
+    pos: 159692840
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "标准抗氧化能力"
+        description: "SOD2 Val16标准型，线粒体抗氧化酶活性标准，皮肤光老化风险正常"
+      TC:
+        label: "抗氧化能力中等"
+        description: "携带一个SOD2变异等位基因，线粒体抗氧化活性中等"
+      CT:
+        label: "抗氧化能力中等"
+        description: "携带一个SOD2变异等位基因，线粒体抗氧化活性中等"
+      CC:
+        label: "高抗氧化能力"
+        description: "SOD2 Ala16纯合，线粒体抗氧化酶活性高，皮肤光老化/皱纹风险可能降低"
+    notes: "SOD2 p.Val16Ala (V16A, rs4880)，C=Ala增强线粒体导入效率和酶活性30-40%，与皮肤抗氧化、光老化保护相关"
+
+  rs2228570:
+    gene: VDR
+    chrom: "12"
+    pos: 47879112
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "标准骨密度/钙代谢"
+        description: "VDR 427aa标准型，维生素D受体功能标准，骨密度正常"
+      TC:
+        label: "骨密度/钙代谢中等"
+        description: "携带一个VDR短蛋白等位基因，维生素D受体活性中等改变"
+      CT:
+        label: "骨密度/钙代谢中等"
+        description: "携带一个VDR短蛋白等位基因，维生素D受体活性中等改变"
+      CC:
+        label: "高VDR活性/骨密度倾向"
+        description: "VDR 424aa短蛋白纯合，维生素D受体转录活性更高，骨密度/钙吸收效率可能增强"
+    notes: "VDR FokI rs2228570 (c.2T>C, p.Met1Thr)，T=ATG起始密码子(427aa)，C=ACG(424aa, 更短但转录活性更高)，与骨密度、钙吸收效率相关"
+
+  rs1800587:
+    gene: IL1A
+    chrom: "2"
+    pos: 112785383
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "标准炎症/痤疮风险"
+        description: "IL1A启动子标准型，IL1α表达水平正常，皮肤炎症/痤疮风险标准"
+      GA:
+        label: "炎症/痤疮风险中等"
+        description: "携带一个IL1A启动子变异等位基因，IL1α表达水平轻度升高"
+      AG:
+        label: "炎症/痤疮风险中等"
+        description: "携带一个IL1A启动子变异等位基因，IL1α表达水平轻度升高"
+      AA:
+        label: "炎症/痤疮倾向"
+        description: "IL1A启动子变异纯合，IL1α表达水平升高，皮肤炎症/痤疮风险可能增加"
+    notes: "IL1A启动子rs1800587 (-889G>A)，A等位基因增加IL1A转录活性，与炎症反应、痤疮瘢痕风险相关"
+
+  # ==================== 运动/认知（扩充）====================
+  rs6265:
+    gene: BDNF
+    chrom: "11"
+    pos: 27679916
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "标准运动学习/情绪"
+        description: "BDNF Val66标准型，脑源性神经营养因子分泌和运输正常，运动学习能力标准"
+      GA:
+        label: "运动学习/情绪中等"
+        description: "携带一个BDNF变异等位基因，BDNF分泌和活性依赖性释放轻度降低"
+      AG:
+        label: "运动学习/情绪中等"
+        description: "携带一个BDNF变异等位基因，BDNF分泌和活性依赖性释放轻度降低"
+      AA:
+        label: "运动学习/情绪差异"
+        description: "BDNF Met66纯合，BDNF分泌和运输效率降低，运动学习能力/情绪调节可能差异"
+    notes: "BDNF p.Val66Met (V66M, rs6265)，Met66降低BDNF分泌和活性依赖性释放，与运动学习、记忆、情绪调节个体差异相关"
