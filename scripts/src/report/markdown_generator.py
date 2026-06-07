@@ -288,13 +288,32 @@ class MarkdownReportGenerator:
             },
         }
 
-    @staticmethod
-    def _cross_check_gene(card: GeneCard) -> Dict[str, Any]:
+    # Protein-affecting consequence types (for downgrade check eligibility)
+    _PROTEIN_AFFECTING_CONS = frozenset({
+        "frameshift", "stop_gained", "stop_lost", "start_lost",
+        "splice_acceptor", "splice_donor", "missense",
+        "inframe_insertion", "inframe_deletion", "protein_altering",
+        "transcript_ablation",
+    })
+
+    @classmethod
+    def _is_protein_affecting(cls, variant: Variant) -> bool:
+        """Check if a variant's consequence affects protein structure/function."""
+        cons = (variant.consequence or "").lower()
+        for key in cls._PROTEIN_AFFECTING_CONS:
+            if key in cons:
+                return True
+        return False
+
+    def _cross_check_gene(self, card: GeneCard) -> Dict[str, Any]:
         """Cross-check impactful gene variants against gnomAD AF and ClinVar.
 
-        Rules (per user request):
-        - If ClinVar benign/likely_benign OR gnomAD AF > 30%  → downgrade.
-        - If ClinVar VUS/pathogenic/unknown AND gnomAD AF < 30% → keep but warn.
+        Rules (per user request — 2026-06-07 revision):
+        - ONLY check HOMOZYGOUS variants that affect protein function
+          (missense, frameshift, stop_gained, splice, inframe, start_lost, etc.)
+        - OR logic: ClinVar benign/likely_benign → downgrade
+                     gnomAD AF > 30% → downgrade
+        - All other variants (heterozygous, synonymous, intronic, UTR, etc.) → NOT checked.
 
         Returns dict with keys:
             downgrade (bool), downgrade_reasons (List[str]),
@@ -313,8 +332,18 @@ class MarkdownReportGenerator:
         if not variants:
             return result
 
-        all_downgrade = True
-        for v in variants:
+        # Step 1: Filter to ONLY homozygous + protein-affecting variants
+        eligible = [
+            v for v in variants
+            if v.is_homozygous and self._is_protein_affecting(v)
+        ]
+
+        if not eligible:
+            # No eligible variants → nothing to downgrade
+            return result
+
+        any_downgrade = False
+        for v in eligible:
             # gnomAD AF (variant-level from VEP)
             af = max(
                 v.gnomad_af_exome or 0.0,
@@ -329,33 +358,42 @@ class MarkdownReportGenerator:
             if sig != "unknown":
                 result["clinvar_sigs"].append(sig)
 
+            cons_short = (v.consequence or "").split(",")[0]
+
             var_check = {
                 "variant": f"{v.chrom}:{v.pos} {v.ref}>{v.alt}",
+                "consequence": cons_short,
                 "af": af,
                 "clinvar": cv["clnsig"] if cv else "未注释",
                 "downgrade": False,
                 "downgrade_reason": "",
             }
 
-            # Rule: benign/likely_benign  → downgrade
+            var_downgrade = False
+
+            # OR Rule: ClinVar benign/likely_benign → downgrade
             if sig in ("benign", "likely_benign"):
-                var_check["downgrade"] = True
+                var_downgrade = True
                 var_check["downgrade_reason"] = f"ClinVar={cv['clnsig'] if cv else 'benign'}"
-            # Rule: gnomAD AF > 30%  → downgrade
+
+            # OR Rule: gnomAD AF > 30% → downgrade
             elif af > 0.30:
-                var_check["downgrade"] = True
+                var_downgrade = True
                 var_check["downgrade_reason"] = f"gnomAD AF={af:.1%}"
 
-            if not var_check["downgrade"]:
-                all_downgrade = False
+            var_check["downgrade"] = var_downgrade
+            if var_downgrade:
+                any_downgrade = True
 
             result["variant_checks"].append(var_check)
 
-        # Gene-level: downgrade ONLY if ALL key variants are downgraded
-        if all_downgrade and result["variant_checks"]:
+        # Gene-level: downgrade if ANY eligible homozygous protein-affecting
+        # variant triggers ClinVar benign OR gnomAD AF > 30%
+        if any_downgrade:
             result["downgrade"] = True
             result["downgrade_reasons"] = [
                 vc["downgrade_reason"] for vc in result["variant_checks"]
+                if vc["downgrade"]
             ]
 
         return result
@@ -420,103 +458,100 @@ class MarkdownReportGenerator:
 
         # 听觉系统
         if gene == "CDH23":
-            return "可以把 CDH23 理解为耳蜗毛细胞上的'机械弹簧'——声音振动传来时，这个蛋白把毛细胞表面的纤毛连接在一起，形成感知机械力的'传感器'。双等位基因失活意味着这个弹簧断了，与先天性重度至极重度感音神经性听力损失（DFNB12 型）高度相关，患者通常在婴幼儿期即表现为双耳重度听力障碍。少数情况下若伴有视网膜色素变性，则符合 Usher 1D 型。**随访建议**：建议在出生后 1 个月内完成耳声发射（OAE）筛查，3 个月内完成听性脑干反应（ABR）确诊；若当前为成人且听力正常，仍建议每 1-2 年复查纯音测听，以监测迟发性听力损失。"
+            return "耳蜗毛细胞机械传感器，双等位基因失活→先天性重度感音神经性聋（DFNB12/Usher 1D）"
         if gene == "MYO7A":
-            return "MYO7A 参与毛细胞静纤毛的结构维护。该基因的双等位基因严重变异通常导致 Usher 1B 型（先天性聋 + 视网膜色素变性）。若检出的变异在人群中频率较高（如 >30%），则多为常见多态性，临床意义有限。"
+            return "毛细胞静纤毛结构蛋白，双等位基因严重变异→Usher 1B（先天性聋+视网膜色素变性）"
         if gene == "GJB2":
-            return "Connexin-26 是耳蜗钾离子循环的关键缝隙连接蛋白。功能丧失 → 耳蜗内电位无法维持 → 感音神经性聋（DFNB1），通常表现为语前重度-极重度听力损失。"
+            return "耳蜗钾离子通道蛋白，功能丧失→DFNB1先天性重度感音神经性聋"
         if gene == "OTOF":
-            return "Otoferlin 是内毛细胞突触囊泡释放的关键蛋白。双等位基因失活 → 声音信号无法从耳蜗传向听神经 → 听觉神经病变（ANSD），表现为听阈正常或轻度升高但言语识别极差。"
+            return "内毛细胞突触囊泡释放蛋白，双等位失活→听觉神经病变（ANSD）"
         if gene == "SLC26A4":
-            return "Pendrin 负责内耳内淋巴液离子平衡。功能严重受损 → 内淋巴积水 → 大前庭导水管综合征（EVA），表现为波动性听力下降，头部外伤或气压变化可诱发/加重聋。"
+            return "内耳离子平衡蛋白，功能受损→大前庭导水管综合征（波动性听力下降）"
         if gene in ("MT-RNR1", "MT-TS1"):
-            return "线粒体基因变异 → 氨基糖苷类抗生素（庆大霉素、链霉素等）耳毒性敏感性显著增加 → 低剂量即可导致不可逆的感音神经性聋。"
+            return "线粒体变异→氨基糖苷类抗生素耳毒性敏感，低剂量可致不可逆聋"
 
         # 体感/痛觉
         if gene == "SCN9A":
-            return "Nav1.7 是痛觉神经纤维上的'电闸'，控制疼痛信号是否向大脑传递。若检出的变异在东亚人群中频率 >80%，则属于极高频常见多态性，通常不具有临床致病意义。真正的 SCN9A 致病变异非常罕见。"
+            return "Nav1.7痛觉通道，变异罕见，高频率多态性通常无临床意义"
         if gene == "SCN10A":
-            return "Nav1.8 钠通道主要表达于伤害性感受器。功能改变 → 炎症性疼痛和慢性疼痛的易感性可能发生变化。"
+            return "Nav1.8钠通道，功能改变→炎症性/慢性疼痛易感性变化"
         if gene == "OPRM1":
-            return "OPRM1 编码μ-阿片受体，是身体'天然止痛系统'的核心开关，也是吗啡、芬太尼等止痛药的作用靶点。纯合无义变异导致受体蛋白提前终止，产生截短的无功能蛋白。可能的影响：内源性镇痛系统受损，对阿片类镇痛药（术后吗啡、癌痛芬太尼）的反应可能显著减弱，常规剂量可能效果不佳。"
+            return "μ阿片受体，纯合无义变异→内源性镇痛受损，阿片类镇痛药反应减弱"
         if gene == "TRPV1":
-            return "TRPV1 是辣椒素受体兼热敏感受器。功能变异 → 对辣椒等辛辣食物的灼热感耐受度、以及对高温伤害的感知阈值可能发生变化。"
+            return "辣椒素/热敏受体，变异→辛辣灼热感耐受度和高温感知阈值变化"
         if gene == "TRPM8":
-            return "TRPM8 是冷敏感受器和薄荷醇受体。功能变异 → 对低温环境的冷感敏感度、以及对薄荷清凉感的感知可能发生变化。"
+            return "冷敏感/薄荷醇受体，变异→低温敏感度和薄荷清凉感变化"
         if gene == "PIEZO2":
-            return "PIEZO2 是机械敏感离子通道，负责触觉分辨和本体感觉。功能严重受损 → 触觉精细度下降、本体感觉减退（闭眼时难以判断肢体位置）、共济失调步态。"
+            return "机械敏感通道，严重受损→触觉精细度下降、本体感觉减退"
 
         # 视觉
         if gene in ("OPN1LW", "OPN1MW"):
-            return "红/绿视蛋白基因位于 X 染色体。男性为单倍体，任何功能缺失变异都可能导致红绿色觉异常（红色弱/绿色弱或全色盲）。本样本为男性，需关注。"
+            return "红/绿视蛋白（X染色体），男性单倍体，功能缺失→红绿色觉异常"
         if gene == "OPN1SW":
-            return "蓝视蛋白基因。功能丧失 → 蓝黄色觉异常（tritanopia），表现为蓝/黄颜色辨别困难，但红/绿色觉正常。"
+            return "蓝视蛋白，功能丧失→蓝黄色觉异常，红绿色觉正常"
         if gene == "RHO":
-            return "视紫红质是杆状细胞光信号传导的核心蛋白。功能严重受损 → 视网膜色素变性（RP）或先天性静止性夜盲（CSNB），表现为夜盲、进行性视野缩小。"
+            return "视紫红质，功能严重受损→视网膜色素变性/先天性静止性夜盲"
         if gene == "ABCA4":
-            return "ABCA4 负责视网膜色素上皮细胞中类视黄醇代谢产物的转运。双等位基因严重功能受损 → Stargardt 病（青少年黄斑变性）或锥杆细胞营养不良，表现为中心视力进行性下降。"
+            return "视网膜类视黄醇转运蛋白，双等位失活→Stargardt病/锥杆细胞营养不良"
         if gene == "EYS":
-            return "EYS 是视网膜感光细胞外节结构蛋白。双等位基因功能丧失 → 视网膜色素变性（RP25），表现为夜盲和进行性周边视野丧失。"
+            return "感光细胞外节结构蛋白，双等位失活→视网膜色素变性（RP25）"
         if gene in ("GJA8", "CRYAA"):
-            return "晶状体结构/代谢蛋白。功能严重受损 → 先天性白内障，表现为婴幼儿期即出现的晶状体混浊和视力障碍。"
+            return "晶状体蛋白，功能严重受损→先天性白内障"
 
         # 味觉
         if gene == "TAS2R38":
-            return "苦味受体 TAS2R38 的基因型决定了对苯硫脲（PTC）等苦味物质的敏感度。PAV/PAV（味觉敏感型）→ 对苦味高度敏感；AVI/AVI（味觉迟钝型）→ 对苦味不敏感；杂合型 → 中间表型。"
+            return "苦味受体，PAV/PAV=敏感型，AVI/AVI=迟钝型，杂合=中间表型"
         if gene in ("TAS1R2", "TAS1R3"):
-            return "TAS1R2/TAS1R3 构成甜味受体。功能严重受损 → 对糖类甜味物质的感知能力下降，可能表现为'食不知甜'。"
+            return "甜味受体，功能严重受损→糖类甜味感知下降"
         if gene == "TAS1R1":
-            return "TAS1R1 与 TAS1R3 构成鲜味受体。功能严重受损 → 对谷氨酸（味精）等鲜味物质的感知能力下降。"
+            return "鲜味受体，功能严重受损→谷氨酸（味精）鲜味感知下降"
         if gene in ("SCNN1A", "SCNN1B", "SCNN1G"):
-            return "上皮钠通道（ENaC）亚基，负责咸味感知。功能严重受损 → 对咸味的敏感度下降，可能偏好更咸的食物。"
+            return "咸味感知钠通道，功能受损→咸味敏感度下降"
         if gene == "OTOP1":
-            return "OTOP1 是质子通道，负责酸味感知。功能严重受损 → 对酸性物质的酸味感知能力下降。"
+            return "酸味感知质子通道，功能受损→酸味感知下降"
 
         # 色素沉着
         if gene == "OCA2":
-            return "OCA2 是黑色素体膜转运蛋白，影响黑色素合成量。功能严重受损 → 眼皮肤白化病 II 型（OCA2），表现为极浅色皮肤、浅色头发、蓝/灰/淡褐色虹膜，伴眼球震颤和视力低下。"
+            return "黑色素体转运蛋白，功能严重受损→眼皮肤白化病II型（OCA2）"
         if gene == "HERC2":
-            return "HERC2 调控 OCA2 基因表达。功能严重受损 → 通过下调 OCA2 间接导致色素减少，表现为浅色虹膜（蓝/绿色眼）和浅色皮肤。"
+            return "调控OCA2表达，功能受损→浅色虹膜（蓝/绿眼）和浅色皮肤"
         if gene in ("TYRP1", "TYR"):
-            return "酪氨酸酶相关蛋白，黑色素合成通路的关键酶。功能严重受损 → 眼皮肤白化病 I/III 型，表现为极浅色皮肤和毛发，伴严重视力障碍。"
+            return "黑色素合成关键酶，严重受损→眼皮肤白化病I/III型"
         if gene in ("SLC45A2", "SLC24A5"):
-            return "黑色素体 pH 调节蛋白 / 钾离子交换蛋白，影响黑色素合成效率。功能严重受损 → 皮肤/毛发色素显著变浅，表现为白化病或极浅色表型。"
+            return "黑色素体pH/离子交换蛋白，受损→皮肤/毛发色素显著变浅"
 
         # 代谢
         if gene == "CYP1A2":
-            return "CYP1A2 是咖啡因代谢的主要酶。快代谢型（AA）→ 咖啡因清除快，耐受性好，不易因咖啡因导致心悸或失眠；慢代谢型（AC/CC）→ 咖啡因半衰期长，少量摄入即可能引起焦虑、失眠。"
+            return "咖啡因代谢酶，AA型=快代谢耐受好，AC/CC型=慢代谢易失眠"
         if gene == "ALDH2":
-            return "乙醛脱氢酶2是酒精代谢的关键酶。正常活性型（GG）→ 饮酒后乙醛可迅速代谢为乙酸，不易出现面部潮红和不适；活性降低型（GA/AA）→ 乙醛蓄积 → 饮酒后快速面部潮红、心悸、恶心（东亚人群中常见）。"
+            return "酒精代谢关键酶，活性降低型（GA/AA）→饮酒面部潮红（东亚常见）"
         if gene == "ADH1B":
-            return "乙醇脱氢酶2催化乙醇氧化为乙醛。快速氧化型（AG/GG）→ 饮酒后乙醛迅速生成，可能更快出现醉酒感；慢速氧化型（AA）→ 乙醇代谢较慢。"
+            return "乙醇脱氢酶，快速氧化型（AG/GG）→饮酒后乙醛快速生成"
         if gene == "LCT":
-            return "LCT 编码乳糖酶。乳糖酶持久型（CT/TT）→ 成年后乳糖酶持续表达，可正常消化乳制品；非持久型（CC）→ 成年后乳糖酶活性下降 → 摄入乳制品后可能出现腹胀、腹泻、肠鸣（乳糖不耐受）。"
+            return "乳糖酶基因，CT/TT型=成年后仍可消化乳制品，CC=乳糖不耐受"
 
         # 肌肉
         if gene == "ACTN3":
-            return "ACTN3（α-肌动蛋白-3）主要存在于快肌纤维 IIx 型。R577X 无义变异纯合（XX）→ 快肌纤维功能下降 → 爆发力/短跑/力量型运动能力降低，但耐力运动表现可能不受影响甚至略有优势（'耐力基因型'）。杂合（RX）→ 中间表型。"
-
+            return "快肌α肌动蛋白，R577X纯合→爆发力下降，耐力可能不变（耐力基因型）"
         # 毛发
         if gene == "EDAR":
-            return "EDAR 参与外胚层衍生物（毛发、牙齿、汗腺、乳腺）的发育。东亚典型变异（370A）→ 直发、粗发、汗腺发达、乳腺导管密度增加；功能严重受损 → 可能表现为毛发稀疏/卷曲、汗腺发育不全、牙齿发育异常。"
+            return "外胚层发育蛋白，东亚370A型→直发粗发，严重受损→毛发稀疏/卷曲"
         if gene == "ABCC11":
-            return "ABCC11 参与大汗腺分泌物的转运。功能丧失型（AA）→ 干耳垢（片状）、腋下体味较轻（大汗腺分泌减少），在东亚人群中极为常见；功能正常型（GG）→ 湿耳垢、体味较明显。"
+            return "大汗腺转运蛋白，AA=干耳垢/体味轻（东亚常见），GG=湿耳垢/体味明显"
 
         # 嗅觉 — OR 基因
         if gene.startswith("OR"):
-            return "嗅觉受体（OR）基因负责识别特定气味分子。由于人类嗅觉系统存在大量冗余受体（约400个），单个 OR 基因失活通常不会导致完全无法感知某种气味，仅可能降低对该气味分子的敏感度或辨识度。"
-
+            return "嗅觉受体，约400个冗余受体，单个失活通常不明显影响嗅觉"
         # 嗅觉信号转导
         if gene in ("CNGA2", "ADCY3"):
-            return "CNGA2/ADCY3 是嗅觉信号转导通路的核心组件（cAMP 信号级联）。功能严重受损 → 可能导致先天性嗅觉丧失（anosmia）或嗅觉显著减退，因为所有 OR 信号都依赖此通路传递。"
-
+            return "嗅觉cAMP信号通路核心，严重受损→可能先天性嗅觉丧失"
         # 默认描述
         if level == "完全丧失":
-            return f"{gene} 功能完全丧失 → 该基因所参与的{subsystem or '感官'}功能可能严重受损，具体表型取决于该基因在通路中的位置和冗余性。"
+            return f"{gene}功能完全丧失→{subsystem or '感官'}功能可能严重受损"
         elif level == "显著影响":
-            return f"{gene} 功能显著受损 → 该基因所参与的{subsystem or '感官'}功能可能出现明显异常，建议在相关临床表型上加以关注。"
+            return f"{gene}功能显著受损→{subsystem or '感官'}功能可能明显异常，建议关注"
         elif level == "部分影响":
-            return f"{gene} 功能部分受损 → 该基因所参与的{subsystem or '感官'}功能可能有轻微影响，但由于系统冗余或其他代偿机制，实际表型变化可能不明显。"
+            return f"{gene}功能部分受损→{subsystem or '感官'}功能可能轻微影响"
         return "表型影响待进一步分析。"
 
 

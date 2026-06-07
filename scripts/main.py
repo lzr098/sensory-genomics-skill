@@ -10,6 +10,7 @@ import json
 import logging
 import os
 import subprocess
+import sys
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -25,6 +26,7 @@ from src.enrichment.uniprot import UniProtClient
 from src.gene_sets.bed_mapper import BedMapper
 from src.gene_sets.filter import SensoryFilter
 from src.gene_sets.loader import GeneSetLoader
+from src.key_snps import KeySNPInferrer
 from src.logger import get_logger, setup_logger
 from src.models import (
     AnalysisConfig,
@@ -41,6 +43,7 @@ from src.specialized.or_tiers import ORTierClassifier
 from src.specialized.tas2r38 import TAS2R38Analyzer
 from src.vcf.parser import VcfParser
 from src.vcf.prefilter import Prefilter
+from src.vcf.sex_detector import detect_sex
 from src.vep.client import VepClient
 from src.vep.hybrid_client import HybridVepClient
 from src.vep.local_client import LocalVepClient
@@ -68,7 +71,7 @@ class SensoryPipeline:
         self.gene_sets = GeneSetLoader()
         self.sensory_filter = SensoryFilter(self.gene_sets)
         self.impact_engine = ImpactEngine()
-        self.bed_mapper: Optional[BedMapper] = None
+        self.bed_mapper = BedMapper()
 
         # 专用逻辑模块
         self.tas2r38_analyzer = TAS2R38Analyzer()
@@ -149,7 +152,7 @@ class SensoryPipeline:
 
     def _load_precomputed_data(self) -> None:
         """加载预计算的基因坐标和转录本映射数据."""
-        data_dir = Path(__file__).resolve().parent.parent / "data"
+        data_dir = Path(__file__).resolve().parent.parent / "assets" / "data"
 
         # 1. gene -> canonical transcript 映射
         transcript_map_path = data_dir / "gene_transcript_map.json"
@@ -216,6 +219,22 @@ class SensoryPipeline:
             len(or_tier_results) if or_tier_results else 0,
         )
 
+        # Stage 5.5: 关键性状 SNP 基因型推断（使用原始 VCF，非 BED 过滤版）
+        key_snp_results = None
+        snp_vcf_path = self.config.original_vcf_path or self.config.vcf_path
+        try:
+            inferrer = KeySNPInferrer(snp_vcf_path)
+            key_snp_results = inferrer.infer_all()
+            logger.info(
+                "Stage 5.5 complete: %d key SNPs inferred (%d found in VCF, %d REF/REF) [VCF: %s]",
+                len(key_snp_results),
+                sum(1 for r in key_snp_results if r.found_in_vcf),
+                sum(1 for r in key_snp_results if not r.found_in_vcf),
+                "original" if self.config.original_vcf_path else "filtered",
+            )
+        except Exception as exc:
+            logger.warning("Key SNP inference failed: %s", exc)
+
         # Stage 6: API 富集（异步并发）
         enrichment_data = await self._enrich_genes(gene_cards)
         logger.info("Stage 6 complete: enriched %d genes", len(enrichment_data))
@@ -227,6 +246,7 @@ class SensoryPipeline:
             mt_results=mt_results,
             or_tier_results=or_tier_results,
             enrichment_data=enrichment_data,
+            key_snp_results=key_snp_results,
         )
         logger.info("Stage 7 complete: report built")
 
@@ -319,20 +339,46 @@ class SensoryPipeline:
             return None
         return max(consequences, key=lambda tc: cls._score_transcript(tc, gene))
 
-    @classmethod
-    def _merge_vep(cls, variant: Variant, vep_data: Dict[str, Any]) -> Variant:
+    def _merge_vep(self, variant: Variant, vep_data: Dict[str, Any]) -> Variant:
         """将 VEP 结果合并到 Variant 模型.
 
-        对基因重叠区域的变异（如 NLRP3/OR2B11 共区），选择后果最严重的
-        代表性转录本，而非盲目取 transcript_consequences[0]。
+        对基因重叠区域的变异（如 NLRP3/OR2B11 共区、HERC2/OCA2 重叠），
+        收集所有涉及的感官基因符号，确保变异能正确归属到每个相关基因。
         """
         if not vep_data:
             return variant
 
         consequences = vep_data.get("transcript_consequences", [])
         if consequences:
+            # 收集该变异涉及的所有感官基因符号
+            all_sensory_genes: set = set()
+            for tc in consequences:
+                gs = tc.get("gene_symbol", "")
+                if gs and self.gene_sets.is_sensory_gene(gs):
+                    all_sensory_genes.add(gs)
+
+            # BED 映射补充：当 VEP 未返回某个感官基因（如 HERC2/OCA2 重叠区）
+            bed_gene = self.bed_mapper.lookup(variant.chrom, variant.pos)
+            if bed_gene and self.gene_sets.is_sensory_gene(bed_gene):
+                if bed_gene not in all_sensory_genes:
+                    all_sensory_genes.add(bed_gene)
+                    logger.debug(
+                        "BED-mapped gene added: %s:%d -> %s (VEP had %s)",
+                        variant.chrom, variant.pos, bed_gene,
+                        sorted(all_sensory_genes - {bed_gene}) or "none",
+                    )
+
+            # 如果涉及多个感官基因，存储到 gene_symbols
+            if len(all_sensory_genes) > 1:
+                variant.gene_symbols = sorted(all_sensory_genes)
+                logger.debug(
+                    "Multi-gene variant: %s:%d %s>%s -> %s",
+                    variant.chrom, variant.pos, variant.ref, variant.alt,
+                    variant.gene_symbols,
+                )
+
             # 选出整体最优转录本（不偏袒任何基因，按严重度排名）
-            best_tc = cls._select_best_transcript(consequences, gene="")
+            best_tc = self._select_best_transcript(consequences, gene="")
 
             if best_tc:
                 variant.gene_symbol = best_tc.get("gene_symbol", variant.gene_symbol)
@@ -345,24 +391,69 @@ class SensoryPipeline:
                     if best_tc.get("protein_domains")
                     else None
                 )
+                # 提取蛋白位置
+                if best_tc.get("protein_start"):
+                    variant.protein_position = best_tc.get("protein_start")
+                # 提取 SIFT / PolyPhen
+                if best_tc.get("sift"):
+                    variant.sift = str(best_tc.get("sift"))
+                if best_tc.get("polyphen"):
+                    variant.polyphen = str(best_tc.get("polyphen"))
+                # 提取氨基酸替换（兼容异常格式如 GGGDTRA*527X、GGG*/527X 等）
+                if best_tc.get("amino_acids") and best_tc.get("protein_start"):
+                    aa = str(best_tc.get("amino_acids"))
+                    pos = str(best_tc.get("protein_start", ""))
+                    if "/" in aa and aa != "/":
+                        parts = aa.split("/", 1)
+                        ref_aa = parts[0].strip()
+                        alt_aa = parts[1].strip()
+                        # 处理涉及终止密码子的异常格式
+                        if "*" in alt_aa and len(alt_aa) > 3:
+                            variant.amino_acid_change = f"{ref_aa}{pos}{alt_aa}"[:30]
+                        else:
+                            variant.amino_acid_change = f"{ref_aa}{pos}{alt_aa}"
 
-        # 提取 colocated variants（gnomAD AF, ClinVar 等）
+        # 提取 colocated variants（gnomAD AF, ClinVar, rsID 等）
         colocated = vep_data.get("colocated_variants", [])
         for cv in colocated:
-            if "gnomad" in str(cv.get("allele_frequency", "")).lower():
-                variant.af_gnomad = cv.get("allele_frequency")
+            # rsID — VEP 使用 "id" 字段
+            cid = cv.get("id", "")
+            if cid and str(cid).startswith("rs"):
+                variant.rsid = str(cid)
+            # LoF flags（直接从 cv 级提取）
+            if cv.get("lof"):
+                variant.lof_flags = str(cv.get("lof"))
+            if cv.get("lof_flags"):
+                variant.lof_flags = str(cv.get("lof_flags"))
+            # gnomAD 频率 — 在 frequencies.{alt_allele} 下
+            frequencies = cv.get("frequencies", {})
+            if isinstance(frequencies, dict) and variant.alt:
+                alt_allele_data = frequencies.get(variant.alt)
+                if alt_allele_data and isinstance(alt_allele_data, dict):
+                    # gnomAD genomes overall AF
+                    gnomadg = alt_allele_data.get("gnomadg")
+                    if gnomadg is not None:
+                        variant.gnomad_af_genome = float(gnomadg)
+                    # gnomAD exomes overall AF
+                    gnomade = alt_allele_data.get("gnomade")
+                    if gnomade is not None:
+                        variant.gnomad_af_exome = float(gnomade)
+                    # 综合 AF 取两者中的较大值
+                    g_vals = [v for v in [gnomadg, gnomade] if v is not None]
+                    if g_vals:
+                        variant.af_gnomad = max(float(v) for v in g_vals)
 
         variant.raw_vep = vep_data
         return variant
 
     def _assess_genes(self, gene_groups: Dict[str, List[Variant]]) -> List[GeneCard]:
-        """对每个基因进行功能影响评估."""
+        """对每个基因进行功能影响评估，并筛选关键功能变异."""
         gene_cards = []
         for gene_symbol, variants in gene_groups.items():
             if not variants:
                 continue
 
-            # 取影响程度最高的变异作为代表
+            # 评估所有变异
             assessments = [
                 self.impact_engine.assess(v, self.config.sex, self.gene_sets)
                 for v in variants
@@ -372,16 +463,176 @@ class SensoryPipeline:
                 key=lambda a: self._level_rank(a.level),
             )
 
+            # 筛选关键功能变异（基因维度分析：只保留影响蛋白功能的）
+            key_variants = [v for v in variants if self._is_key_variant(v)]
+            # 标记关键变异
+            for v in key_variants:
+                v.is_key_variant = True
+
+            # 如果没有关键变异但基因有影响评估，保留最高影响的一个用于展示
+            if not key_variants and best_assessment.level in (
+                "完全丧失", "显著影响", "部分影响", "可能轻微影响"
+            ):
+                top_var = max(variants, key=lambda v: self._variant_impact_score(v))
+                top_var.is_key_variant = True
+                key_variants = [top_var]
+
+            # 构建蛋白影响综合摘要
+            protein_summary = self._build_protein_impact_summary(gene_symbol, key_variants)
+
             gene_card = GeneCard(
                 gene_symbol=gene_symbol,
                 subsystem=self.gene_sets.get_subsystem(gene_symbol),
                 sensory_function_zh=self.gene_sets.get_gene_function(gene_symbol),
                 variants=variants,
+                key_variants=key_variants,
                 assessment=best_assessment,
+                protein_impact_summary=protein_summary,
             )
             gene_cards.append(gene_card)
 
         return gene_cards
+
+    @staticmethod
+    def _is_key_variant(variant: Variant) -> bool:
+        """判断变异是否为关键功能变异.
+
+        关键变异标准：
+        - 必须是高后果类型（frameshift, stop_gained, splice, missense 等）
+        - 排除同义、内含子、UTR、调控区、非编码等低影响类型
+        - missense 额外要求：有害预测或功能域注释或纯合
+        - 个人特征基因（pigmentation/metabolism/muscle/hair）的纯合调控区变异也保留，
+          因为这类变异可能是功能调控位点（如 HERC2 rs12913832 增强子变异）
+        """
+        cons = (variant.consequence or "").lower()
+        gene = variant.gene_symbol or ""
+
+        # 个人特征基因列表：调控区变异可能具有功能意义
+        trait_genes = {
+            "HERC2", "SLC45A2", "SLC24A4", "SLC24A5", "IRF4",
+            "CYP1A2", "LCT", "ALDH2", "ADH1B",
+            "ACTN3", "EDAR", "OR6A2",
+        }
+        is_trait_gene = gene in trait_genes
+
+        # 对个人特征基因，纯合的调控区/UTR 变异也视为关键变异
+        if is_trait_gene and variant.is_homozygous:
+            if any(t in cons for t in [
+                "upstream_gene_variant", "downstream_gene_variant",
+                "regulatory_region_variant", "tf_binding_site_variant",
+                "5_prime_utr_variant", "3_prime_utr_variant",
+            ]):
+                return True
+
+        # 排除的低影响类型
+        low_impact_keywords = [
+            "synonymous", "intron", "utr", "upstream", "downstream",
+            "intergenic", "regulatory_region", "non_coding", "nmd_transcript",
+            "feature_elongation", "feature_truncation", "mature_mirna",
+        ]
+        for low in low_impact_keywords:
+            if low in cons:
+                return False
+
+        # 必须是功能相关的后果类型
+        high_impact_keywords = [
+            "frameshift", "stop_gained", "stop_lost", "start_lost",
+            "splice", "missense", "inframe", "protein_altering",
+            "transcript_ablation", "transcript_amplification",
+        ]
+        has_high = any(hi in cons for hi in high_impact_keywords)
+        if not has_high:
+            return False
+
+        # missense 额外过滤：需要有害预测、功能域注释、或纯合
+        if "missense" in cons:
+            has_damaging = (
+                (variant.sift and "deleterious" in variant.sift.lower())
+                or (variant.polyphen and "damaging" in variant.polyphen.lower())
+                or bool(variant.protein_domain)
+                or variant.is_homozygous
+                or (variant.af_gnomad is not None and variant.af_gnomad < 0.01)
+            )
+            if not has_damaging:
+                return False
+
+        return True
+
+    @staticmethod
+    def _variant_impact_score(variant: Variant) -> int:
+        """计算变异的蛋白影响分数（用于排序）."""
+        score = 0
+        cons = (variant.consequence or "").lower()
+
+        consequence_scores = {
+            "frameshift": 100, "stop_gained": 95, "stop_lost": 90,
+            "start_lost": 85, "splice": 80, "missense": 50,
+            "inframe": 40, "protein_altering": 35,
+        }
+        for key, val in consequence_scores.items():
+            if key in cons:
+                score = max(score, val)
+
+        if variant.is_homozygous:
+            score += 30
+        if variant.sift and "deleterious" in variant.sift.lower():
+            score += 20
+        if variant.polyphen and "probably_damaging" in variant.polyphen.lower():
+            score += 15
+        if variant.polyphen and "possibly_damaging" in variant.polyphen.lower():
+            score += 10
+        if variant.protein_domain:
+            score += 5
+        score += min(int(variant.qual / 10), 10)
+        return score
+
+    @staticmethod
+    def _build_protein_impact_summary(gene_symbol: str, key_variants: List[Variant]) -> str:
+        """基于关键变异构建综合蛋白影响摘要."""
+        if not key_variants:
+            return "未发现影响蛋白功能的关键变异。"
+
+        lof_types = ["frameshift", "stop_gained", "stop_lost", "start_lost", "splice"]
+        lof_variants = [v for v in key_variants if any(t in (v.consequence or "").lower() for t in lof_types)]
+        missense_variants = [v for v in key_variants if "missense" in (v.consequence or "").lower()]
+        damaging_missense = [v for v in missense_variants
+            if (v.sift and "deleterious" in v.sift.lower())
+            or (v.polyphen and "damaging" in v.polyphen.lower())]
+        hom_variants = [v for v in key_variants if v.is_homozygous]
+
+        parts = []
+        if lof_variants:
+            lof_info = f"发现 {len(lof_variants)} 个功能丧失型变异"
+            if hom_variants:
+                hom_lof = [v for v in lof_variants if v.is_homozygous]
+                if hom_lof:
+                    lof_info += f"（含 {len(hom_lof)} 个纯合）"
+            parts.append(lof_info)
+
+        if missense_variants:
+            mis_info = f"发现 {len(missense_variants)} 个错义变异"
+            if damaging_missense:
+                mis_info += f"，其中 {len(damaging_missense)} 个被预测为可能有害"
+            if hom_variants:
+                hom_mis = [v for v in missense_variants if v.is_homozygous]
+                if hom_mis:
+                    mis_info += f"（含 {len(hom_mis)} 个纯合）"
+            parts.append(mis_info)
+
+        if not lof_variants and not missense_variants:
+            parts.append(f"发现 {len(key_variants)} 个蛋白结构改变变异")
+
+        summary = "；".join(parts) + "。"
+
+        # 添加遗传模式推断
+        if hom_variants:
+            summary += "存在纯合变异，若为隐性遗传模式则可能显著影响蛋白功能。"
+        elif len(key_variants) >= 2:
+            summary += "多个杂合变异共存，需考虑复合杂合的可能性。"
+        else:
+            summary += "杂合状态下，野生型等位基因通常可维持基本功能。"
+
+        return summary
 
     def _analyze_tas2r38(self, gene_cards: List[GeneCard]) -> Optional[Any]:
         """分析 TAS2R38 Haplotype."""
@@ -435,51 +686,52 @@ class SensoryPipeline:
             logger.error("OR tier classification failed: %s", exc)
             return None
 
-    # Impact levels that trigger API enrichment (部分影响及以上)
-    _ENRICH_LEVELS = frozenset({"完全丧失", "显著影响", "部分影响"})
+    # 预计算的影响程度排序字典（用于按需 API 富集阈值判断）
+    _LEVEL_RANK: Dict[str, int] = {
+        "无影响": 0,
+        "可能轻微影响": 1,
+        "部分影响": 2,
+        "显著影响": 3,
+        "完全丧失": 4,
+    }
 
-    # Per-API concurrency limits to avoid rate limiting
-    _API_SEMAPHORES: Dict[str, asyncio.Semaphore] = {}
+    @classmethod
+    def _level_rank(cls, level: str) -> int:
+        """影响程度排序（越大越严重）."""
+        return cls._LEVEL_RANK.get(level, 0)
 
     async def _enrich_genes(
         self, gene_cards: List[GeneCard]
     ) -> Dict[str, Dict[str, Any]]:
-        """异步并发查询外部 API 富集基因信息（仅对部分影响及以上的基因）."""
+        """异步并发查询外部 API 富集基因信息（按需：仅评估≥部分影响的基因）."""
         if not self.config.show_reference_info:
             return {}
 
-        # Filter: only enrich genes at or above 部分影响
-        priority_genes = [
-            card.gene_symbol for card in gene_cards
-            if card.gene_symbol and card.assessment.level in self._ENRICH_LEVELS
+        # 按需筛选：仅对评估级别 >= "部分影响" 的基因查询 API
+        min_rank = self._LEVEL_RANK.get("部分影响", 2)
+        impactful_cards = [
+            card for card in gene_cards
+            if card.gene_symbol and self._level_rank(card.assessment.level) >= min_rank
         ]
-        if not priority_genes:
+        genes = [card.gene_symbol for card in impactful_cards]
+
+        if not genes:
             logger.info("Stage 6: no genes meet impact threshold, skipping API enrichment")
             return {}
 
-        logger.info(
-            "Stage 6: enriching %d/%d genes (impact >= 部分影响)",
-            len(priority_genes), len(gene_cards),
-        )
+        logger.info("Stage 6: enriching %d impactful genes (threshold: 部分影响+)", len(genes))
 
-        # Per-API concurrency: gnomAD=3, GTEx=5, ClinVar=5, UniProt=10
-        api_limits = {"gnomad": 3, "gtex": 5, "clinvar": 5, "uniprot": 10}
-
-        async def rate_limited_query(client, api_name: str, gene: str):
-            sem = self._API_SEMAPHORES.setdefault(
-                api_name, asyncio.Semaphore(api_limits.get(api_name, 5))
-            )
-            async with sem:
-                return await self._safe_query(client.query, gene)
-
+        # 将所有基因的所有 API 查询 flatten 为一个大任务列表
         all_tasks = []
-        task_meta = []
+        task_meta = []  # (gene, api_name) 用于结果归类
 
-        for gene in priority_genes:
-            all_tasks.append(rate_limited_query(self.uniprot_client, "uniprot", gene))
-            all_tasks.append(rate_limited_query(self.gnomad_client, "gnomad", gene))
-            all_tasks.append(rate_limited_query(self.clinvar_client, "clinvar", gene))
-            all_tasks.append(rate_limited_query(self.gtex_client, "gtex", gene))
+        for gene in genes:
+            all_tasks.extend([
+                self._safe_query(self.uniprot_client.query, gene),
+                self._safe_query(self.gnomad_client.query, gene),
+                self._safe_query(self.clinvar_client.query, gene),
+                self._safe_query(self.gtex_client.query, gene),
+            ])
             task_meta.extend([
                 (gene, "uniprot"),
                 (gene, "gnomad"),
@@ -487,10 +739,14 @@ class SensoryPipeline:
                 (gene, "gtex"),
             ])
 
+        # 一次性并发所有查询
         results = await asyncio.gather(*all_tasks, return_exceptions=True)
 
-        enrichment: Dict[str, Dict[str, Any]] = {gene: {} for gene in priority_genes}
+        # 按基因归类结果（仅对 impactful 基因填充；其余基因留空）
+        enrichment: Dict[str, Dict[str, Any]] = {}
         for (gene, api_name), result in zip(task_meta, results):
+            if gene not in enrichment:
+                enrichment[gene] = {}
             if isinstance(result, Exception):
                 enrichment[gene][api_name] = {"error": str(result)}
             else:
@@ -513,6 +769,7 @@ class SensoryPipeline:
         mt_results: Optional[List[Any]],
         or_tier_results: Optional[List[Any]],
         enrichment_data: Dict[str, Dict[str, Any]],
+        key_snp_results: Optional[List[Any]] = None,
     ) -> SensoryReport:
         """构建完整报告."""
         # 注入富集数据
@@ -522,7 +779,7 @@ class SensoryPipeline:
                 card.enrichment_data = enrichment_data[gene]
 
         # 构建执行摘要
-        executive_summary = self._build_executive_summary(gene_cards)
+        executive_summary = self._build_executive_summary(gene_cards, key_snp_results)
 
         # 构建数据可用性
         data_availability: Dict[str, DataAvailability] = {}
@@ -545,6 +802,7 @@ class SensoryPipeline:
             tas2r38=tas2r38,
             mitochondrial=mt_results,
             or_tiers=or_tier_results,
+            key_snps=key_snp_results,
             executive_summary=executive_summary,
             data_availability=data_availability,
             disclaimer_zh=self._default_disclaimer(),
@@ -552,8 +810,11 @@ class SensoryPipeline:
         return report
 
     @staticmethod
-    def _build_executive_summary(gene_cards: List[GeneCard]) -> ExecutiveSummary:
-        """构建执行摘要统计."""
+    def _build_executive_summary(
+        gene_cards: List[GeneCard],
+        key_snp_results: Optional[List[Any]] = None,
+    ) -> ExecutiveSummary:
+        """构建执行摘要统计（含个人特征定性预测）."""
         subsystem_counts: Dict[str, Dict[str, int]] = {}
         key_findings = []
 
@@ -564,24 +825,19 @@ class SensoryPipeline:
                     f"{card.gene_symbol}: {level}（{card.assessment.rationale_zh[:50]}...）"
                 )
 
+        # 生成个人特征定性预测
+        from src.trait_predictor import PersonalTraitPredictor
+        predictor = PersonalTraitPredictor(
+            key_snp_results=key_snp_results,
+            gene_cards=gene_cards,
+        )
+        personal_traits = predictor.predict_all()
+
         return ExecutiveSummary(
             subsystem_counts=subsystem_counts,
             key_findings=key_findings,
+            personal_traits=personal_traits,
         )
-
-    # 预计算的影响程度排序字典（避免 _level_rank 每次重建）
-    _LEVEL_RANK: Dict[str, int] = {
-        "无影响": 0,
-        "可能轻微影响": 1,
-        "部分影响": 2,
-        "显著影响": 3,
-        "完全丧失": 4,
-    }
-
-    @classmethod
-    def _level_rank(cls, level: str) -> int:
-        """影响程度排序（越大越严重）."""
-        return cls._LEVEL_RANK.get(level, 0)
 
     @staticmethod
     def _default_disclaimer() -> str:
@@ -595,22 +851,12 @@ class SensoryPipeline:
         )
 
     async def close(self) -> None:
-        """释放资源（带超时保护，防止 aiohttp session 挂死）."""
-        _CLOSE_TIMEOUT = 5.0
-        clients = [
-            ("vep", self.vep_client),
-            ("uniprot", self.uniprot_client),
-            ("gnomad", self.gnomad_client),
-            ("clinvar", self.clinvar_client),
-            ("gtex", self.gtex_client),
-        ]
-        for name, client in clients:
-            try:
-                await asyncio.wait_for(client.close(), timeout=_CLOSE_TIMEOUT)
-            except asyncio.TimeoutError:
-                logger.warning("Close timeout for %s client (%.1fs), skipping", name, _CLOSE_TIMEOUT)
-            except Exception as exc:
-                logger.warning("Close error for %s client: %s", name, exc)
+        """释放资源."""
+        await self.vep_client.close()
+        await self.uniprot_client.close()
+        await self.gnomad_client.close()
+        await self.clinvar_client.close()
+        await self.gtex_client.close()
 
 
 async def run_analysis(config: AnalysisConfig, bed_path: Optional[str] = None) -> SensoryReport:
@@ -645,26 +891,28 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
     """
     script_dir = Path(__file__).resolve().parent
     work_dir = Path(__file__).resolve().parent.parent
+    skill_root = Path(__file__).resolve().parent.parent.parent
 
     # 精确坐标 BED（外显子/CDS）—— strict 模式优先
     precise_beds = []
     if strict_filter:
         precise_beds = [
-            script_dir / "data" / "sensory_genes_exons.bed",
             script_dir.parent / "assets" / "data" / "sensory_genes_exons.bed",
             work_dir / "sensory_genes_exons.bed",
             work_dir / "assets" / "data" / "sensory_genes_exons.bed",
+            skill_root / "assets" / "data" / "sensory_genes_exons.bed",
+            Path("/tmp/sensory_precompute/sensory_genes_exons.bed"),
         ]
 
     # 基因全区域 BED —— fallback
     broad_beds = [
-        script_dir / "data" / "sensory_gene_regions.bed",
         script_dir.parent / "assets" / "data" / "sensory_gene_regions.bed",
         work_dir / "sensory_genes.bed",
         work_dir / "assets" / "data" / "sensory_gene_regions.bed",
+        skill_root / "assets" / "data" / "sensory_gene_regions.bed",
     ]
 
-    # 外部 BED（通用路径，无用户特定硬编码）
+    # 外部 BED
     external_beds = [
         "/tmp/core_genes.bed",
     ]
@@ -695,22 +943,23 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
         logger.warning("No BED file found, using full VCF")
         return vcf_path, None
 
-    # 确保 VCF 有 .tbi 索引（bcftools view -R 需要）
-    if not os.path.exists(vcf_path + ".tbi") and not os.path.exists(vcf_path + ".csi"):
-        logger.info("VCF index missing, creating .tbi for %s", vcf_path)
+    # 检查并自动创建 VCF 索引（bcftools -R 需要索引）
+    idx_path = vcf_path + ".tbi"
+    idx_path_csi = vcf_path + ".csi"
+    if not os.path.exists(idx_path) and not os.path.exists(idx_path_csi):
+        logger.info("VCF index not found, auto-indexing with bcftools...")
         try:
             subprocess.run(
                 ["bcftools", "index", "-t", vcf_path],
-                stderr=subprocess.PIPE,
-                check=True,
-                timeout=120,
+                stderr=subprocess.PIPE, check=True, timeout=120,
             )
-            logger.info("Created .tbi index for %s", vcf_path)
+            logger.info("VCF index created: %s", idx_path)
         except subprocess.CalledProcessError as exc:
-            logger.error("Failed to create .tbi index: %s", exc.stderr.decode() if exc.stderr else str(exc))
+            logger.error("Auto-index failed: %s", exc)
+            logger.warning("Proceeding without BED filter due to missing index")
             return vcf_path, None
         except subprocess.TimeoutExpired:
-            logger.error("Index creation timed out for %s", vcf_path)
+            logger.error("Auto-index timeout")
             return vcf_path, None
 
     # 检查 VCF 染色体命名
@@ -787,6 +1036,17 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
         return vcf_path, None
 
 
+def _auto_infer_sex(vcf_path: str) -> Optional[str]:
+    """自动推断样本性别（从 chrX/chrY 基因型模式）."""
+    logger.info("Auto-detecting sample sex from VCF...")
+    sex = detect_sex(vcf_path)
+    if sex:
+        logger.info("Inferred sex: %s (%s)", sex, "男性" if sex == "M" else "女性")
+    else:
+        logger.warning("Could not determine sex from VCF (chrX/chrY may be absent)")
+    return sex
+
+
 async def main(config: Optional[AnalysisConfig] = None) -> Dict[str, str]:
     """Skill 主入口.
 
@@ -801,6 +1061,19 @@ async def main(config: Optional[AnalysisConfig] = None) -> Dict[str, str]:
 
     # 初始化日志
     setup_logger(level=logging.INFO)
+
+    # 保存原始 VCF 路径（BED 过滤前），供 KeySNPInferrer 使用
+    original_vcf_path = config.vcf_path
+    config.original_vcf_path = original_vcf_path
+
+    # 自动推断性别（当用户使用 --auto-sex 未提供 --sex 时）
+    if hasattr(config, 'auto_sex') and config.auto_sex:
+        inferred = _auto_infer_sex(original_vcf_path)
+        if inferred:
+            config.sex = inferred
+        else:
+            logger.error("Cannot auto-detect sex. Please provide --sex M|F explicitly.")
+            sys.exit(1)
 
     # BED 筛选感官基因区域
     filtered_vcf, bed_path_used = _filter_vcf_by_bed(config.vcf_path, strict_filter=config.strict_filter)
@@ -841,7 +1114,10 @@ def _parse_args() -> AnalysisConfig:
     """解析命令行参数."""
     parser = argparse.ArgumentParser(description="Sensory Genomics Analysis Skill")
     parser.add_argument("--vcf", required=True, help="VCF file path")
-    parser.add_argument("--sex", required=True, choices=["M", "F"], help="Sample sex")
+    parser.add_argument("--sex", default=None, choices=["M", "F"],
+                        help="Sample sex (M/F). Use --auto-sex to auto-detect from VCF.")
+    parser.add_argument("--auto-sex", action="store_true",
+                        help="Auto-detect sex from chrX/chrY genotype patterns")
     parser.add_argument(
         "--subsystems",
         default="vision,hearing,olfaction,taste,somatosensation",
@@ -861,14 +1137,22 @@ def _parse_args() -> AnalysisConfig:
     )
 
     args = parser.parse_args()
+
+    # Sex resolution: --auto-sex or --sex required
+    sex = args.sex
+    auto_sex = args.auto_sex
+    if not sex and not auto_sex:
+        parser.error("Either --sex M|F or --auto-sex is required")
+
     return AnalysisConfig(
         vcf_path=args.vcf,
-        sex=args.sex,
+        sex=sex or "M",  # placeholder, overwritten by auto_sex if enabled
         subsystems=args.subsystems.split(","),
         output_dir=args.output_dir,
         known_phenotype=args.known_phenotype,
         show_reference_info=not args.no_reference_info,
         strict_filter=args.strict_filter,
+        auto_sex=auto_sex,
     )
 
 

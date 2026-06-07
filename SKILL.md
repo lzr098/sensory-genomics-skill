@@ -27,10 +27,11 @@ Use this skill when the user:
 
 To process a VCF file through the full pipeline:
 
-1. Validate the VCF path and sample sex (M/F)
+1. Validate the VCF path and sample sex (M/F, or use `--auto-sex` for auto-detection)
 2. Parse the VCF using streaming read (supports `.vcf` and `.vcf.gz`)
 3. Apply quality prefilter: QUAL ≥ 30, DP ≥ 10, FILTER = PASS / `.` / `""`
-4. **Strict-filter** (optional): use precomputed exon BED to exclude intronic variants before VEP
+4. **Strict-filter** (optional `--strict-filter`): use precomputed exon BED to exclude intronic variants before VEP
+   - **IMPORTANT**: strict-filter replaces the VCF path used by the sensory pipeline but **not** the KeySNPInferrer — the original VCF is always preserved for SNP queries
 5. Annotate variants via **tiered VEP lookup** (auto-detect by default):
    - **L1** — Memory cache (SQLite, 90-day TTL)
    - **L2** — Precomputed variant VEP database (`assets/data/sensory_variants_vep.sqlite`, 19,861 records)
@@ -41,9 +42,12 @@ To process a VCF file through the full pipeline:
 6. Transcript arbitration: score by canonical(+10) + protein_coding(+5) + consequence severity(+0-40) to resolve gene overlaps (e.g. NLRP3/OR2B11)
 7. Filter to sensory gene sets with exact gene-symbol matching
 8. Run functional impact assessment
-9. Apply specialized logic modules
-10. Enrich with UniProt / gnomAD / ClinVar / GTEx (cached, display-only)
-11. Generate Markdown report + JSON output
+9. Apply specialized logic modules (TAS2R38, mitochondrial, OR tiers)
+10. **Stage 5.5**: Key trait SNP inference — query 50+ trait-associated SNPs from **original VCF** (not BED-filtered), using REF/REF inference for absent SNPs
+11. Enrich with UniProt / gnomAD / ClinVar / GTEx (cached, display-only)
+12. **Personal trait prediction**: combine KeySNP results + GeneCard assessments → 8 personal traits (eye/hair/skin color, caffeine/alcohol/lactose metabolism, hair texture, earwax type)
+13. **Cross-check & downgrade**: for homozygous protein-affecting variants (missense/frameshift/stop_gained/splice/inframe), apply OR logic — ClinVar benign/likely_benign OR gnomAD AF > 30% → downgrade
+14. Generate Markdown report + JSON output
 
 Use `scripts/main.py` as the pipeline entry point. Refer to `references/config.yaml` for default parameters.
 
@@ -191,21 +195,24 @@ Force a specific source via `config.yaml`:
 
 ## Usage Example
 
+```bash
+# Basic usage (auto-detect sex)
+python scripts/main.py --vcf sample.vcf.gz --auto-sex --strict-filter
+
+# Specify sex explicitly
+python scripts/main.py --vcf sample.vcf.gz --sex M --strict-filter
+
+# Skip API enrichment
+python scripts/main.py --vcf sample.vcf.gz --auto-sex --no-reference-info
+```
+
 ```python
 import asyncio
-from scripts.main import SensoryPipeline
-from scripts.config_loader import ConfigLoader
+from scripts.main import SensoryPipeline, main
+from scripts.src.config_loader import ConfigLoader
 
 async def analyze():
-    config = ConfigLoader().load()
-    pipeline = SensoryPipeline(config)
-    report = await pipeline.run(
-        vcf_path="sample.vcf.gz",
-        sex="M",
-        subsystems=["vision", "hearing", "olfaction", "taste", "somatosensation"]
-    )
-    report.save_markdown("output/report.md")
-    report.save_json("output/report.json")
+    pipelines = main()
 
 asyncio.run(analyze())
 ```
@@ -245,16 +252,28 @@ asyncio.run(analyze())
 
 ## Runtime Troubleshooting
 
-### macOS pysam Code-Signing Issue
+### macOS pysam Code-Signing Issue (MANDATORY BYPASS)
 
-On macOS, the `pysam` package in the default WorkBuddy venv may fail to import due to Team ID code-signing conflicts ("The process has forked and you cannot use this CoreFoundation functionality safely"). Do **not** attempt to reinstall pysam in the default venv — codesign, xattr, and source compilation have all been tried and do not resolve the issue.
+**CRITICAL: NEVER attempt to install or use pysam in the default WorkBuddy venv.**
 
-**Workaround**: Use the system Python 3.14 runtime instead:
+On macOS, the `pysam` package fails with Team ID code-signing conflicts ("different Team IDs"). Do **not** reinstall, codesign, xattr, or compile from source — they do not resolve the issue.
+
+**ALWAYS use system Python 3.14 for running the sensory-genomics pipeline:**
+
 ```bash
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pip install aiosqlite pydantic Jinja2 PyYAML
-export PYTHONPATH="/path/to/sensory-genomics/scripts:$PYTHONPATH"
-/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m src.main --vcf ...
+# System Python 3.14 has pysam working correctly
+python_bin="/Library/Frameworks/Python.framework/Versions/3.14/bin/python3"
+skill_dir="$HOME/.workbuddy/skills/sensory-genomics"
+
+# Ensure dependencies are installed (one-time)
+$python_bin -m pip install pysam aiohttp aiosqlite pydantic Jinja2 PyYAML 2>/dev/null
+
+# Run the pipeline
+PYTHONPATH="$skill_dir/scripts" $python_bin "$skill_dir/scripts/main.py" \
+  --vcf /path/to/vcf.gz --auto-sex --strict-filter
 ```
+
+**This is a hard rule.** No exceptions. The default WorkBuddy venv (`~/.workbuddy/binaries/python/envs/default/`) must NOT be used for sensory-genomics analysis.
 
 ### Reference Genome Version Mismatch (GRCh37 vs GRCh38)
 

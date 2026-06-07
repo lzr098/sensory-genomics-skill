@@ -34,7 +34,7 @@
 | 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 支持质量 | gnomAD/ClinVar | 科普一句话 |
 |------|--------|------|---------|---------|---------|---------------|-----------|
 {% for finding in key_findings %}
-| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.cross_check_summary or "—" }} | {{ finding.phenotypic_impact[:350] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 350 %}...{% endif %} |
+| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.cross_check_summary or "—" }} | {{ finding.phenotypic_impact[:30] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 30 %}...{% endif %} |
 {% else %}
 | — | — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
 {% endfor %}
