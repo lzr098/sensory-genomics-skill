@@ -242,3 +242,40 @@ asyncio.run(analyze())
 - Precompute DB only covers common variants (AF ≥ 0.1% in gnomAD r4); novel/private variants still require VEP API
 - 329 of 20,190 filtered variants failed VEP annotation during precompute (1.6%, mostly API timeouts)
 - Ensembl overlap API does not return UTR coordinates; UTR variants rely on VEP runtime annotation
+
+## Runtime Troubleshooting
+
+### macOS pysam Code-Signing Issue
+
+On macOS, the `pysam` package in the default WorkBuddy venv may fail to import due to Team ID code-signing conflicts ("The process has forked and you cannot use this CoreFoundation functionality safely"). Do **not** attempt to reinstall pysam in the default venv — codesign, xattr, and source compilation have all been tried and do not resolve the issue.
+
+**Workaround**: Use the system Python 3.14 runtime instead:
+```bash
+/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m pip install aiosqlite pydantic Jinja2 PyYAML
+export PYTHONPATH="/path/to/sensory-genomics/scripts:$PYTHONPATH"
+/Library/Frameworks/Python.framework/Versions/3.14/bin/python3 -m src.main --vcf ...
+```
+
+### Reference Genome Version Mismatch (GRCh37 vs GRCh38)
+
+The `assets/data/key_trait_snps.yaml` file defines trait-associated SNPs for the Key SNP Inference module. Historically these coordinates were stored in **GRCh37** but modern WGS/WES VCF files are almost always **GRCh38**. A coordinate mismatch causes all SNP lookups to miss, resulting in 100% REF/REF fallback inference — which silently produces incorrect phenotype predictions.
+
+**Prevention**:
+- All SNP coordinates in `key_trait_snps.yaml` must be verified as GRCh38 before deployment. The included SNPs were batch-updated via Ensembl API on 2026-06-07 (commit `48cf785`).
+- When adding new SNPs, query Ensembl `/variation/human/{rsid}` and use the `GRCh38` mapping (`seq_region_name`, `start`, `allele_string`).
+
+### Phenotype Map Key Normalization
+
+When a SNP's reference allele changes (e.g., due to GRCh37→GRCh38 strand flips or allele reorientation), the genotype keys in `phenotype_map` may no longer match the VCF genotype string. Additionally, heterozygous genotypes like `CT` and `TC` are semantically identical but fail exact string matching.
+
+**Fix**: The `key_snps.py` module now normalizes genotype keys by sorting alleles alphabetically before phenotype lookup:
+```python
+sorted_pmap = { "".join(sorted(k)): v for k, v in pmap.items() }
+pheno = sorted_pmap.get("".join(sorted(gt)), {})
+```
+
+### Multi-Allelic SNP Coverage
+
+Some trait SNPs are multi-allelic (e.g., rs1229984 / ADH1B has three alleles in GRCh38). The original `phenotype_map` only covered bi-allelic combinations. When a VCF reports a genotype involving a secondary alt allele (e.g., `CT` where `T` is the primary ref and `C` is alt[1]), it falls through to "unknown phenotype".
+
+**Fix**: Ensure `phenotype_map` covers all combinatorial genotypes for multi-allelic SNPs after coordinate updates. After the 2026-06-07 fix, all 46 key SNPs resolve to defined phenotypes with zero "unknown" entries.
