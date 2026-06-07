@@ -2,7 +2,7 @@
 
 通过本地 ClinVar VCF (优先) 或 NCBI E-utilities (fallback) 查询 ClinVar 记录。
 
-本地 VCF 路径: /Users/zhaorongli/WorkBuddy/2026-05-24-17-27-51/tools/clinvar.vcf.gz
+本地 VCF 路径: /Users/zhaorongli/.workbuddy/data/clinvar/clinvar.vcf.gz
 """
 
 import subprocess
@@ -13,7 +13,7 @@ from src.enrichment.cache import CacheManager
 from src.enrichment.client_base import AsyncApiClient
 
 
-_LOCAL_CLINVAR_VCF = Path("/Users/zhaorongli/WorkBuddy/2026-05-24-17-27-51/tools/clinvar.vcf.gz")
+_LOCAL_CLINVAR_VCF = Path("/Users/zhaorongli/.workbuddy/data/clinvar/clinvar.vcf.gz")
 
 
 def _bcftools_query(args: List[str]) -> str:

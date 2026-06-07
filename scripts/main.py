@@ -435,28 +435,51 @@ class SensoryPipeline:
             logger.error("OR tier classification failed: %s", exc)
             return None
 
+    # Impact levels that trigger API enrichment (部分影响及以上)
+    _ENRICH_LEVELS = frozenset({"完全丧失", "显著影响", "部分影响"})
+
+    # Per-API concurrency limits to avoid rate limiting
+    _API_SEMAPHORES: Dict[str, asyncio.Semaphore] = {}
+
     async def _enrich_genes(
         self, gene_cards: List[GeneCard]
     ) -> Dict[str, Dict[str, Any]]:
-        """异步并发查询外部 API 富集基因信息（全部基因全部 API 并发）."""
+        """异步并发查询外部 API 富集基因信息（仅对部分影响及以上的基因）."""
         if not self.config.show_reference_info:
             return {}
 
-        genes = [card.gene_symbol for card in gene_cards if card.gene_symbol]
-        if not genes:
+        # Filter: only enrich genes at or above 部分影响
+        priority_genes = [
+            card.gene_symbol for card in gene_cards
+            if card.gene_symbol and card.assessment.level in self._ENRICH_LEVELS
+        ]
+        if not priority_genes:
+            logger.info("Stage 6: no genes meet impact threshold, skipping API enrichment")
             return {}
 
-        # 将所有基因的所有 API 查询 flatten 为一个大任务列表
-        all_tasks = []
-        task_meta = []  # (gene, api_name) 用于结果归类
+        logger.info(
+            "Stage 6: enriching %d/%d genes (impact >= 部分影响)",
+            len(priority_genes), len(gene_cards),
+        )
 
-        for gene in genes:
-            all_tasks.extend([
-                self._safe_query(self.uniprot_client.query, gene),
-                self._safe_query(self.gnomad_client.query, gene),
-                self._safe_query(self.clinvar_client.query, gene),
-                self._safe_query(self.gtex_client.query, gene),
-            ])
+        # Per-API concurrency: gnomAD=3, GTEx=5, ClinVar=5, UniProt=10
+        api_limits = {"gnomad": 3, "gtex": 5, "clinvar": 5, "uniprot": 10}
+
+        async def rate_limited_query(client, api_name: str, gene: str):
+            sem = self._API_SEMAPHORES.setdefault(
+                api_name, asyncio.Semaphore(api_limits.get(api_name, 5))
+            )
+            async with sem:
+                return await self._safe_query(client.query, gene)
+
+        all_tasks = []
+        task_meta = []
+
+        for gene in priority_genes:
+            all_tasks.append(rate_limited_query(self.uniprot_client, "uniprot", gene))
+            all_tasks.append(rate_limited_query(self.gnomad_client, "gnomad", gene))
+            all_tasks.append(rate_limited_query(self.clinvar_client, "clinvar", gene))
+            all_tasks.append(rate_limited_query(self.gtex_client, "gtex", gene))
             task_meta.extend([
                 (gene, "uniprot"),
                 (gene, "gnomad"),
@@ -464,11 +487,9 @@ class SensoryPipeline:
                 (gene, "gtex"),
             ])
 
-        # 一次性并发所有查询
         results = await asyncio.gather(*all_tasks, return_exceptions=True)
 
-        # 按基因归类结果
-        enrichment: Dict[str, Dict[str, Any]] = {gene: {} for gene in genes}
+        enrichment: Dict[str, Dict[str, Any]] = {gene: {} for gene in priority_genes}
         for (gene, api_name), result in zip(task_meta, results):
             if isinstance(result, Exception):
                 enrichment[gene][api_name] = {"error": str(result)}
@@ -574,12 +595,22 @@ class SensoryPipeline:
         )
 
     async def close(self) -> None:
-        """释放资源."""
-        await self.vep_client.close()
-        await self.uniprot_client.close()
-        await self.gnomad_client.close()
-        await self.clinvar_client.close()
-        await self.gtex_client.close()
+        """释放资源（带超时保护，防止 aiohttp session 挂死）."""
+        _CLOSE_TIMEOUT = 5.0
+        clients = [
+            ("vep", self.vep_client),
+            ("uniprot", self.uniprot_client),
+            ("gnomad", self.gnomad_client),
+            ("clinvar", self.clinvar_client),
+            ("gtex", self.gtex_client),
+        ]
+        for name, client in clients:
+            try:
+                await asyncio.wait_for(client.close(), timeout=_CLOSE_TIMEOUT)
+            except asyncio.TimeoutError:
+                logger.warning("Close timeout for %s client (%.1fs), skipping", name, _CLOSE_TIMEOUT)
+            except Exception as exc:
+                logger.warning("Close error for %s client: %s", name, exc)
 
 
 async def run_analysis(config: AnalysisConfig, bed_path: Optional[str] = None) -> SensoryReport:
@@ -619,24 +650,23 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
     precise_beds = []
     if strict_filter:
         precise_beds = [
+            script_dir / "data" / "sensory_genes_exons.bed",
             script_dir.parent / "assets" / "data" / "sensory_genes_exons.bed",
             work_dir / "sensory_genes_exons.bed",
             work_dir / "assets" / "data" / "sensory_genes_exons.bed",
-            Path("/tmp/sensory_precompute/sensory_genes_exons.bed"),
         ]
 
     # 基因全区域 BED —— fallback
     broad_beds = [
+        script_dir / "data" / "sensory_gene_regions.bed",
         script_dir.parent / "assets" / "data" / "sensory_gene_regions.bed",
         work_dir / "sensory_genes.bed",
         work_dir / "assets" / "data" / "sensory_gene_regions.bed",
     ]
 
-    # 外部 BED
+    # 外部 BED（通用路径，无用户特定硬编码）
     external_beds = [
         "/tmp/core_genes.bed",
-        "/Users/zhaorongli/WorkBuddy/2026-06-02-22-48-37/analysis_output/sensory_genes.bed",
-        "/Users/zhaorongli/WorkBuddy/2026-06-02-22-48-37/analysis_output/olfactory_genes.bed",
     ]
 
     bed_path = None
@@ -664,6 +694,24 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
     if bed_path is None:
         logger.warning("No BED file found, using full VCF")
         return vcf_path, None
+
+    # 确保 VCF 有 .tbi 索引（bcftools view -R 需要）
+    if not os.path.exists(vcf_path + ".tbi") and not os.path.exists(vcf_path + ".csi"):
+        logger.info("VCF index missing, creating .tbi for %s", vcf_path)
+        try:
+            subprocess.run(
+                ["bcftools", "index", "-t", vcf_path],
+                stderr=subprocess.PIPE,
+                check=True,
+                timeout=120,
+            )
+            logger.info("Created .tbi index for %s", vcf_path)
+        except subprocess.CalledProcessError as exc:
+            logger.error("Failed to create .tbi index: %s", exc.stderr.decode() if exc.stderr else str(exc))
+            return vcf_path, None
+        except subprocess.TimeoutExpired:
+            logger.error("Index creation timed out for %s", vcf_path)
+            return vcf_path, None
 
     # 检查 VCF 染色体命名
     has_chr = False
