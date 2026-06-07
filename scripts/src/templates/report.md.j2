@@ -79,17 +79,17 @@
 ### 3.4 嗅觉系统
 
 > 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因变异通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。本样本中嗅觉相关的关键发现已在 [第 2 章](#2-功能丧失变异总览) 按信息含量分层展示：
-> - [2.2 已知配体变异](#22-嗅觉受体--已知配体变异信息含量更高优先展示) → 直接对应花香、鱼腥、香菜、薄荷等具体气味
-> - [2.3 配体未知的纯合 LoF](#23-嗅觉受体--配体未知的纯合功能丧失) → 纯合功能丧失但配体不明的 OR 基因
+> - [2.1 已知配体变异](#21-嗅觉受体--已知配体变异信息含量更高优先展示) → 直接对应花香、鱼腥、香菜、薄荷等具体气味
+> - [2.2 配体未知的纯合 LoF](#22-嗅觉受体--配体未知的纯合功能丧失) → 纯合功能丧失但配体不明的 OR 基因
 > - [附录 F](#f-杂合嗅觉受体-lof-汇总) → 杂合 LOF，因冗余性影响轻微
 
 本节不再重复罗列上述表格，仅补充说明：
 
-**已知配体 OR 的实际影响**（对应 [2.2 节](#22-嗅觉受体--已知配体变异信息含量更高优先展示)）：
+**已知配体 OR 的实际影响**（对应 [2.1 节](#21-嗅觉受体--已知配体变异信息含量更高优先展示)）：
 - 纯合错义的 OR 基因对对应气味的敏感度可能有一定下降，但日常生活中通常自我察觉不明显
 - 杂合错义的 OR 基因加上嗅觉受体大量冗余，基本不会导致可察觉表型
 
-**纯合 LoF OR 的实际影响**（对应 [2.3 节](#23-嗅觉受体--配体未知的纯合功能丧失)）：
+**纯合 LoF OR 的实际影响**（对应 [2.2 节](#22-嗅觉受体--配体未知的纯合功能丧失)）：
 - 配体未知的纯合 LoF OR 虽然受体完全失活，但无法推断具体气味影响
 - 多个受体同时失活是否会产生可察觉的嗅觉缺陷，目前缺乏研究证据
 
@@ -149,7 +149,7 @@
 | SNP | 基因 | 位置 | 推断基因型 | 来源 | 支持质量 | 推断表型 |
 |-----|------|------|-----------|------|---------|---------|
 {% for snp in key_snps %}
-| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF 检出{% else %}REF/REF 推断{% endif %} | {% if snp.found_in_vcf and (snp.dp is not none or snp.gq is not none) %}DP={{ snp.dp if snp.dp is not none else "—" }}, GQ={{ snp.gq if snp.gq is not none else "—" }}, AD={{ snp.ad_ref if snp.ad_ref is not none else "—" }}/{{ snp.ad_alt if snp.ad_alt is not none else "—" }}{% else %}—{% endif %} | **{{ snp.phenotype_label }}** |
+| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF 检出{% else %}REF/REF 推断{% endif %} | {% if snp.found_in_vcf and (snp.dp is not none or (snp.gq is not none and snp.gq < 90)) %}{% set qparts = [] %}{% if snp.dp is not none %}{% set _ = qparts.append("DP=" + snp.dp | string) %}{% endif %}{% if snp.gq is not none and snp.gq < 90 %}{% set _ = qparts.append("GQ=" + snp.gq | string) %}{% endif %}{% if snp.ad_ref is not none or snp.ad_alt is not none %}{% set _ = qparts.append("AD=" + (snp.ad_ref | string) + "/" + (snp.ad_alt | string)) %}{% endif %}{{ qparts | join(", ") }}{% else %}—{% endif %} | **{{ snp.phenotype_label }}** |
 {% endfor %}
 
 > **说明**: "REF/REF 推断"表示该位点在 VCF 中未出现，推断为纯合参考基因型。此类推断基于 GRCh38 参考等位基因，置信度较高但非实验验证。

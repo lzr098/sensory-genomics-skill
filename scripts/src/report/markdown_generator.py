@@ -82,20 +82,17 @@ class MarkdownReportGenerator:
                     for v in top_vars
                 ])
                 # Build per-variant quality summary for top variants
+                # GQ is only shown if < 90; DP and AD are always shown
                 var_quality = []
                 for v in top_vars:
-                    if v.dp or v.gq:
-                        qparts = []
-                        if v.dp:
-                            qparts.append(f"DP={v.dp}")
-                        if v.gq is not None:
-                            qparts.append(f"GQ={v.gq}")
-                        if v.ad and len(v.ad) >= 2:
-                            qparts.append(f"AD={v.ad[0]}/{v.ad[1]}")
-                        # Use comma (not pipe) to avoid breaking Markdown table columns
-                        var_quality.append(", ".join(qparts) if qparts else "—")
-                    else:
-                        var_quality.append("—")
+                    qparts = []
+                    if v.dp:
+                        qparts.append(f"DP={v.dp}")
+                    if v.gq is not None and v.gq < 90:
+                        qparts.append(f"GQ={v.gq}")
+                    if v.ad and len(v.ad) >= 2:
+                        qparts.append(f"AD={v.ad[0]}/{v.ad[1]}")
+                    var_quality.append(", ".join(qparts) if qparts else "—")
                 quality_summary = "; ".join(var_quality) if var_quality else "—"
 
                 key_findings.append({
