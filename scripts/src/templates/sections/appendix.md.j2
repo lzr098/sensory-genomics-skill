@@ -97,7 +97,26 @@
 > 未检出杂合功能丧失的 OR 变异。
 {% endif %}
 
-### G. OR 基因 Tier C 列表
+### G. 配体未知的纯合 OR 功能丧失汇总
+
+以下为本样本中检出**纯合（1/1）**功能丧失变异的 OR 基因。这些基因配体尚未明确，故不在主报告 [2.3 节](#23-嗅觉受体--配体未知的纯合功能丧失) 中逐一展示。
+
+{% if or_homozygous_lof_unknown %}
+<details>
+<summary>点击展开 — {{ or_homozygous_lof_unknown | length }} 个纯合功能丧失 OR 基因</summary>
+
+| 基因 | 变异后果 | 基因型 | 配体状态 | 推断影响 |
+|------|---------|--------|---------|---------|
+{% for ot in or_homozygous_lof_unknown %}
+| **{{ ot.gene_symbol }}** | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | 配体未知 | 该受体完全失活，但配体尚未明确 |
+{% endfor %}
+
+</details>
+{% else %}
+*未检出配体未知的纯合功能丧失 OR 变异。*
+{% endif %}
+
+### H. OR 基因 Tier C 列表
 
 以下 OR 基因存在纯合 LoF 变异，但配体未知或影响评估为轻微，不在主报告中详细展示：
 
@@ -111,7 +130,7 @@
 *无 Tier C 级别数据。*
 {% endif %}
 
-### H. 全部变异 JSON
+### I. 全部变异 JSON
 
 原始分析数据以 JSON 格式保存，包含本次分析中发现的全部感官基因变异及其完整评估结果。
 

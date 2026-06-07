@@ -126,6 +126,7 @@ class MarkdownReportGenerator:
                     or_tier_c.append(ot)
 
         # 预计算 LOF/GOF 分组（用于 v5 模板分层展示）
+        lof_gof_variants = self._collect_lof_gof_variants(report.gene_cards)
         # 2.1 高影响非 OR 基因：纯合 LOF 或评估 >= 显著影响
         non_or_lof = [item for item in lof_gof_variants
                       if item.get("subsystem") != "olfaction"
@@ -254,7 +255,7 @@ class MarkdownReportGenerator:
 
         # 听觉系统
         if gene == "CDH23":
-            return "可以把 CDH23 理解为耳蜗毛细胞上的'机械弹簧'——声音振动传来时，这个蛋白把毛细胞表面的纤毛连接在一起，形成感知机械力的'传感器'。双等位基因失活意味着这个弹簧断了，与先天性重度至极重度感音神经性听力损失（DFNB12 型）高度相关，患者通常在婴幼儿期即表现为双耳重度听力障碍。少数情况下若伴有视网膜色素变性，则符合 Usher 1D 型。"
+            return "可以把 CDH23 理解为耳蜗毛细胞上的'机械弹簧'——声音振动传来时，这个蛋白把毛细胞表面的纤毛连接在一起，形成感知机械力的'传感器'。双等位基因失活意味着这个弹簧断了，与先天性重度至极重度感音神经性听力损失（DFNB12 型）高度相关，患者通常在婴幼儿期即表现为双耳重度听力障碍。少数情况下若伴有视网膜色素变性，则符合 Usher 1D 型。**随访建议**：建议在出生后 1 个月内完成耳声发射（OAE）筛查，3 个月内完成听性脑干反应（ABR）确诊；若当前为成人且听力正常，仍建议每 1-2 年复查纯音测听，以监测迟发性听力损失。"
         if gene == "MYO7A":
             return "MYO7A 参与毛细胞静纤毛的结构维护。该基因的双等位基因严重变异通常导致 Usher 1B 型（先天性聋 + 视网膜色素变性）。若检出的变异在人群中频率较高（如 >30%），则多为常见多态性，临床意义有限。"
         if gene == "GJB2":

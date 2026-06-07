@@ -686,16 +686,40 @@ class SensoryPipeline:
             logger.error("OR tier classification failed: %s", exc)
             return None
 
+    # 预计算的影响程度排序字典（用于按需 API 富集阈值判断）
+    _LEVEL_RANK: Dict[str, int] = {
+        "无影响": 0,
+        "可能轻微影响": 1,
+        "部分影响": 2,
+        "显著影响": 3,
+        "完全丧失": 4,
+    }
+
+    @classmethod
+    def _level_rank(cls, level: str) -> int:
+        """影响程度排序（越大越严重）."""
+        return cls._LEVEL_RANK.get(level, 0)
+
     async def _enrich_genes(
         self, gene_cards: List[GeneCard]
     ) -> Dict[str, Dict[str, Any]]:
-        """异步并发查询外部 API 富集基因信息（全部基因全部 API 并发）."""
+        """异步并发查询外部 API 富集基因信息（按需：仅评估≥部分影响的基因）."""
         if not self.config.show_reference_info:
             return {}
 
-        genes = [card.gene_symbol for card in gene_cards if card.gene_symbol]
+        # 按需筛选：仅对评估级别 >= "部分影响" 的基因查询 API
+        min_rank = self._LEVEL_RANK.get("部分影响", 2)
+        impactful_cards = [
+            card for card in gene_cards
+            if card.gene_symbol and self._level_rank(card.assessment.level) >= min_rank
+        ]
+        genes = [card.gene_symbol for card in impactful_cards]
+
         if not genes:
+            logger.info("Stage 6: no genes meet impact threshold, skipping API enrichment")
             return {}
+
+        logger.info("Stage 6: enriching %d impactful genes (threshold: 部分影响+)", len(genes))
 
         # 将所有基因的所有 API 查询 flatten 为一个大任务列表
         all_tasks = []
@@ -718,9 +742,11 @@ class SensoryPipeline:
         # 一次性并发所有查询
         results = await asyncio.gather(*all_tasks, return_exceptions=True)
 
-        # 按基因归类结果
-        enrichment: Dict[str, Dict[str, Any]] = {gene: {} for gene in genes}
+        # 按基因归类结果（仅对 impactful 基因填充；其余基因留空）
+        enrichment: Dict[str, Dict[str, Any]] = {}
         for (gene, api_name), result in zip(task_meta, results):
+            if gene not in enrichment:
+                enrichment[gene] = {}
             if isinstance(result, Exception):
                 enrichment[gene][api_name] = {"error": str(result)}
             else:
@@ -812,20 +838,6 @@ class SensoryPipeline:
             key_findings=key_findings,
             personal_traits=personal_traits,
         )
-
-    # 预计算的影响程度排序字典（避免 _level_rank 每次重建）
-    _LEVEL_RANK: Dict[str, int] = {
-        "无影响": 0,
-        "可能轻微影响": 1,
-        "部分影响": 2,
-        "显著影响": 3,
-        "完全丧失": 4,
-    }
-
-    @classmethod
-    def _level_rank(cls, level: str) -> int:
-        """影响程度排序（越大越严重）."""
-        return cls._LEVEL_RANK.get(level, 0)
 
     @staticmethod
     def _default_disclaimer() -> str:
@@ -932,6 +944,25 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
     if bed_path is None:
         logger.warning("No BED file found, using full VCF")
         return vcf_path, None
+
+    # 检查并自动创建 VCF 索引（bcftools -R 需要索引）
+    idx_path = vcf_path + ".tbi"
+    idx_path_csi = vcf_path + ".csi"
+    if not os.path.exists(idx_path) and not os.path.exists(idx_path_csi):
+        logger.info("VCF index not found, auto-indexing with bcftools...")
+        try:
+            subprocess.run(
+                ["bcftools", "index", "-t", vcf_path],
+                stderr=subprocess.PIPE, check=True, timeout=120,
+            )
+            logger.info("VCF index created: %s", idx_path)
+        except subprocess.CalledProcessError as exc:
+            logger.error("Auto-index failed: %s", exc)
+            logger.warning("Proceeding without BED filter due to missing index")
+            return vcf_path, None
+        except subprocess.TimeoutExpired:
+            logger.error("Auto-index timeout")
+            return vcf_path, None
 
     # 检查 VCF 染色体命名
     has_chr = False
