@@ -184,3 +184,442 @@ snps:
         label: "干耳垢"
         description: "ABCC11 功能缺失等位基因纯合，耳垢为干燥片状，腋下体味较轻，东亚人群中高频"
     notes: "ABCC11 Gly180Arg (G180R)，A 等位基因导致 ABCC11 功能丧失，与干耳垢、轻度体味相关，在东亚人群中频率约80-95%"
+
+  # ==================== 视觉系统（扩充）====================
+  rs1800407:
+    gene: OCA2
+    chrom: "15"
+    pos: 28230318
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "棕色眼睛"
+        description: "OCA2功能正常，虹膜黑色素含量高，典型棕色眼色"
+      GA:
+        label: "绿/淡褐色眼睛"
+        description: "携带一个OCA2变异等位基因，虹膜色素中等，表现为绿眼或淡褐色眼"
+      AA:
+        label: "绿/淡褐色眼睛"
+        description: "OCA2功能变异纯合，虹膜黑色素含量较低，绿眼或淡褐色眼概率高"
+    notes: "OCA2 p.Arg419Gln (R419Q)，与欧洲人绿/淡褐色眼色强相关，是决定眼色的次要位点（次于HERC2 rs12913832）"
+
+  rs1426654:
+    gene: SLC24A5
+    chrom: "15"
+    pos: 48426484
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "深色皮肤"
+        description: "SLC24A5功能正常，黑色素合成效率高，皮肤色素较深"
+      GA:
+        label: "中等色素"
+        description: "携带一个SLC24A5变异等位基因，皮肤色素程度中等"
+      AA:
+        label: "浅色皮肤"
+        description: "SLC24A5功能变异纯合，黑色素合成效率降低，皮肤色素较浅"
+    notes: "SLC24A5 p.Ala111Thr (A111T)，解释约25-38%的欧亚人群皮肤色素差异，是欧亚人群中最强的皮肤色素选择信号之一"
+
+  rs12203592:
+    gene: IRF4
+    chrom: "6"
+    pos: 396321
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "标准日晒反应"
+        description: "IRF4功能正常，日晒后易晒黑，雀斑风险低"
+      CT:
+        label: "中度雀斑/日晒敏感"
+        description: "携带一个IRF4变异等位基因，日晒敏感性增加，雀斑风险中等"
+      TT:
+        label: "高雀斑风险/浅色眼色"
+        description: "IRF4变异纯合，日晒后易晒伤不易晒黑，雀斑风险高，眼色较浅"
+    notes: "IRF4内含子变异，通过调控TYR表达影响黑色素合成，与雀斑、眼色、日晒反应相关"
+
+  rs1079610:
+    gene: OPN4
+    chrom: "10"
+    pos: 102069200
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "标准光敏感"
+        description: "黑视蛋白功能正常，昼夜节律光同步能力标准"
+      CT:
+        label: "光敏感轻度改变"
+        description: "携带一个OPN4变异等位基因，光敏感性和昼夜节律同步轻度改变"
+      TT:
+        label: "光敏感改变"
+        description: "OPN4变异纯合，光敏感性和昼夜节律同步能力可能改变"
+    notes: "OPN4（黑视蛋白）内含子变异，影响非视觉光感知、昼夜节律光同步、睡眠时型和季节性情感障碍风险"
+
+  rs941600:
+    gene: OPN4
+    chrom: "10"
+    pos: 102071785
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "标准光敏感"
+        description: "黑视蛋白信号肽功能正常，蛋白定位和光响应标准"
+      CT:
+        label: "光敏感轻度改变"
+        description: "携带一个OPN4变异等位基因，黑视蛋白功能轻度改变"
+      TT:
+        label: "光敏感功能改变"
+        description: "OPN4变异纯合，黑视蛋白信号肽功能改变，光敏感性可能改变"
+    notes: "OPN4 p.Pro10Leu (P10L)，位于信号肽区域，影响黑视蛋白的细胞内定位和光响应特性"
+
+  # ==================== 听觉系统（扩充）====================
+  rs72474224:
+    gene: GJB2
+    chrom: "13"
+    pos: 20763612
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "标准听力"
+        description: "Connexin-26功能正常，耳蜗钾离子循环正常"
+      GA:
+        label: "听力轻度差异"
+        description: "携带一个GJB2变异等位基因，Connexin-26功能部分降低，可能有轻微听力差异"
+      AA:
+        label: "听力差异风险"
+        description: "GJB2变异纯合，Connexin-26功能降低，听力差异风险增加"
+    notes: "GJB2 p.Val37Ile (V37I)，在东亚人群中频率较高（约5-10%），与轻微听力表型相关，非典型致病性变异"
+
+  rs2394795:
+    gene: CDH23
+    chrom: "10"
+    pos: 73552685
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "标准噪声耐受"
+        description: "CDH23功能正常，毛细胞静纤毛结构稳定，噪声耐受性标准"
+      TC:
+        label: "噪声敏感中等"
+        description: "携带一个CDH23变异等位基因，噪声诱导听力易感性轻度增加"
+      CC:
+        label: "噪声敏感"
+        description: "CDH23变异纯合，噪声诱导听力易感性增加"
+    notes: "CDH23内含子变异，与噪声诱导听力易感性相关，影响毛细胞机械转导的稳定性"
+
+  # ==================== 嗅觉系统（扩充）====================
+  rs7943953:
+    gene: OR2T11
+    chrom: "1"
+    pos: 248260439
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "正常鱼腥味感知"
+        description: "OR2T11功能正常，对含硫化合物（鱼腥味/葱蒜味）感知正常"
+      CT:
+        label: "鱼腥味敏感度降低"
+        description: "携带一个OR2T11变异等位基因，对鱼腥味敏感度降低"
+      TT:
+        label: "鱼腥味感知减弱"
+        description: "OR2T11变异纯合，对含硫化合物（鱼腥味）感知显著减弱"
+    notes: "OR2T11 p.Thr133Ile (T133I)，与鱼类气味感知个体差异相关，影响甲硫醇和二甲基硫醚的检测"
+
+  rs61729907:
+    gene: OR7D4
+    chrom: "19"
+    pos: 54198057
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "正常雄烯酮感知"
+        description: "OR7D4功能正常，对雄烯酮（猪骚味/尿骚味/麝香）感知正常"
+      TC:
+        label: "雄烯酮敏感度降低"
+        description: "携带一个OR7D4功能缺失等位基因，对雄烯酮敏感度降低"
+      CC:
+        label: "雄烯酮嗅觉缺失"
+        description: "OR7D4功能缺失纯合，对雄烯酮（猪骚味）几乎无法感知"
+    notes: "OR7D4 p.Ser304Ter (S304X)，无义变异导致受体截短，与雄烯酮嗅觉缺失高度相关（人群频率约30%）"
+
+  rs6591536:
+    gene: OR5A1
+    chrom: "11"
+    pos: 5583210
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "正常花香感知"
+        description: "OR5A1功能正常，对β-紫罗兰酮（紫罗兰花香/覆盆子）感知正常"
+      GA:
+        label: "花香敏感度降低"
+        description: "携带一个OR5A1变异等位基因，对β-紫罗兰酮敏感度降低"
+      AA:
+        label: "花香感知减弱"
+        description: "OR5A1变异纯合，对β-紫罗兰酮（紫罗兰花香）感知显著减弱"
+    notes: "OR5A1 p.Asn183Ser (N183S)，与β-紫罗兰酮气味感知个体差异相关，是研究最深入的OR功能多态性之一"
+
+  # ==================== 味觉系统（扩充）====================
+  rs35874116:
+    gene: TAS1R2
+    chrom: "1"
+    pos: 11812702
+    ref: "T"
+    alt: ["C"]
+    phenotype_map:
+      TT:
+        label: "甜味敏感"
+        description: "TAS1R2功能正常，甜味受体配体结合能力标准，对蔗糖甜度感知敏感"
+      TC:
+        label: "甜味中等敏感"
+        description: "携带一个TAS1R2变异等位基因，甜味受体功能轻度改变，甜度感知中等"
+      CC:
+        label: "甜味不敏感"
+        description: "TAS1R2变异纯合，甜味受体配体结合能力降低，对蔗糖甜度感知不敏感"
+    notes: "TAS1R2 p.Ile191Val (I191V)，位于配体结合口袋，改变受体对蔗糖和人工甜味剂的亲和力"
+
+  rs307355:
+    gene: TAS1R3
+    chrom: "1"
+    pos: 1101345
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "甜味敏感"
+        description: "TAS1R3表达水平正常，甜味受体功能标准，对蔗糖甜度感知敏感"
+      CT:
+        label: "甜味中等敏感"
+        description: "携带一个TAS1R3启动子变异，受体表达水平轻度降低，甜度感知中等"
+      TT:
+        label: "甜味不敏感"
+        description: "TAS1R3启动子变异纯合，受体表达水平降低，对蔗糖甜度感知不敏感"
+    notes: "TAS1R3启动子C/T变异（-1572），T等位基因降低TAS1R3表达水平，减弱甜味感知，需更高蔗糖浓度达到同等甜度"
+
+  rs34160967:
+    gene: TAS1R1
+    chrom: "1"
+    pos: 11827261
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "鲜味敏感"
+        description: "TAS1R1功能正常，鲜味受体对谷氨酸响应标准，鲜味感知敏感"
+      GA:
+        label: "鲜味中等敏感"
+        description: "携带一个TAS1R1变异等位基因，鲜味受体功能轻度改变，鲜味感知中等"
+      AA:
+        label: "鲜味不敏感"
+        description: "TAS1R1变异纯合，鲜味受体对谷氨酸响应降低，鲜味感知不敏感"
+    notes: "TAS1R1 p.Ser576Asn (S576N)，位于受体胞内结构域，影响鲜味受体对谷氨酸和IMP的响应"
+
+  rs8462:
+    gene: TAS2R16
+    chrom: "7"
+    pos: 122968182
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "水杨苷苦味敏感"
+        description: "TAS2R16 Asn172增强受体激活，对水杨苷（柳树皮/阿司匹林相关）苦味感知敏感"
+      AG:
+        label: "水杨苷苦味中等"
+        description: "携带一个TAS2R16变异等位基因，对水杨苷苦味感知中等"
+      GG:
+        label: "水杨苷苦味不敏感"
+        description: "TAS2R16变异纯合，对水杨苷（柳树皮/杏仁）苦味感知不敏感"
+    notes: "TAS2R16 p.Asn172Asp (N172D)，Asn172增强β-糖苷类化合物激活，是研究最深入的苦味受体多态性之一"
+
+  rs10772420:
+    gene: TAS2R19
+    chrom: "12"
+    pos: 111851882
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "奎宁苦味敏感"
+        description: "TAS2R19功能正常，对奎宁类苦味化合物感知敏感"
+      CT:
+        label: "奎宁苦味中等"
+        description: "携带一个TAS2R19变异等位基因，对奎宁苦味感知中等"
+      TT:
+        label: "奎宁苦味不敏感"
+        description: "TAS2R19变异纯合，对奎宁类苦味化合物感知不敏感"
+    notes: "TAS2R19 p.Arg94Trp (R94W)，位于苦味受体配体结合口袋，影响奎宁和咖啡因的苦味感知"
+
+  rs236514:
+    gene: KCNJ2
+    chrom: "17"
+    pos: 68169747
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "标准酸味感知"
+        description: "KCNJ2功能正常，酸味信号转导标准，酸味感知正常"
+      CT:
+        label: "酸味感知中等差异"
+        description: "携带一个KCNJ2变异等位基因，酸味感知轻度改变"
+      TT:
+        label: "酸味感知改变"
+        description: "KCNJ2变异纯合，酸味信号转导改变，酸味感知个体差异显著"
+    notes: "KCNJ2内含子变异，参与酸味信号转导（与OTOP1协同），影响酸味敏感度和饮食偏好"
+
+  # ==================== 体感/痛觉/温度觉（扩充）====================
+  rs6746030:
+    gene: SCN9A
+    chrom: "2"
+    pos: 167258499
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "标准疼痛阈值"
+        description: "Nav1.7钠通道功能正常，疼痛信号传导标准，疼痛阈值正常"
+      CT:
+        label: "疼痛阈值轻度降低"
+        description: "携带一个SCN9A变异等位基因，Nav1.7功能轻度改变，疼痛阈值轻度降低"
+      TT:
+        label: "疼痛阈值降低"
+        description: "SCN9A变异纯合，Nav1.7功能改变，疼痛阈值降低，慢性疼痛风险增加"
+    notes: "SCN9A p.Arg1150Trp (R1150W)，常见错义变异，与疼痛敏感度和慢性疼痛风险相关，非致病性变异"
+
+  rs4680:
+    gene: COMT
+    chrom: "22"
+    pos: 19951271
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "疼痛耐受/压力适应"
+        description: "COMT Val158高活性，多巴胺代谢快，疼痛耐受度高，压力适应性好"
+      GA:
+        label: "疼痛/压力中等敏感"
+        description: "COMT活性中等，多巴胺水平中等，疼痛和压力敏感度中等"
+      AA:
+        label: "疼痛敏感/压力易感"
+        description: "COMT Met158低活性，多巴胺代谢慢，疼痛敏感度高，压力反应性强"
+    notes: "COMT p.Val158Met (V158M)，经典的功能多态性，Met158降低酶活性约4倍，影响多巴胺水平和疼痛/压力感知"
+
+  rs1799971:
+    gene: OPRM1
+    chrom: "6"
+    pos: 154010548
+    ref: "A"
+    alt: ["G"]
+    phenotype_map:
+      AA:
+        label: "标准痛觉调制"
+        description: "μ-阿片受体Asn40标准型，内源性阿片肽结合正常，痛觉调制标准"
+      AG:
+        label: "痛觉调制轻度改变"
+        description: "携带一个OPRM1变异等位基因，μ-阿片受体功能轻度改变"
+      GG:
+        label: "痛觉调制改变"
+        description: "OPRM1变异纯合，Asp40增强β-内啡肽结合，痛觉调制功能改变"
+    notes: "OPRM1 p.Asn40Asp (N40D)，Asp40增强β-内啡肽结合亲和力约3倍，降低疼痛敏感度，影响愉悦感传导"
+
+  rs11562975:
+    gene: TRPM8
+    chrom: "2"
+    pos: 234662448
+    ref: "G"
+    alt: ["C"]
+    phenotype_map:
+      GG:
+        label: "标准冷/薄荷醇敏感"
+        description: "TRPM8功能正常，冷感受和薄荷醇感受标准"
+      GC:
+        label: "冷/薄荷醇敏感中等改变"
+        description: "携带一个TRPM8变异等位基因，冷痛阈值和薄荷醇敏感度改变"
+      CC:
+        label: "冷/薄荷醇敏感改变"
+        description: "TRPM8变异纯合，冷感受和薄荷醇感受显著改变"
+    notes: "TRPM8 3'UTR变异，影响TRPM8表达水平，与冷痛阈值和薄荷醇（清凉感）敏感度个体差异相关"
+
+  # ==================== 代谢特征（扩充）====================
+  rs1229984:
+    gene: ADH1B
+    chrom: "4"
+    pos: 100239319
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "标准酒精代谢"
+        description: "ADH1B His48标准型，乙醇脱氢酶活性标准，酒精代谢速率正常"
+      GA:
+        label: "酒精代谢加速"
+        description: "携带一个ADH1B变异等位基因，Arg48酶活性增强约40倍，乙醛快速积累"
+      AA:
+        label: "酒精代谢显著加速"
+        description: "ADH1B变异纯合，Arg48酶活性显著增强，强烈酒精脸红反应"
+    notes: "ADH1B p.His48Arg (H48R)，Arg48显著增强乙醇脱氢酶活性，导致乙醛快速积累（脸红反应），东亚人群中频率约50-70%"
+
+  # ==================== 色素沉着（扩充）====================
+  rs1805007:
+    gene: MC1R
+    chrom: "16"
+    pos: 89986117
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "非红发/标准色素"
+        description: "MC1R功能正常，黑色素合成标准，非红发表型"
+      CT:
+        label: "红发携带者"
+        description: "携带一个MC1R功能缺失等位基因，红发风险增加，皮肤色素较浅"
+      TT:
+        label: "红发/极浅肤色"
+        description: "MC1R功能缺失纯合，真黑色素合成严重降低，红发/极浅肤色/雀斑"
+    notes: "MC1R p.Arg151Cys (R151C)，高外显错义变异，严重降低受体功能，与红发、雀斑、浅色皮肤强关联，欧洲红发人群频率约25%"
+
+  rs1805008:
+    gene: MC1R
+    chrom: "16"
+    pos: 89986130
+    ref: "C"
+    alt: ["T"]
+    phenotype_map:
+      CC:
+        label: "非红发/标准色素"
+        description: "MC1R功能正常，黑色素合成标准，非红发表型"
+      CT:
+        label: "红发携带者"
+        description: "携带一个MC1R功能缺失等位基因，红发风险增加，皮肤色素较浅"
+      TT:
+        label: "红发/极浅肤色"
+        description: "MC1R功能缺失纯合，真黑色素合成严重降低，红发/极浅肤色/雀斑"
+    notes: "MC1R p.Arg160Trp (R160W)，高外显错义变异，严重降低受体功能，与红发、雀斑、浅色皮肤强关联，欧洲红发人群频率约15%"
+
+  rs26722:
+    gene: SLC45A2
+    chrom: "5"
+    pos: 33987262
+    ref: "G"
+    alt: ["A"]
+    phenotype_map:
+      GG:
+        label: "深色头发"
+        description: "SLC45A2功能正常，黑色素转运效率高，头发颜色较深"
+      GA:
+        label: "中等发色"
+        description: "携带一个SLC45A2变异等位基因，黑色素转运效率降低，发色中等"
+      AA:
+        label: "浅色头发"
+        description: "SLC45A2变异纯合，黑色素转运效率显著降低，头发颜色较浅"
+    notes: "SLC45A2 p.Glu272Lys (E272K)，与欧洲人头发颜色变异相关，与rs16891982协同影响色素表型"
