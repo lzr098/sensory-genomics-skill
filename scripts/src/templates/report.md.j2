@@ -1,4 +1,11 @@
-{# 主报告模板 - v5 格式：重点展示 SNP 命中 + LOF/GOF + 高影响基因 #}
+{# 主报告模板 - v5 格式：
+   1 执行摘要
+   2 功能丧失变异总览（已知配体OR优先）
+   3 感官子系统深度分析
+   4 个人特征
+   5 方法学与局限性
+   6 附录
+#}
 {% from "macros/gene_card.md.j2" import render_gene_card %}
 
 # 感官基因组学特征分析报告
@@ -11,9 +18,9 @@
 ## 目录
 
 1. [执行摘要](#1-执行摘要)
-2. [重点发现](#2-重点发现)
-3. [感官子系统分析](#3-感官子系统分析)
-4. [个人特征](#4-个人特征)
+2. [功能丧失变异总览](#2-功能丧失变异总览)
+3. [感官子系统深度分析](#3-感官子系统深度分析)
+4. [个人特征详情](#4-个人特征详情)
 5. [方法学与局限性](#5-方法学与局限性)
 6. [附录](#6-附录)
 
@@ -23,70 +30,11 @@
 
 {% include "sections/executive_summary.md.j2" %}
 
----
+{% include "sections/lof_overview.md.j2" %}
 
-## 2. 重点发现
+## 3. 感官子系统深度分析
 
-本节集中展示三类需要优先关注的结果：**关键 SNP 命中**（VCF 实际检出）、**功能丧失/获得性变异**（LOF/GOF）、以及**评估为"显著影响"及以上级别**的基因。
-
-### 2.1 关键性状 SNP 命中（VCF 实际检出）
-
-以下 SNP 在本样本 VCF 中**直接检出**，非 REF/REF 推断，结果可信度最高：
-
-{% if snp_hits %}
-| SNP | 基因 | 位置 | 推断基因型 | 表型标签 | 表型描述 |
-|-----|------|------|-----------|---------|---------|
-{% for snp in snp_hits %}
-| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | **{{ snp.phenotype_label }}** | {{ snp.phenotype_description[:60] }}{% if snp.phenotype_description | length > 60 %}...{% endif %} |
-{% endfor %}
-{% else %}
-> ⚠️ **未在 VCF 中检出任何关键性状 SNP**。所有关键 SNP 均按 REF/REF 推断。这可能是因为：
-> 1. 本 VCF 为过滤后版本（filtered2），内含子/调控区变异已被去除；
-> 2. 样本在这些位点确实为纯合参考型（东亚人群常见）。
-{% endif %}
-
-### 2.2 功能丧失 / 获得性变异（LOF / GOF 候选）
-
-以下变异具有明确的蛋白功能后果（移码、无义、剪接位点破坏，或高 CADD 错义），可能影响基因功能：
-
-{% if lof_gof_variants %}
-| 基因 | 子系统 | 变异类型 | 位置 | 后果 | 基因型 | 表型影响 |
-|------|--------|---------|------|------|--------|---------|
-{% for item in lof_gof_variants %}
-| **{{ item.gene }}** | {{ item.subsystem or "N/A" }} | {{ item.type }} | {{ item.variant.chrom }}:{{ item.variant.pos }} | {{ item.variant.consequence[:35] if item.variant.consequence else "N/A" }} | {{ item.variant.gt }} | {{ item.phenotypic_impact[:50] if item.phenotypic_impact else "—" }}... |
-{% endfor %}
-
-> **表型影响说明**：
-{% for item in lof_gof_variants %}
-> - **{{ item.gene }}** ({{ item.variant.chrom }}:{{ item.variant.pos }})：{{ item.phenotypic_impact }}
-{% endfor %}
-{% else %}
-> 未检出明确的 LOF/GOF 级别变异。
-{% endif %}
-
-### 2.3 高影响基因（显著影响及以上）
-
-以下基因的功能影响评估为 **"显著影响"** 或 **"完全丧失"**，建议重点关注：
-
-{% if high_impact_cards %}
-| 基因 | 子系统 | 评估级别 | 遗传模式 | 关键依据 | 代表变异 |
-|------|--------|---------|---------|---------|---------|
-{% for card in high_impact_cards %}
-| **{{ card.gene_symbol }}** | {{ card.subsystem or "N/A" }} | {{ card.assessment.level | level_badge }} | {{ card.assessment.inheritance_pattern or "未知" }} | {{ card.assessment.rationale_zh[:50] if card.assessment.rationale_zh else "" }}... | {% if card.key_variants %}{{ card.key_variants[0].chrom }}:{{ card.key_variants[0].pos }} {{ card.key_variants[0].consequence[:20] if card.key_variants[0].consequence else "" }}{% else %}—{% endif %} |
-{% endfor %}
-
-{% for card in high_impact_cards %}
-{{ render_gene_card(card, max_variants=5, phenotypic_impacts=phenotypic_impacts) }}
-{% endfor %}
-{% else %}
-> 未检出评估为"显著影响"或"完全丧失"级别的基因。
-{% endif %}
-
----
-
-## 3. 感官子系统分析
-
-以下按子系统展示评估为 **"部分影响"及以上** 的基因。低影响/无影响基因见[附录 C](#c-无关或轻微影响基因)。
+以下按子系统展示评估为 **"部分影响"及以上** 的基因的详细分析。低影响/无影响基因见 [附录 C](#c-无关或轻微影响基因)。
 
 {% if "vision" in subsystems %}
 ### 3.1 视觉系统
@@ -130,40 +78,27 @@
 {% if "olfaction" in subsystems %}
 ### 3.4 嗅觉系统
 
-> 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因失活通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。以下列出检出功能丧失（LoF）变异的 OR 基因，按配体已知程度分层。
+> 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因变异通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。本样本中嗅觉相关的关键发现已在 [第 2 章](#2-功能丧失变异总览) 按信息含量分层展示：
+> - [2.2 已知配体变异](#22-嗅觉受体--已知配体变异信息含量更高优先展示) → 直接对应花香、鱼腥、香菜、薄荷等具体气味
+> - [2.3 配体未知的纯合 LoF](#23-嗅觉受体--配体未知的纯合功能丧失) → 纯合功能丧失但配体不明的 OR 基因
+> - [附录 F](#f-杂合嗅觉受体-lof-汇总) → 杂合 LOF，因冗余性影响轻微
 
-{% set olf_cards = subsys_cards.get("olfaction", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
-{% if olf_cards %}
-{% for card in olf_cards %}
+本节不再重复罗列上述表格，仅补充说明：
+
+**已知配体 OR 的实际影响**（对应 [2.2 节](#22-嗅觉受体--已知配体变异信息含量更高优先展示)）：
+- 纯合错义的 OR 基因对对应气味的敏感度可能有一定下降，但日常生活中通常自我察觉不明显
+- 杂合错义的 OR 基因加上嗅觉受体大量冗余，基本不会导致可察觉表型
+
+**纯合 LoF OR 的实际影响**（对应 [2.3 节](#23-嗅觉受体--配体未知的纯合功能丧失)）：
+- 配体未知的纯合 LoF OR 虽然受体完全失活，但无法推断具体气味影响
+- 多个受体同时失活是否会产生可察觉的嗅觉缺陷，目前缺乏研究证据
+
+{% set olf_signal_cards = subsys_cards.get("olfaction", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | selectattr("gene_symbol", "in", ["CNGA2", "ADCY3"]) | list %}
+{% if olf_signal_cards %}
+#### 嗅觉信号转导通路
+
+{% for card in olf_signal_cards %}
 {{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
-{% endfor %}
-{% else %}
-> 嗅觉信号转导通路基因（CNGA2/ADCY3 等）未检出评估为"部分影响"及以上的变异。
-{% endif %}
-
-{% if or_tier_a %}
-#### 已知配体的 OR 变异（Tier A）
-
-以下 OR 基因有明确配体对应关系，且检出功能丧失变异：
-
-| 基因 | 识别的气味分子 | 气味特征 | 变异后果 | 基因型 |
-|------|--------------|---------|---------|--------|
-{% for ot in or_tier_a %}
-| {{ ot.gene_symbol }} | {{ ot.known_ligand_zh or "未知" }} | {{ ot.odor_description_zh or "—" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} |
-{% endfor %}
-
-> 🔬 **嗅觉影响推断**：上述 OR 基因单个失活通常不会导致完全无法感知对应气味，但可能使对该气味的**敏感度降低**或在低浓度下**辨识度下降**。实际生活中不易自我察觉。
-{% endif %}
-
-{% if or_tier_b %}
-#### 配体未明确的 OR 变异（Tier B）
-
-以下 OR 基因检出纯合功能丧失变异，但配体尚未明确：
-
-| 基因 | 变异后果 | 基因型 | 说明 |
-|------|---------|--------|------|
-{% for ot in or_tier_b %}
-| {{ ot.gene_symbol }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | 配体未知，无法推断具体气味影响 |
 {% endfor %}
 {% endif %}
 {% endif %}
@@ -174,17 +109,23 @@
 {% if tas2r38 %}
 #### TAS2R38 苦味感知单倍型
 
-| SNP | 位置 | 基因型 |
-|-----|------|--------|
-| rs713598 | chr7:141972755 | {{ tas2r38.rs713598_gt or "N/A" }} |
-| rs1726866 | chr7:141972962 | {{ tas2r38.rs1726866_gt or "N/A" }} |
-| rs10246939 | chr7:141973545 | {{ tas2r38.rs10246939_gt or "N/A" }} |
+| SNP | 位置 | 基因型 | 说明 |
+|-----|------|--------|------|
+| rs713598 | chr7:141972755 | {{ tas2r38.rs713598_gt or "N/A" }} | {% if tas2r38.rs713598_gt and tas2r38.rs713598_gt != "./." %}数据完整{% else %}数据缺失{% endif %} |
+| rs1726866 | chr7:141972962 | {{ tas2r38.rs1726866_gt or "N/A" }} | {% if tas2r38.rs1726866_gt == "1/1" or tas2r38.rs1726866_gt == "AA" %}**AVI 单倍型特征等位基因**{% else %}—{% endif %} |
+| rs10246939 | chr7:141973545 | {{ tas2r38.rs10246939_gt or "N/A" }} | {% if tas2r38.rs10246939_gt and tas2r38.rs10246939_gt != "./." %}数据完整{% else %}数据缺失{% endif %} |
 
-**推断单倍型**: {{ tas2r38.diplotype or "N/A" }}  
-**苦味感知表型**: {{ tas2r38.phenotype_zh or "N/A" }}  
-**感知能力等级**: {{ tas2r38.phenotype_level or "N/A" }}
+**推断单倍型**: {{ tas2r38.diplotype or "未知/未知" }}
+
+**苦味感知表型**: {{ tas2r38.phenotype_zh or "苦味感知能力未知" }}
+
+**感知能力等级**: {{ tas2r38.phenotype_level or "未知" }}
+
+{% if tas2r38.diplotype == "未知/未知" or not tas2r38.diplotype %}
+> **有限推断**：若 rs1726866 为 **1/1 (AA)**，该基因型是 AVI（苦味不敏感型）单倍型的标志之一。AVI 单倍型携带者对苯硫脲（PTC）、丙硫氧嘧啶（PROP）等苦味化合物的敏感度显著降低。但由于另外两个关键位点数据缺失，无法完成完整单倍型推断。建议补充检测缺失位点。
+{% endif %}
 {% else %}
-> TAS2R38 关键 SNP 缺失（VCF 中未检出 rs713598、rs10246939），苦味感知单倍型无法判定。
+> TAS2R38 关键 SNP 缺失，苦味感知单倍型无法判定。
 {% endif %}
 
 {% set taste_cards = subsys_cards.get("taste", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
@@ -197,23 +138,11 @@
 
 ---
 
-## 4. 个人特征
+## 4. 个人特征详情
 
 本章涵盖瞳孔颜色、毛发形态、耳垢类型、香菜喜好、咖啡因/酒精代谢、乳糖耐受、运动类型等与感官间接相关的个人特征。
 
-### 4.1 个人特征速览
-
-基于关键 SNP 基因型推断与基因层面变异数据，以下是个人特征的定性预测：
-
-| 特征 | 预测结论 | 置信度 | 关键依据 |
-|------|---------|--------|---------|
-{% for trait in personal_traits %}
-| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
-{% endfor %}
-
-> **说明**：以上预测基于已知关键 SNP 的 REF/REF 推断或 VCF 实际检出基因型，结合基因层面的功能变异评估。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
-
-### 4.2 关键性状 SNP 基因型推断详情
+### 4.1 关键性状 SNP 基因型推断
 
 以下 SNP 是基于文献明确报道的性状关联位点。对于 VCF 中未检出的位点，按参考基因组型（REF/REF）推断；检出的位点按实际基因型推断。
 
@@ -225,45 +154,17 @@
 
 > **说明**: "REF/REF 推断"表示该位点在 VCF 中未出现，推断为纯合参考基因型。此类推断基于 GRCh38 参考等位基因，置信度较高但非实验验证。
 
-### 4.3 色素沉着与毛发特征 — 基因层面详情
+### 4.2 个人特征速览
 
-{% set pigment_cards = subsys_cards.get("pigmentation", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
-{% if pigment_cards %}
-{% for card in pigment_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+基于关键 SNP 基因型推断与基因层面变异数据，以下是个人特征的定性预测：
+
+| 特征 | 预测结论 | 置信度 | 关键依据 |
+|------|---------|--------|---------|
+{% for trait in personal_traits %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
 {% endfor %}
-{% else %}
-> 色素沉着相关基因未检出评估为"部分影响"及以上的功能变异。
-{% endif %}
 
-{% set hair_cards = subsys_cards.get("hair", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
-{% if hair_cards %}
-{% for card in hair_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
-{% endfor %}
-{% else %}
-> 毛发特征相关基因未检出评估为"部分影响"及以上的功能变异。
-{% endif %}
-
-### 4.4 代谢与肌肉特征 — 基因层面详情
-
-{% set meta_cards = subsys_cards.get("metabolism", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
-{% if meta_cards %}
-{% for card in meta_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
-{% endfor %}
-{% else %}
-> 代谢相关基因未检出评估为"部分影响"及以上的功能变异。
-{% endif %}
-
-{% set muscle_cards = subsys_cards.get("muscle", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
-{% if muscle_cards %}
-{% for card in muscle_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
-{% endfor %}
-{% else %}
-> 肌肉特征相关基因未检出评估为"部分影响"及以上的功能变异。
-{% endif %}
+> **说明**：以上预测基于 VCF 实际检出基因型或 REF/REF 推断。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
 
 ---
 

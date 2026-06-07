@@ -1,0 +1,73 @@
+{# 第 2 章：功能丧失变异总览 - v5 格式 #}
+## 2. 功能丧失变异总览
+
+> **章节说明**：本节列出具有明确蛋白功能后果（移码、无义、剪接位点破坏）的变异。"功能丧失"指该变异大概率导致所编码蛋白无法正常行使功能。以下按子系统分类，突出需要关注的条目。
+
+### 2.1 高影响非 OR 基因
+
+以下基因编码非嗅觉受体蛋白，其功能丧失变异具有明确的生理意义：
+
+{% if non_or_lof %}
+| 基因 | 子系统 | 变异 | 位置 | 后果 | 基因型 | 科普影响 |
+|------|--------|------|------|------|--------|---------|
+{% for item in non_or_lof %}
+| **{{ item.gene }}** | {{ item.subsystem or "N/A" }} | {{ item.type }} | {{ item.variant.chrom }}:{{ item.variant.pos }} | {{ item.variant.consequence[:30] if item.variant.consequence else "N/A" }} | {{ item.variant.gt }} | {{ item.phenotypic_impact[:55] if item.phenotypic_impact else "—" }}{% if item.phenotypic_impact | length > 55 %}...{% endif %} |
+{% endfor %}
+{% else %}
+> 未检出非 OR 基因的功能丧失变异。
+{% endif %}
+
+### 2.2 嗅觉受体 — 已知配体变异（信息含量更高，优先展示）
+
+> ⚠️ **嗅觉系统冗余说明**：人类约有 400 个功能性嗅觉受体基因。单个 OR 基因变异通常不会导致完全无法感知某种气味，但可能降低对该气味分子的**敏感度**或在低浓度下**辨识度下降**。
+
+以下 OR 基因有**明确的配体-受体对应关系**，且在本样本中检出变异。这些属于报告中**信息含量最高**的嗅觉发现，直接对应具体气味：
+
+{% if or_tier_a %}
+| 基因 | 识别的气味分子 | 气味特征 | 变异后果 | 基因型 | 影响评估 |
+|------|--------------|---------|---------|--------|---------|
+{% for ot in or_tier_a %}
+| **{{ ot.gene_symbol }}** | {{ ot.known_ligand_zh or "未知" }} | {{ ot.odor_description_zh or "—" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | {% if ot.variant.is_homozygous %}{% if "missense" in (ot.variant.consequence or "") %}错义+纯合，可能对对应气味敏感度有一定影响{% else %}功能丧失+纯合，该受体可能完全失活{% endif %}{% else %}杂合，加上嗅觉系统冗余，通常影响轻微{% endif %} |
+{% endfor %}
+
+**实际影响解读**：
+- 纯合变异（1/1）的 OR 基因对对应气味的敏感度可能有一定下降，但日常生活中通常自我察觉不明显
+- 杂合变异（0/1）的 OR 基因加上嗅觉系统的高度冗余，通常不会导致明显表型变化
+- 例如：OR6A2 杂合变异不会把你变成"爱吃香菜的人"，OR7D4 杂合变异也不会让你对猪肉骚味完全无感
+{% else %}
+> 未在已知配体的 OR 基因中检出值得关注的功能变异。
+{% endif %}
+
+### 2.3 嗅觉受体 — 配体未知的纯合功能丧失
+
+以下列出本样本中检出**纯合（1/1）**功能丧失变异的 OR 基因。这些基因目前**配体尚未明确**，暂无法推断具体气味影响。杂合 OR 功能丧失变异见 [附录 F](#f-杂合嗅觉受体-lof-汇总)。
+
+{% if or_homozygous_lof_unknown %}
+本样本中，有 **{{ or_homozygous_lof_unknown | length }} 个 OR 基因**检出纯合功能丧失变异：
+
+| 基因 | 变异后果 | 基因型 | 配体状态 | 推断影响 |
+|------|---------|--------|---------|---------|
+{% for ot in or_homozygous_lof_unknown %}
+| **{{ ot.gene_symbol }}** | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | 配体未知 | 该受体完全失活，但配体尚未明确 |
+{% endfor %}
+
+> **为什么只列纯合？** 本样本中另有若干 OR 基因检出**杂合（0/1）**功能丧失变异。由于嗅觉系统的高度冗余，杂合失活通常不会导致可察觉的表型变化，故移至 [附录 F](#f-杂合嗅觉受体-lof-汇总)。
+{% else %}
+> 未检出配体未知的纯合功能丧失 OR 变异。
+{% endif %}
+
+### 2.4 其他子系统功能丧失变异
+
+除上述已列出的基因外，以下基因亦检出功能丧失变异，但评估为"无影响"或"可能轻微影响"：
+
+{% if other_lof %}
+| 基因 | 子系统 | 变异 | 基因型 | 评估 |
+|------|--------|------|--------|------|
+{% for item in other_lof %}
+| {{ item.gene }} | {{ item.subsystem or "N/A" }} | {{ item.variant.chrom }}:{{ item.variant.pos }} | {{ item.variant.gt }} | 杂合/轻微，冗余系统或临床意义有限 |
+{% endfor %}
+{% else %}
+> 未检出其他需要列出的功能丧失变异。
+{% endif %}
+
+---

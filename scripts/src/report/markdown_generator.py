@@ -87,6 +87,7 @@ class MarkdownReportGenerator:
                     "level": level,
                     "rationale": card.assessment.rationale_zh[:80] if card.assessment.rationale_zh else "",
                     "variants": var_info,
+                    "inheritance_pattern": card.assessment.inheritance_pattern or "未知",
                     "phenotypic_impact": self._infer_phenotypic_impact(card.gene_symbol, card.subsystem, level, top_vars),
                 })
 
@@ -124,6 +125,23 @@ class MarkdownReportGenerator:
                 else:
                     or_tier_c.append(ot)
 
+        # 预计算 LOF/GOF 分组（用于 v5 模板分层展示）
+        # 2.1 高影响非 OR 基因：纯合 LOF 或评估 >= 显著影响
+        non_or_lof = [item for item in lof_gof_variants
+                      if item.get("subsystem") != "olfaction"
+                      and item["variant"].is_homozygous]
+        # 2.4 其他子系统功能丧失变异：杂合非 OR LOF
+        other_lof = [item for item in lof_gof_variants
+                     if item.get("subsystem") != "olfaction"
+                     and item["variant"].is_heterozygous]
+        or_heterozygous_lof = [item for item in lof_gof_variants
+                               if item.get("subsystem") == "olfaction"
+                               and item["variant"].is_heterozygous]
+        or_homozygous_lof_unknown = [ot for ot in (or_tier_b + or_tier_c)]
+        non_or_impactful = [c for c in report.gene_cards
+                           if c.subsystem != "olfaction"
+                           and c.assessment.level in ("完全丧失", "显著影响", "部分影响")]
+
         return {
             "report": report,
             "sample_id": report.sample_id,
@@ -144,6 +162,11 @@ class MarkdownReportGenerator:
             "or_tier_a": or_tier_a,
             "or_tier_b": or_tier_b,
             "or_tier_c": or_tier_c,
+            "non_or_lof": non_or_lof,
+            "or_heterozygous_lof": or_heterozygous_lof,
+            "or_homozygous_lof_unknown": or_homozygous_lof_unknown,
+            "non_or_impactful": non_or_impactful,
+            "other_lof": other_lof,
             "executive_summary": report.executive_summary,
             "personal_traits": report.executive_summary.personal_traits,
             "disclaimer_zh": report.disclaimer_zh,
@@ -231,9 +254,9 @@ class MarkdownReportGenerator:
 
         # 听觉系统
         if gene == "CDH23":
-            return "钙黏蛋白23是毛细胞尖端链接（tip link）的核心结构蛋白。双等位基因失活 → 尖端链接断裂 → 毛细胞机械-电转导丧失 → 感音神经性听力损失（符合 DFNB12 / Usher 1D 表型）。"
+            return "可以把 CDH23 理解为耳蜗毛细胞上的'机械弹簧'——声音振动传来时，这个蛋白把毛细胞表面的纤毛连接在一起，形成感知机械力的'传感器'。双等位基因失活意味着这个弹簧断了，与先天性重度至极重度感音神经性听力损失（DFNB12 型）高度相关，患者通常在婴幼儿期即表现为双耳重度听力障碍。少数情况下若伴有视网膜色素变性，则符合 Usher 1D 型。"
         if gene == "MYO7A":
-            return "非传统肌球蛋白 VIIa 参与毛细胞静纤毛发育与维持。功能受损 → 静纤毛束结构异常 → 听力下降，可能伴随前庭功能障碍（平衡感减退、眩晕倾向）。"
+            return "MYO7A 参与毛细胞静纤毛的结构维护。该基因的双等位基因严重变异通常导致 Usher 1B 型（先天性聋 + 视网膜色素变性）。若检出的变异在人群中频率较高（如 >30%），则多为常见多态性，临床意义有限。"
         if gene == "GJB2":
             return "Connexin-26 是耳蜗钾离子循环的关键缝隙连接蛋白。功能丧失 → 耳蜗内电位无法维持 → 感音神经性聋（DFNB1），通常表现为语前重度-极重度听力损失。"
         if gene == "OTOF":
@@ -245,11 +268,11 @@ class MarkdownReportGenerator:
 
         # 体感/痛觉
         if gene == "SCN9A":
-            return "Nav1.7 电压门控钠通道是痛觉信号传导的关键分子。功能改变 → 痛觉阈值偏移：功能丧失型可导致先天性无痛症（极罕见），功能增强型可导致原发性红斑性肢痛症（烧灼痛）。本样本为杂合错义，更可能表现为痛觉敏感度异常。"
+            return "Nav1.7 是痛觉神经纤维上的'电闸'，控制疼痛信号是否向大脑传递。若检出的变异在东亚人群中频率 >80%，则属于极高频常见多态性，通常不具有临床致病意义。真正的 SCN9A 致病变异非常罕见。"
         if gene == "SCN10A":
             return "Nav1.8 钠通道主要表达于伤害性感受器。功能改变 → 炎症性疼痛和慢性疼痛的易感性可能发生变化。"
         if gene == "OPRM1":
-            return "μ-阿片受体是内源性阿片肽和外源性阿片类药物（吗啡、芬太尼等）的主要作用靶点。纯合功能丧失 → 内源性镇痛系统受损 → 对阿片类镇痛药的反应可能显著减弱，术后/癌痛镇痛方案可能需要调整。"
+            return "OPRM1 编码μ-阿片受体，是身体'天然止痛系统'的核心开关，也是吗啡、芬太尼等止痛药的作用靶点。纯合无义变异导致受体蛋白提前终止，产生截短的无功能蛋白。可能的影响：内源性镇痛系统受损，对阿片类镇痛药（术后吗啡、癌痛芬太尼）的反应可能显著减弱，常规剂量可能效果不佳。"
         if gene == "TRPV1":
             return "TRPV1 是辣椒素受体兼热敏感受器。功能变异 → 对辣椒等辛辣食物的灼热感耐受度、以及对高温伤害的感知阈值可能发生变化。"
         if gene == "TRPM8":
@@ -315,7 +338,7 @@ class MarkdownReportGenerator:
 
         # 嗅觉 — OR 基因
         if gene.startswith("OR"):
-            return "嗅觉受体（OR）基因负责识别特定气味分子。由于人类嗅觉系统存在大量冗余受体（约400个），单个 OR 基因失活通常不会导致完全无法感知某种气味，但可能降低对该气味分子的敏感度或辨识度。多个相关 OR 同时失活时才可能产生可察觉的嗅觉缺陷。"
+            return "嗅觉受体（OR）基因负责识别特定气味分子。由于人类嗅觉系统存在大量冗余受体（约400个），单个 OR 基因失活通常不会导致完全无法感知某种气味，仅可能降低对该气味分子的敏感度或辨识度。"
 
         # 嗅觉信号转导
         if gene in ("CNGA2", "ADCY3"):

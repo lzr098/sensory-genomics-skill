@@ -1,12 +1,11 @@
-{# 附录 - v5 格式：Tier C OR 表 + 无关基因 + gnomAD + 建议补充 #}
+{# 附录 - v5 格式：杂合 OR LOF + Tier C + 无关基因 + gnomAD + 建议补充 #}
 
-## 11. 附录
+## 6. 附录
 
 ### A. 技术参数
 
 | 项目 | 值 |
 |------|-----|
-| 原始变异数 | {{ report.executive_summary.subsystem_counts.get("total", "N/A") if report.executive_summary else "N/A" }} |
 | 感官基因区域变异 | {{ gene_cards | map(attribute='variants') | map('length') | sum }} |
 | 关键功能变异 | {{ gene_cards | map(attribute='key_variants') | map('length') | sum }} |
 | 涉及基因 | {{ gene_cards | length }} |
@@ -70,26 +69,35 @@
 
 ### E. 建议补充分析
 
-| 补充项目 | 关键基因/SNP | 当前状态 |
-|---------|------------|---------|
-| 瞳孔颜色 | HERC2 rs12913832, OCA2 rs1800407 | {% if key_snps | selectattr("rsid", "equalto", "rs12913832") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 苦味敏感度 | TAS2R38 rs713598, rs10246939 | {% if tas2r38 %}✅ 单倍型已推断{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 咖啡因代谢 | CYP1A2 rs762551 | {% if key_snps | selectattr("rsid", "equalto", "rs762551") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 酒精代谢 | ALDH2 rs671 | {% if key_snps | selectattr("rsid", "equalto", "rs671") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 乳糖耐受 | LCT rs4988235 | {% if key_snps | selectattr("rsid", "equalto", "rs4988235") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 肌肉类型 | ACTN3 rs1815739 | {% if key_snps | selectattr("rsid", "equalto", "rs1815739") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 卷发表型 | EDAR rs3827760 | {% if key_snps | selectattr("rsid", "equalto", "rs3827760") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
-| 耳垢类型 | ABCC11 rs17822931 | {% if key_snps | selectattr("rsid", "equalto", "rs17822931") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}❌ 关键 SNP 缺失{% endif %} |
+| 补充项目 | 关键基因/SNP | 当前状态 | 建议 |
+|---------|------------|---------|------|
+| 瞳孔颜色 | HERC2 rs12913832 | {% if key_snps | selectattr("rsid", "equalto", "rs12913832") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 苦味敏感度 | TAS2R38 rs713598, rs10246939 | {% if tas2r38 and tas2r38.diplotype and tas2r38.diplotype != "未知/未知" %}✅ 单倍型已推断{% else %}⚠️ 关键 SNP 缺失{% endif %} | 建议补充检测缺失位点 |
+| 咖啡因代谢 | CYP1A2 rs762551 | {% if key_snps | selectattr("rsid", "equalto", "rs762551") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 酒精代谢 | ALDH2 rs671 | {% if key_snps | selectattr("rsid", "equalto", "rs671") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 乳糖耐受 | LCT rs4988235 | {% if key_snps | selectattr("rsid", "equalto", "rs4988235") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 肌肉类型 | ACTN3 rs1815739 | {% if key_snps | selectattr("rsid", "equalto", "rs1815739") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 卷发表型 | EDAR rs3827760 | {% if key_snps | selectattr("rsid", "equalto", "rs3827760") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 耳垢类型 | ABCC11 rs17822931 | {% if key_snps | selectattr("rsid", "equalto", "rs17822931") | selectattr("found_in_vcf") | list | length > 0 %}✅ VCF 检出{% else %}✅ 已推断{% endif %} | — |
+| 听力筛查 | CDH23 相关 | ⚠️ 需临床验证 | 如 CDH23 有罕见致病变异，建议尽早进行听力学评估 |
 
-> 当前分析覆盖 9 个子系统共 391 个基因。
+### F. 杂合嗅觉受体 LOF 汇总
 
-### E. 全部变异 JSON
+> 以下 OR 基因检出**杂合（0/1）**功能丧失变异。由于嗅觉系统的高度冗余，杂合失活通常不会导致可察觉的表型变化。
 
-原始分析数据以 JSON 格式保存，包含本次分析中发现的全部感官基因变异及其完整评估结果。
+{% if or_heterozygous_lof %}
+| 基因 | 变异后果 | 基因型 | 备注 |
+|------|---------|--------|------|
+{% for item in or_heterozygous_lof %}
+| {{ item.gene }} | {{ item.variant.consequence or "N/A" }} | {{ item.variant.gt }} | 冗余系统，影响轻微 |
+{% endfor %}
 
-> 详细 JSON 数据见同目录下的 `.json` 输出文件。
+> 以上共 {{ or_heterozygous_lof | length }} 个 OR 基因检出杂合功能丧失变异。鉴于嗅觉系统的组合编码特性（约 400 个受体协同工作），单一受体的杂合失活在日常生活中几乎不可察觉。
+{% else %}
+> 未检出杂合功能丧失的 OR 变异。
+{% endif %}
 
-### F. OR 基因 Tier C 列表
+### G. OR 基因 Tier C 列表
 
 以下 OR 基因存在纯合 LoF 变异，但配体未知或影响评估为轻微，不在主报告中详细展示：
 
@@ -102,6 +110,12 @@
 {% else %}
 *无 Tier C 级别数据。*
 {% endif %}
+
+### H. 全部变异 JSON
+
+原始分析数据以 JSON 格式保存，包含本次分析中发现的全部感官基因变异及其完整评估结果。
+
+> 详细 JSON 数据见同目录下的 `.json` 输出文件。
 
 ---
 

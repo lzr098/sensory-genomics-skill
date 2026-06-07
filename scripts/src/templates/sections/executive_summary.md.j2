@@ -1,4 +1,4 @@
-{# 执行摘要 - v2 格式 #}
+{# 执行摘要 - v5 格式：合并 1.3/1.4 为统一的重点关注发现表 #}
 ## 1. 执行摘要
 
 ### 1.1 样本信息
@@ -18,33 +18,25 @@
 | 特征 | 预测结论 | 置信度 | 关键依据 |
 |------|---------|--------|---------|
 {% for trait in personal_traits %}
-| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:60] }}{% if trait.evidence | length > 60 %}...{% endif %} |
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
 {% endfor %}
 
-> **说明**：以上预测基于已知关键 SNP 的 REF/REF 推断或 VCF 实际检出基因型，结合基因层面的功能变异评估。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
+> **说明**：以上预测基于 VCF 实际检出基因型或 REF/REF 推断。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
 
-### 1.3 核心发现速览
+### 1.3 重点关注发现
 
-{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢特征", "muscle": "肌肉特征", "hair": "毛发特征"} %}
+以下基因在本样本中评估为**"部分影响"及以上**，建议优先关注：
 
-| 感官领域 | 关键发现 | 表型影响推断 |
-|---------|---------|-------------|
+{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
+
+| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 科普一句话 |
+|------|--------|------|---------|---------|-----------|
 {% for finding in key_findings %}
-| {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.gene }}: {{ finding.level | level_badge }} | {{ finding.phenotypic_impact[:60] if finding.phenotypic_impact else "" }}... |
+| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.phenotypic_impact[:70] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 70 %}...{% endif %} |
 {% else %}
-| — | 无高风险发现 | 各感官系统未检出需要关注的致病性变异 |
+| — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
 {% endfor %}
 
-### 1.4 值得关注的高优先级发现
-
-{% if key_findings %}
-{% for finding in key_findings %}
-- **{{ finding.gene }}** ({{ subsys_names.get(finding.subsystem, finding.subsystem) }}) — {{ finding.level | level_badge }}
-  - **分子依据**：{{ finding.rationale }}
-  - **表型推断**：{{ finding.phenotypic_impact }}
-{% endfor %}
-{% else %}
-- 暂无高优先级发现。所有感官相关基因均未检出完全丧失或显著影响级别的功能改变变异。
-{% endif %}
+> **阅读指引**：上表为速览，每个发现的详细科普解释和分子机制见 [第 3 章](#3-感官子系统深度分析)。
 
 ---
