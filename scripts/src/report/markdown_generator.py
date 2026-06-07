@@ -81,12 +81,31 @@ class MarkdownReportGenerator:
                     f"{v.chrom}:{v.pos} {v.consequence[:20]}" if v.consequence else f"{v.chrom}:{v.pos}"
                     for v in top_vars
                 ])
+                # Build per-variant quality summary for top variants
+                var_quality = []
+                for v in top_vars:
+                    if v.dp or v.gq:
+                        qparts = []
+                        if v.dp:
+                            qparts.append(f"DP={v.dp}")
+                        if v.gq is not None:
+                            qparts.append(f"GQ={v.gq}")
+                        if v.ad and len(v.ad) >= 2:
+                            qparts.append(f"AD={v.ad[0]}/{v.ad[1]}")
+                        # Use comma (not pipe) to avoid breaking Markdown table columns
+                        var_quality.append(", ".join(qparts) if qparts else "—")
+                    else:
+                        var_quality.append("—")
+                quality_summary = "; ".join(var_quality) if var_quality else "—"
+
                 key_findings.append({
                     "gene": card.gene_symbol,
                     "subsystem": card.subsystem,
                     "level": level,
                     "rationale": card.assessment.rationale_zh[:80] if card.assessment.rationale_zh else "",
                     "variants": var_info,
+                    "variant_objects": top_vars,
+                    "quality_summary": quality_summary,
                     "inheritance_pattern": card.assessment.inheritance_pattern or "未知",
                     "phenotypic_impact": self._infer_phenotypic_impact(card.gene_symbol, card.subsystem, level, top_vars),
                 })

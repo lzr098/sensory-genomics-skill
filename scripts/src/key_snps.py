@@ -74,10 +74,22 @@ class KeySNPInferrer:
 
                 ref = parts[3]
                 alt = parts[4].split(",")
-                gt_field = parts[9].split(":")[0]  # e.g. "0/1" or "0|0"
+                format_fields = parts[8].split(":")
+                sample_fields = parts[9].split(":")
+                gt_field = sample_fields[0]  # e.g. "0/1" or "0|0"
+
+                # Build dict of FORMAT -> sample value
+                fmt = dict(zip(format_fields, sample_fields))
 
                 # Normalize GT to alleles
                 gt = self._gt_to_alleles(gt_field, ref, alt)
+
+                # Extract quality metrics
+                dp = self._parse_int(fmt.get("DP"))
+                gq = self._parse_int(fmt.get("GQ"))
+                ad_parts = fmt.get("AD", "").split(",") if fmt.get("AD") else []
+                ad_ref = self._parse_int(ad_parts[0]) if len(ad_parts) > 0 else None
+                ad_alt = self._parse_int(ad_parts[1]) if len(ad_parts) > 1 else None
 
                 return {
                     "chrom": parts[0],
@@ -86,12 +98,26 @@ class KeySNPInferrer:
                     "alt": alt,
                     "gt": gt,
                     "gt_raw": gt_field,
+                    "dp": dp,
+                    "gq": gq,
+                    "ad_ref": ad_ref,
+                    "ad_alt": ad_alt,
                 }
             except Exception as e:
                 logger.warning("Failed to query VCF for %s:%d: %s", chrom_query, pos, e)
                 continue
 
         return None
+
+    @staticmethod
+    def _parse_int(value: Optional[str]) -> Optional[int]:
+        """安全解析整数字段，返回 None 表示缺失或无效."""
+        if value is None or value == "." or value == "":
+            return None
+        try:
+            return int(value)
+        except ValueError:
+            return None
 
     @staticmethod
     def _gt_to_alleles(gt_field: str, ref: str, alt_list: List[str]) -> str:
@@ -129,10 +155,15 @@ class KeySNPInferrer:
             if vcf_record:
                 gt = vcf_record["gt"]
                 found_in_vcf = True
+                dp = vcf_record.get("dp")
+                gq = vcf_record.get("gq")
+                ad_ref = vcf_record.get("ad_ref")
+                ad_alt = vcf_record.get("ad_alt")
             else:
                 # Not in VCF -> homozygous reference
                 gt = ref + ref
                 found_in_vcf = False
+                dp = gq = ad_ref = ad_alt = None
 
             # Look up phenotype
             pmap = info.get("phenotype_map", {})
@@ -167,6 +198,10 @@ class KeySNPInferrer:
                 phenotype_description=pheno.get("description", ""),
                 notes=info.get("notes", ""),
                 found_in_vcf=found_in_vcf,
+                dp=dp,
+                gq=gq,
+                ad_ref=ad_ref,
+                ad_alt=ad_alt,
             )
             results.append(result)
 

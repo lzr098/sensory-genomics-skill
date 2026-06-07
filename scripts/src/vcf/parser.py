@@ -111,6 +111,9 @@ class VcfParser:
             return None
 
         dp = int(call.get("DP", 0)) if call.get("DP") is not None else 0
+        gq = int(call.get("GQ")) if call.get("GQ") is not None else None
+        ad_raw = call.get("AD")
+        ad = list(ad_raw) if ad_raw is not None else None
         qual = float(record.qual) if record.qual is not None else 0.0
         filter_status = self._format_filter(record.filter)
 
@@ -121,6 +124,8 @@ class VcfParser:
             alt=alt,
             gt=gt,
             dp=dp,
+            gq=gq,
+            ad=ad,
             qual=qual,
             filter_status=filter_status,
         )

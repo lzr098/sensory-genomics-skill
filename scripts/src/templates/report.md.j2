@@ -146,10 +146,10 @@
 
 以下 SNP 是基于文献明确报道的性状关联位点。对于 VCF 中未检出的位点，按参考基因组型（REF/REF）推断；检出的位点按实际基因型推断。
 
-| SNP | 基因 | 位置 | 推断基因型 | 来源 | 推断表型 |
-|-----|------|------|-----------|------|---------|
+| SNP | 基因 | 位置 | 推断基因型 | 来源 | 支持质量 | 推断表型 |
+|-----|------|------|-----------|------|---------|---------|
 {% for snp in key_snps %}
-| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF 检出{% else %}REF/REF 推断{% endif %} | **{{ snp.phenotype_label }}** |
+| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF 检出{% else %}REF/REF 推断{% endif %} | {% if snp.found_in_vcf and (snp.dp is not none or snp.gq is not none) %}DP={{ snp.dp if snp.dp is not none else "—" }}, GQ={{ snp.gq if snp.gq is not none else "—" }}, AD={{ snp.ad_ref if snp.ad_ref is not none else "—" }}/{{ snp.ad_alt if snp.ad_alt is not none else "—" }}{% else %}—{% endif %} | **{{ snp.phenotype_label }}** |
 {% endfor %}
 
 > **说明**: "REF/REF 推断"表示该位点在 VCF 中未出现，推断为纯合参考基因型。此类推断基于 GRCh38 参考等位基因，置信度较高但非实验验证。

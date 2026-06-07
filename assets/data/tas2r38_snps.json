@@ -5,9 +5,9 @@
     {
       "rsid": "rs713598",
       "chrom": "7",
-      "pos": 141972755,
-      "ref": "G",
-      "alt": "C",
+      "pos": 141973545,
+      "ref": "C",
+      "alt": "G",
       "amino_acid_change": "Pro49Ala",
       "haplotype_alleles": {
         "P": "C",
@@ -17,33 +17,33 @@
     {
       "rsid": "rs1726866",
       "chrom": "7",
-      "pos": 141973545,
-      "ref": "T",
-      "alt": "C",
+      "pos": 141972905,
+      "ref": "G",
+      "alt": "A",
       "amino_acid_change": "Ala262Val",
       "haplotype_alleles": {
-        "A": "C",
-        "V": "T"
+        "A": "G",
+        "V": "A"
       }
     },
     {
       "rsid": "rs10246939",
       "chrom": "7",
-      "pos": 141974933,
-      "ref": "G",
-      "alt": "A",
+      "pos": 141972804,
+      "ref": "T",
+      "alt": "C",
       "amino_acid_change": "Val296Ile",
       "haplotype_alleles": {
-        "V": "G",
-        "I": "A"
+        "V": "C",
+        "I": "T"
       }
     }
   ],
   "haplotype_definitions": {
-    "PAV": ["rs713598_C", "rs1726866_T", "rs10246939_G"],
-    "AVI": ["rs713598_G", "rs1726866_C", "rs10246939_A"],
-    "AAI": ["rs713598_G", "rs1726866_C", "rs10246939_G"],
-    "PVI": ["rs713598_C", "rs1726866_T", "rs10246939_A"],
+    "PAV": ["rs713598_C", "rs1726866_A", "rs10246939_C"],
+    "AVI": ["rs713598_G", "rs1726866_G", "rs10246939_T"],
+    "AAI": ["rs713598_G", "rs1726866_G", "rs10246939_C"],
+    "PVI": ["rs713598_C", "rs1726866_A", "rs10246939_T"],
     "PAVnote": "功能型单体型（苦味敏感）",
     "AVInote": "非功能型单体型（苦味不敏感）",
     "AAInote": "非功能型单体型（苦味不敏感）",

@@ -29,10 +29,10 @@
 
 {% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
 
-| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 科普一句话 |
-|------|--------|------|---------|---------|-----------|
+| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 支持质量 | 科普一句话 |
+|------|--------|------|---------|---------|---------|-----------|
 {% for finding in key_findings %}
-| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.phenotypic_impact[:70] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 70 %}...{% endif %} |
+| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.phenotypic_impact[:350] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 350 %}...{% endif %} |
 {% else %}
 | — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
 {% endfor %}

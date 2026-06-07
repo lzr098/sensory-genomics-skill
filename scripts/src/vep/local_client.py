@@ -98,7 +98,10 @@ class LocalVepClient:
             "--canonical",
             "--biotype",
             "--numbers",
-            "--everything",
+            "--sift", "b",
+            "--polyphen", "b",
+            "--variant_class",
+            "--fork", "4",
         ]
 
         logger.info("Running local VEP for %d variants via Docker", len(variants))
@@ -109,7 +112,7 @@ class LocalVepClient:
                 cmd,
                 capture_output=True,
                 text=True,
-                timeout=600,
+                timeout=1200,
             )
             if result.returncode != 0:
                 logger.error("VEP Docker failed: %s", result.stderr)

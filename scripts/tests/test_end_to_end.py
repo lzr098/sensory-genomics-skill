@@ -44,7 +44,23 @@ def test_pipeline_completes():
     assert report.sex == "M"
     assert len(report.gene_cards) > 0
     assert report.tas2r38 is not None
-    print(f"✅ Pipeline completed: {len(report.gene_cards)} gene cards")
+
+    # Verify VCF quality fields are populated on variants
+    total_vars = sum(len(c.variants) for c in report.gene_cards)
+    vars_with_dp = sum(1 for c in report.gene_cards for v in c.variants if v.dp > 0)
+    assert vars_with_dp > 0, "No variants have DP field"
+    print(f"✅ Pipeline completed: {len(report.gene_cards)} gene cards, {total_vars} variants, {vars_with_dp} with DP")
+
+    # Verify KeySNP quality fields for VCF-detected SNPs
+    if report.key_snps:
+        found_snps = [s for s in report.key_snps if s.found_in_vcf]
+        for snp in found_snps[:3]:
+            assert snp.dp is not None, f"Missing DP for found SNP {snp.rsid}"
+            assert snp.gq is not None, f"Missing GQ for found SNP {snp.rsid}"
+            assert snp.ad_ref is not None, f"Missing AD ref for found SNP {snp.rsid}"
+            assert snp.ad_alt is not None, f"Missing AD alt for found SNP {snp.rsid}"
+        print(f"✅ KeySNP quality fields populated for {len(found_snps)} found SNPs")
+
     return report
 
 
@@ -90,6 +106,10 @@ def test_markdown_content(md_content: str):
     # Subsystem sections
     assert "视觉系统" in md_content, "Missing vision section"
     assert "听觉系统" in md_content, "Missing hearing section"
+    # Quality metrics columns in 1.3 and 4.1
+    assert "支持质量" in md_content, "Missing quality column in 1.3"
+    assert "DP=" in md_content, "Missing DP= in report"
+    assert "GQ=" in md_content, "Missing GQ= in report"
     print("✅ Markdown content validation passed")
 
 

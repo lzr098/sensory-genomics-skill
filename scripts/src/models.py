@@ -51,6 +51,8 @@ class Variant(BaseModel):
     alt: str = Field(..., description="替代等位基因")
     gt: str = Field(..., description="基因型，如 0/1, 1/1, 0|1")
     dp: int = Field(0, description="测序深度")
+    gq: Optional[int] = Field(None, description="基因型质量 (Phred-scaled)")
+    ad: Optional[List[int]] = Field(None, description="等位基因深度 [ref, alt]")
     qual: float = Field(0.0, description="质量值")
     filter_status: str = Field("PASS", description="FILTER 字段")
 
@@ -200,6 +202,10 @@ class KeySNPResult(BaseModel):
     phenotype_description: str = Field("", description="表型描述")
     notes: str = Field("", description="注释说明")
     found_in_vcf: bool = Field(False, description="是否在 VCF 中检出")
+    dp: Optional[int] = Field(None, description="测序深度")
+    gq: Optional[int] = Field(None, description="基因型质量 (Phred-scaled)")
+    ad_ref: Optional[int] = Field(None, description="参考等位基因深度")
+    ad_alt: Optional[int] = Field(None, description="替代等位基因深度")
 
 
 class PersonalTraitPrediction(BaseModel):
