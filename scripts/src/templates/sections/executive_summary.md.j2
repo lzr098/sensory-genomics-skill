@@ -31,14 +31,15 @@
 
 {% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
 
-| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 支持质量 | 科普一句话 |
-|------|--------|------|---------|---------|---------|-----------|
+| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 支持质量 | gnomAD/ClinVar | 科普一句话 |
+|------|--------|------|---------|---------|---------|---------------|-----------|
 {% for finding in key_findings %}
-| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.phenotypic_impact[:30] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 30 %}...{% endif %} |
+| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.cross_check_summary or "—" }} | {{ finding.phenotypic_impact[:350] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 350 %}...{% endif %} |
 {% else %}
-| — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
+| — | — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
 {% endfor %}
 
 > **阅读指引**：上表为速览，每个发现的详细科普解释和分子机制见 [第 3 章](#3-感官子系统深度分析)。
+> **gnomAD/ClinVar 提示**：对于评估为"显著影响"或"完全丧失"的基因，已交叉验证 gnomAD 人群频率和 ClinVar 临床意义。若 ClinVar 标注为 Benign/Likely_benign，或 gnomAD 等位基因频率 >30%，该基因已降级处理（详见 [附录 H](#h-降级基因说明)）。
 
 ---

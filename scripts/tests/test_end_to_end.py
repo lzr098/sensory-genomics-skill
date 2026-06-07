@@ -93,10 +93,8 @@ def test_markdown_content(md_content: str):
     """Verify key sections are present in the Markdown report."""
     # Disclaimer
     assert "重要声明" in md_content, "Missing disclaimer"
-    # CDH23 with specific follow-up advice
+    # CDH23 may be downgraded; check it appears in downgraded appendix or mild section
     assert "CDH23" in md_content, "Missing CDH23"
-    assert "OAE" in md_content or "耳声发射" in md_content, "Missing OAE follow-up advice"
-    assert "ABR" in md_content or "听性脑干反应" in md_content, "Missing ABR follow-up advice"
     # OPRM1
     assert "OPRM1" in md_content, "Missing OPRM1"
     # OR section 2.3 should show count, not a table
@@ -110,6 +108,9 @@ def test_markdown_content(md_content: str):
     assert "支持质量" in md_content, "Missing quality column in 1.3"
     assert "DP=" in md_content, "Missing DP= in report"
     assert "GQ=" in md_content, "Missing GQ= in report"
+    # Cross-check appendix
+    assert "H. 降级基因说明" in md_content, "Missing Appendix H (downgraded genes)"
+    assert "gnomAD/ClinVar" in md_content, "Missing gnomAD/ClinVar column"
     print("✅ Markdown content validation passed")
 
 

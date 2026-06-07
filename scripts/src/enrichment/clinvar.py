@@ -86,6 +86,54 @@ def _query_clinvar_by_gene(gene_symbol: str) -> Optional[Dict[str, Any]]:
     }
 
 
+def query_clinvar_by_variant(chrom: str, pos: int, ref: str, alt: str) -> Optional[Dict[str, Any]]:
+    """Query local ClinVar VCF for a specific variant (position + ref/alt match).
+
+    Returns the first matching record, or None if not found / no local VCF.
+    """
+    if not _LOCAL_CLINVAR_VCF.exists():
+        return None
+
+    fmt = "%CHROM\t%POS\t%ID\t%REF\t%ALT\t%CLNSIG\t%CLNREVSTAT\t%CLNDN\t%GENEINFO\t%ALLELEID\t%CLNHGVS\t%MC\t%ORIGIN\t%RS\n"
+
+    try:
+        stdout = _bcftools_query([
+            "query", "-f", fmt,
+            "-r", f"{chrom}:{pos}-{pos}",
+            str(_LOCAL_CLINVAR_VCF),
+        ])
+    except RuntimeError:
+        return None
+
+    lines = [l for l in stdout.strip().split("\n") if l.strip()]
+    if not lines:
+        return None
+
+    for line in lines:
+        parts = line.split("\t")
+        if len(parts) < 14:
+            continue
+        (
+            c_chrom, c_pos, vid, c_ref, c_alt, clnsig, clnrevstat, clndn,
+            geneinfo, alleleid, clnhgvs, mc, origin, rs
+        ) = parts
+        # Multi-allelic support
+        alts = c_alt.split(",")
+        if c_ref == ref and alt in alts:
+            return {
+                "found": True,
+                "chrom": c_chrom,
+                "pos": int(c_pos),
+                "clnsig": clnsig if clnsig != "." else "Unknown",
+                "clnrevstat": clnrevstat if clnrevstat != "." else "Unknown",
+                "clndn": clndn if clndn != "." else "",
+                "rs": rs if rs != "." else None,
+                "source": "local_vcf",
+            }
+
+    return None
+
+
 class ClinVarClient(AsyncApiClient):
     """ClinVar E-utilities 客户端（带本地 VCF 优先查询）."""
 

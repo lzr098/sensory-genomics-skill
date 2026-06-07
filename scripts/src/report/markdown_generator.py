@@ -9,10 +9,39 @@ from typing import Any, Dict, List, Optional
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+from src.enrichment.clinvar import query_clinvar_by_variant
 from src.logger import get_logger
 from src.models import GeneCard, SensoryReport, Variant
 
 logger = get_logger(__name__)
+
+# ClinVar significance rank (lower = more benign)
+_CLINVAR_RANK = {
+    "benign": 0,
+    "likely_benign": 1,
+    "uncertain_significance": 2,
+    "vus": 2,
+    "likely_pathogenic": 3,
+    "pathogenic": 4,
+}
+
+
+def _parse_clinvar_significance(clnsig: str) -> str:
+    """Normalize ClinVar CLNSIG to a simple category."""
+    if not clnsig or clnsig == ".":
+        return "unknown"
+    s = clnsig.lower().replace(" ", "_").replace("-", "_")
+    if "benign/likely_benign" in s or "benign" in s and "pathogenic" not in s:
+        return "benign"
+    if "likely_benign" in s:
+        return "likely_benign"
+    if "pathogenic/likely_pathogenic" in s or "pathogenic" in s and "benign" not in s:
+        return "pathogenic"
+    if "likely_pathogenic" in s:
+        return "likely_pathogenic"
+    if "uncertain_significance" in s or "vus" in s:
+        return "vus"
+    return "unknown"
 
 
 class MarkdownReportGenerator:
@@ -64,17 +93,47 @@ class MarkdownReportGenerator:
 
     def _build_context(self, report: SensoryReport) -> Dict[str, Any]:
         """构建模板上下文."""
-        # 构建各子系统的基因卡片列表
+        # Cross-check impactful genes against gnomAD/ClinVar
+        cross_checks: Dict[str, Dict[str, Any]] = {}
+        for card in report.gene_cards:
+            if card.assessment.level in ("完全丧失", "显著影响", "部分影响"):
+                cross_checks[card.gene_symbol] = self._cross_check_gene(card)
+
+        # Downgraded gene symbols set
+        downgraded_genes = {
+            card.gene_symbol for card in report.gene_cards
+            if card.assessment.level in ("完全丧失", "显著影响")
+            and cross_checks.get(card.gene_symbol, {}).get("downgrade")
+        }
+
+        # 构建各子系统的基因卡片列表（排除已降级的显著影响/完全丧失基因）
         subsys_cards: Dict[str, List[GeneCard]] = {}
         for card in report.gene_cards:
+            if card.gene_symbol in downgraded_genes:
+                continue
             ss = card.subsystem or "unknown"
             subsys_cards.setdefault(ss, []).append(card)
 
         # 构建关键发现列表（用于执行摘要）
         key_findings = []
+        downgraded_findings = []
         for card in report.gene_cards:
             level = card.assessment.level
             if level in ("完全丧失", "显著影响", "部分影响"):
+                cc = cross_checks.get(card.gene_symbol, {})
+
+                # For 显著影响/完全丧失: downgrade removes from key_findings
+                if level in ("完全丧失", "显著影响") and cc.get("downgrade"):
+                    downgraded_findings.append({
+                        "gene": card.gene_symbol,
+                        "subsystem": card.subsystem,
+                        "original_level": level,
+                        "downgrade_reasons": cc.get("downgrade_reasons", []),
+                        "gnomad_af_max": cc.get("gnomad_af_max", 0.0),
+                        "variant_checks": cc.get("variant_checks", []),
+                    })
+                    continue
+
                 # 收集关键变异信息
                 top_vars = self._get_top_variants(card.variants, n=2)
                 var_info = ", ".join([
@@ -82,7 +141,6 @@ class MarkdownReportGenerator:
                     for v in top_vars
                 ])
                 # Build per-variant quality summary for top variants
-                # GQ is only shown if < 90; DP and AD are always shown
                 var_quality = []
                 for v in top_vars:
                     qparts = []
@@ -95,6 +153,14 @@ class MarkdownReportGenerator:
                     var_quality.append(", ".join(qparts) if qparts else "—")
                 quality_summary = "; ".join(var_quality) if var_quality else "—"
 
+                # Build cross-check evidence summary for display
+                cc_notes = []
+                if cc.get("gnomad_af_max"):
+                    cc_notes.append(f"gnomAD AF={cc['gnomad_af_max']:.1%}")
+                if cc.get("clinvar_sigs"):
+                    cc_notes.append(f"ClinVar={', '.join(cc['clinvar_sigs'])}")
+                cc_summary = "; ".join(cc_notes) if cc_notes else "—"
+
                 key_findings.append({
                     "gene": card.gene_symbol,
                     "subsystem": card.subsystem,
@@ -103,6 +169,7 @@ class MarkdownReportGenerator:
                     "variants": var_info,
                     "variant_objects": top_vars,
                     "quality_summary": quality_summary,
+                    "cross_check_summary": cc_summary,
                     "inheritance_pattern": card.assessment.inheritance_pattern or "未知",
                     "phenotypic_impact": self._infer_phenotypic_impact(card.gene_symbol, card.subsystem, level, top_vars),
                 })
@@ -159,6 +226,9 @@ class MarkdownReportGenerator:
                            if c.subsystem != "olfaction"
                            and c.assessment.level in ("完全丧失", "显著影响", "部分影响")]
 
+        # Downgraded gene symbols set
+        downgraded_genes = {d["gene"] for d in downgraded_findings}
+
         return {
             "report": report,
             "sample_id": report.sample_id,
@@ -168,10 +238,13 @@ class MarkdownReportGenerator:
             "subsystems": report.subsystems,
             "gene_cards": report.gene_cards,
             # 按影响级别分层：有影响 (>=部分影响) → 主报告，其他 → 附录
-            "impactful_cards": [c for c in report.gene_cards 
-                if c.assessment.level in ("完全丧失", "显著影响", "部分影响")],
-            "mild_cards": [c for c in report.gene_cards 
-                if c.assessment.level in ("可能轻微影响", "无影响")],
+            # Downgraded 显著影响/完全丧失 genes are excluded from impactful_cards
+            "impactful_cards": [c for c in report.gene_cards
+                if c.assessment.level in ("完全丧失", "显著影响", "部分影响")
+                and c.gene_symbol not in downgraded_genes],
+            "mild_cards": [c for c in report.gene_cards
+                if c.assessment.level in ("可能轻微影响", "无影响")
+                or c.gene_symbol in downgraded_genes],
             "subsys_cards": subsys_cards,
             "tas2r38": report.tas2r38,
             "mitochondrial": report.mitochondrial,
@@ -182,21 +255,25 @@ class MarkdownReportGenerator:
             "non_or_lof": non_or_lof,
             "or_heterozygous_lof": or_heterozygous_lof,
             "or_homozygous_lof_unknown": or_homozygous_lof_unknown,
-            "non_or_impactful": non_or_impactful,
+            "non_or_impactful": [c for c in non_or_impactful
+                if c.gene_symbol not in downgraded_genes],
             "other_lof": other_lof,
             "executive_summary": report.executive_summary,
             "personal_traits": report.executive_summary.personal_traits,
             "disclaimer_zh": report.disclaimer_zh,
             "data_availability": report.data_availability,
             "key_findings": key_findings,
+            "downgraded_findings": downgraded_findings,
+            "cross_checks": cross_checks,
             "profile": profile,
             "gnomad_refs": gnomad_refs,
             "key_snps": report.key_snps if report.key_snps else [],
             # SNP hits: key SNPs actually found in VCF
             "snp_hits": [s for s in (report.key_snps or []) if s.found_in_vcf],
-            # High-impact cards: significant or above
+            # High-impact cards: significant or above (excluding downgraded)
             "high_impact_cards": [c for c in report.gene_cards
-                if c.assessment.level in ("完全丧失", "显著影响")],
+                if c.assessment.level in ("完全丧失", "显著影响")
+                and c.gene_symbol not in downgraded_genes],
             # LOF/GOF variants across all genes
             "lof_gof_variants": self._collect_lof_gof_variants(report.gene_cards),
             # All analyzed genes list for appendix
@@ -210,6 +287,78 @@ class MarkdownReportGenerator:
                 for card in report.gene_cards
             },
         }
+
+    @staticmethod
+    def _cross_check_gene(card: GeneCard) -> Dict[str, Any]:
+        """Cross-check impactful gene variants against gnomAD AF and ClinVar.
+
+        Rules (per user request):
+        - If ClinVar benign/likely_benign OR gnomAD AF > 30%  → downgrade.
+        - If ClinVar VUS/pathogenic/unknown AND gnomAD AF < 30% → keep but warn.
+
+        Returns dict with keys:
+            downgrade (bool), downgrade_reasons (List[str]),
+            gnomad_af_max (float), clinvar_sigs (List[str]),
+            variant_checks (List[dict])
+        """
+        result: Dict[str, Any] = {
+            "downgrade": False,
+            "downgrade_reasons": [],
+            "gnomad_af_max": 0.0,
+            "clinvar_sigs": [],
+            "variant_checks": [],
+        }
+
+        variants = card.key_variants or card.variants
+        if not variants:
+            return result
+
+        all_downgrade = True
+        for v in variants:
+            # gnomAD AF (variant-level from VEP)
+            af = max(
+                v.gnomad_af_exome or 0.0,
+                v.gnomad_af_genome or 0.0,
+                v.af_gnomad or 0.0,
+            )
+            result["gnomad_af_max"] = max(result["gnomad_af_max"], af)
+
+            # ClinVar (variant-level via local VCF)
+            cv = query_clinvar_by_variant(v.chrom, v.pos, v.ref, v.alt)
+            sig = _parse_clinvar_significance(cv["clnsig"] if cv else "")
+            if sig != "unknown":
+                result["clinvar_sigs"].append(sig)
+
+            var_check = {
+                "variant": f"{v.chrom}:{v.pos} {v.ref}>{v.alt}",
+                "af": af,
+                "clinvar": cv["clnsig"] if cv else "未注释",
+                "downgrade": False,
+                "downgrade_reason": "",
+            }
+
+            # Rule: benign/likely_benign  → downgrade
+            if sig in ("benign", "likely_benign"):
+                var_check["downgrade"] = True
+                var_check["downgrade_reason"] = f"ClinVar={cv['clnsig'] if cv else 'benign'}"
+            # Rule: gnomAD AF > 30%  → downgrade
+            elif af > 0.30:
+                var_check["downgrade"] = True
+                var_check["downgrade_reason"] = f"gnomAD AF={af:.1%}"
+
+            if not var_check["downgrade"]:
+                all_downgrade = False
+
+            result["variant_checks"].append(var_check)
+
+        # Gene-level: downgrade ONLY if ALL key variants are downgraded
+        if all_downgrade and result["variant_checks"]:
+            result["downgrade"] = True
+            result["downgrade_reasons"] = [
+                vc["downgrade_reason"] for vc in result["variant_checks"]
+            ]
+
+        return result
 
     def _collect_lof_gof_variants(self, gene_cards: List[GeneCard]) -> List[Dict[str, Any]]:
         """收集所有 LOF/GOF 变异."""
