@@ -717,7 +717,7 @@ class MarkdownReportGenerator:
                 var_type_cn = cls._cn_consequence(v0.consequence)
                 zyg = "纯合"
                 if max_af is not None and max_af > 0.30:
-                    olfactory_impact = "常见多态，预计不影响嗅觉 — 该嗅觉能力预计无影响"
+                    olfactory_impact = "常见多态 — 该嗅觉能力预计无影响"
                 elif max_af is not None and max_af < 0.01:
                     if "frameshift" in (v0.consequence or "") or "stop_gained" in (v0.consequence or ""):
                         olfactory_impact = "可能显著影响对该气味的感知能力"
