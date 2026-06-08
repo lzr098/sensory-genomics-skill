@@ -709,6 +709,31 @@ class MarkdownReportGenerator:
             if has_protein_impact:
                 with_protein += 1
 
+            # Build Chinese variant type and olfactory impact prediction
+            var_type_cn = ""
+            olfactory_impact = ""
+            if a_vars:
+                v0 = a_vars[0]
+                var_type_cn = cls._cn_consequence(v0.consequence)
+                zyg = "纯合"
+                if max_af is not None and max_af > 0.30:
+                    olfactory_impact = "常见多态，预计不影响嗅觉 — 该嗅觉能力预计无影响"
+                elif max_af is not None and max_af < 0.01:
+                    if "frameshift" in (v0.consequence or "") or "stop_gained" in (v0.consequence or ""):
+                        olfactory_impact = "可能显著影响对该气味的感知能力"
+                    else:
+                        olfactory_impact = "可能降低对该气味的敏感度"
+                else:
+                    olfactory_impact = "可能对该气味敏感度有一定影响"
+            elif b_vars:
+                v0 = b_vars[0]
+                var_type_cn = cls._cn_consequence(v0.consequence)
+                zyg = "杂合"
+                olfactory_impact = "预计不影响嗅觉 — 杂合，嗅觉系统高度冗余"
+            else:
+                var_type_cn = "同义/非编码区"
+                olfactory_impact = "预计不影响嗅觉功能"
+
             entry = {
                 "gene": gene,
                 "ligand_zh": lig.get("ligand_zh", ""),
@@ -722,6 +747,8 @@ class MarkdownReportGenerator:
                 "max_af": max_af,
                 "min_af": min_af,
                 "af_note": af_note,
+                "var_type_cn": var_type_cn,
+                "olfactory_impact": olfactory_impact,
                 "total_variants": len(variants),
                 "level": card.assessment.level,
                 "uniprot": card.enrichment_data.get("uniprot", {}) if card.enrichment_data else {},
@@ -834,6 +861,25 @@ class MarkdownReportGenerator:
                 from src.logger import get_logger
                 get_logger(__name__).warning("Failed to load or_ligands.json: %s", exc)
         return cls._cached_ligand_map
+
+    @classmethod
+    def _cn_consequence(cls, csq: str) -> str:
+        """Translate variant consequence to Chinese."""
+        if not csq:
+            return "未知"
+        cn_map = {
+            "frameshift_variant": "移码突变",
+            "stop_gained": "提前终止",
+            "stop_lost": "终止丢失",
+            "start_lost": "起始丢失",
+            "missense_variant": "错义突变",
+            "splice_acceptor_variant": "剪接受体位点",
+            "splice_donor_variant": "剪接供体位点",
+            "inframe_deletion": "非框内缺失",
+            "inframe_insertion": "非框内插入",
+            "synonymous_variant": "同义突变",
+        }
+        return cn_map.get(csq, csq.replace("_variant", "").replace("_", " "))
 
     @staticmethod
     def _build_comprehensive_profile(report: SensoryReport) -> List[Dict[str, Any]]:

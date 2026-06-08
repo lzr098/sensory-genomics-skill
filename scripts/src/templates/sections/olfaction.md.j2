@@ -20,27 +20,15 @@
 > **结论**: 未发现真正罕见的功能丧失变异需关注
 > {% endif %}
 
-| 基因 | 配体气味 | 变异 | AF | 解读 |
-|------|---------|------|-----|------|
+| 基因 | 配体气味 | 变异类型 | AF | 嗅觉功能预估 |
+|------|---------|---------|-----|------------|
 {% for entry in known_ligand_or_tiers.all_genes if entry.has_variants %}
-{% set gene = entry.gene %}
 {% set odor = entry.odor_zh if entry.odor_zh else entry.ligand_zh %}
-{% if entry.tier_a_variants %}
-{% for v in entry.tier_a_variants[:1] %}
+{% if odor and odor != '详见文献' and not odor.startswith('详见文献') %}
+{% set gene = entry.gene %}
 {% set af = entry.max_af %}
 {% set af_str = ('%.0f%%'|format(af*100)) if af is not none else 'N/A' %}
-{% set note = entry.af_note if entry.af_note else '' %}
-| **{{ gene }}** | {{ odor[:20] if odor else '—' }} | HOM {{ v.consequence.replace('_variant','') }} ({{ v.ref }}>{{ v.alt }}) | {{ af_str }} | {{ note }} |
-{% endfor %}
-{% elif entry.tier_b_variants %}
-{% for v in entry.tier_b_variants[:1] %}
-{% set af = entry.max_af %}
-{% set af_str = ('%.0f%%'|format(af*100)) if af is not none else 'N/A' %}
-{% set note = entry.af_note if entry.af_note else '杂合，嗅觉冗余下影响轻微' %}
-| {{ gene }} | {{ odor[:20] if odor else '—' }} | HET {{ v.consequence.replace('_variant','') }} ({{ v.ref }}>{{ v.alt }}) | {{ af_str }} | {{ note }} |
-{% endfor %}
-{% else %}
-| {{ gene }} | {{ odor[:20] if odor else '—' }} | UTR/syn only | — | 非编码区变异，无蛋白影响 |
+| **{{ gene }}** | {{ odor[:30] }} | {{ entry.var_type_cn }} | {{ af_str }} | {{ entry.olfactory_impact }} |
 {% endif %}
 {% endfor %}
 
