@@ -181,6 +181,9 @@ snps:
       GG:
         label: 干耳垢
         description: ABCC11 功能缺失等位基因纯合，耳垢为干燥片状，腋下体味较轻，东亚人群中高频
+      TT:
+        label: 干耳垢
+        description: ABCC11 T等位基因纯合（东亚高频型），耳垢为干燥片状，腋下体味较轻
     notes: ABCC11 Gly180Arg (G180R)，A 等位基因导致 ABCC11 功能丧失，与干耳垢、轻度体味相关，在东亚人群中频率约80-95%
   rs1800407:
     gene: OCA2
@@ -880,6 +883,9 @@ snps:
       CC:
         label: 高VDR活性/骨密度倾向
         description: VDR 424aa短蛋白纯合，维生素D受体转录活性更高，骨密度/钙吸收效率可能增强
+      GG:
+        label: VDR G等位基因纯合（罕见）
+        description: VDR罕见等位基因纯合型，文献数据有限，表型未完全阐明
     notes: VDR FokI rs2228570 (c.2T>C, p.Met1Thr)，T=ATG起始密码子(427aa)，C=ACG(424aa, 更短但转录活性更高)，与骨密度、钙吸收效率相关
   rs1800587:
     gene: IL1A

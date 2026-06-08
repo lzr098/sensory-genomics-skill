@@ -34,6 +34,7 @@ class AsyncApiClient(ABC):
         rate_limit: int = 10,
         max_retries: int = 3,
         timeout: int = 30,
+        trust_env: bool = False,
     ) -> None:
         """初始化 API 客户端.
 
@@ -44,6 +45,7 @@ class AsyncApiClient(ABC):
             rate_limit: 每秒最大请求数。
             max_retries: 最大重试次数。
             timeout: HTTP 超时（秒）。
+            trust_env: 是否读取系统代理设置。默认 False（避免 Clash 等代理干扰）。
         """
         self.api_name = api_name
         self.base_url = base_url.rstrip("/")
@@ -52,11 +54,12 @@ class AsyncApiClient(ABC):
         self.timeout = aiohttp.ClientTimeout(total=timeout)
         self.semaphore = asyncio.Semaphore(rate_limit)
         self.session: Optional[aiohttp.ClientSession] = None
+        self._trust_env = trust_env
 
     async def _get_session(self) -> aiohttp.ClientSession:
         """获取或创建 aiohttp 会话."""
         if self.session is None or self.session.closed:
-            self.session = aiohttp.ClientSession(timeout=self.timeout, trust_env=True)
+            self.session = aiohttp.ClientSession(timeout=self.timeout, trust_env=self._trust_env)
         return self.session
 
     async def query(self, key: str) -> Dict[str, Any]:

@@ -12,7 +12,7 @@
 | 基因集 | 预定义五大感官子系统基因集（YAML 静态配置） |
 | 功能评估 | 五级评估体系，综合蛋白影响 × 基因确定性 × 遗传模式 |
 | 遗传模式 | 隐性纯合 / X-连锁 / 显性 / 线粒体 |
-| API 富集 | UniProt（蛋白功能）、gnomAD（人群 AF）、ClinVar（记录）、GTEx（表达） |
+| API 富集 | UniProt（蛋白功能）、gnomAD（本地预计算 AF）、ClinVar（本地 VCF）、GTEx（表达，待集成） |
 | 缓存策略 | SQLite 异步缓存，TTL 30 天 |
 
 ### 5.2 已知局限
@@ -33,13 +33,13 @@
 
 ### 5.3 数据可用性状态
 
-| 数据类型 | 来源 | 用途 | 局限性 |
-|---------|------|------|--------|
-| gnomAD AF | gnomAD | 人群等位基因频率参考 | 仅作信息展示，不参与评估 |
-| ClinVar | NCBI | 已知变异记录查询 | 仅作信息展示，不参与评估 |
-| UniProt | UniProt | 蛋白功能与拓扑 | 仅作信息展示，不参与评估 |
-| GTEx | GTEx Portal | 组织表达水平 | 仅作信息展示，不参与评估 |
-| SpliceAI | VEP / 外部 | 剪接影响预测 | v0.1.0 未全面集成 |
-| CADD | VEP / 外部 | 变异致病性评分 | v0.1.0 未全面集成 |
+| 数据类型 | 来源 | 本次调用状态 | 说明 |
+|---------|------|------------|------|
+| gnomAD AF | 本地预计算 DB (sensory_variants_vep.sqlite, 19,861 条) | ✅ 本次分析调用成功 | 仅覆盖 AF≥0.1% 常见变异；罕见/私有变异不在 DB 中 |
+| ClinVar | 本地 VCF (clinvar.vcf.gz, 183MB) | ✅ 本次分析调用成功 | bcftools 本地查询，零网络延迟 |
+| UniProt | REST API (rest.uniprot.org) | ✅ 本次分析调用成功 | 异步并发查询，覆盖所有需富集的基因 |
+| GTEx | REST API (gtexportal.org) + 本地 ENSG 映射 | ⚠️ 待集成 | gene_ensg_map.json 已就绪 (501 条)，API 连通性问题待解决 |
+| SpliceAI | VEP / 外部 | ❌ 待集成 | v0.2.0 未集成 |
+| CADD | VEP / 外部 | ❌ 待集成 | v0.2.0 未集成 |
 
 ---

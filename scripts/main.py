@@ -22,6 +22,7 @@ from src.enrichment.cache import CacheManager
 from src.enrichment.clinvar import ClinVarClient
 from src.enrichment.gnomad import GnomADClient
 from src.enrichment.gtex import GTExClient
+from src.enrichment.local_gnomad import LocalGnomADClient
 from src.enrichment.uniprot import UniProtClient
 from src.gene_sets.bed_mapper import BedMapper
 from src.gene_sets.filter import SensoryFilter
@@ -149,6 +150,7 @@ class SensoryPipeline:
             cache=self.cache,
             rate_limit=self.skill_config.rate_limits.uniprot,
         )
+        self.local_gnomad = LocalGnomADClient()
 
     def _load_precomputed_data(self) -> None:
         """加载预计算的基因坐标和转录本映射数据."""
@@ -238,6 +240,12 @@ class SensoryPipeline:
         # Stage 6: API 富集（异步并发）
         enrichment_data = await self._enrich_genes(gene_cards)
         logger.info("Stage 6 complete: enriched %d genes", len(enrichment_data))
+
+        # Stage 6.5: OR 基因分级重分类（使用 enrichment 数据）
+        or_tier_results = self._reclassify_or_genes_with_enrichment(
+            gene_cards, enrichment_data, or_tier_results
+        )
+        logger.info("Stage 6.5 complete: OR tiers reclassified with enrichment data")
 
         # Stage 7: 构建报告上下文
         report = self._build_report(
@@ -686,6 +694,29 @@ class SensoryPipeline:
             logger.error("OR tier classification failed: %s", exc)
             return None
 
+    def _reclassify_or_genes_with_enrichment(
+        self,
+        gene_cards: List[GeneCard],
+        enrichment_data: Dict[str, Dict[str, Any]],
+        fallback_tiers: Optional[List[Any]] = None,
+    ) -> Optional[List[Any]]:
+        """使用 enrichment 数据重新分类 OR 基因（gnomAD AF + ClinVar）."""
+        or_variants = []
+        for card in gene_cards:
+            if card.gene_symbol.startswith("OR"):
+                or_variants.extend(card.variants)
+
+        if not or_variants:
+            return None
+
+        try:
+            return self.or_classifier.classify_with_enrichment(
+                or_variants, self.config.sex, self.gene_sets, enrichment_data
+            )
+        except Exception as exc:
+            logger.warning("OR enrichment-aware reclassification failed: %s, using fallback", exc)
+            return fallback_tiers
+
     # 预计算的影响程度排序字典（用于按需 API 富集阈值判断）
     _LEVEL_RANK: Dict[str, int] = {
         "无影响": 0,
@@ -703,54 +734,119 @@ class SensoryPipeline:
     async def _enrich_genes(
         self, gene_cards: List[GeneCard]
     ) -> Dict[str, Dict[str, Any]]:
-        """异步并发查询外部 API 富集基因信息（按需：仅评估≥部分影响的基因）."""
+        """异步并发查询外部 API 富集基因信息.
+
+        双路径策略:
+            Path A (primary): 所有子系统评估级别 >= "部分影响" 的基因
+                → 基因级: UniProt + gnomAD(gene) + ClinVar + GTEx
+            Path B (secondary): OR 基因中检出纯合蛋白影响变异的基因
+                → 基因级: UniProt + ClinVar(gene) + GTEx
+                → 变异级: gnomAD(per variant) → enrichment[gene]["gnomad_variants"]
+
+        两条路径去重后统一并发查询。
+        """
         if not self.config.show_reference_info:
             return {}
 
-        # 按需筛选：仅对评估级别 >= "部分影响" 的基因查询 API
+        # ── Path A: 影响评估阈值筛选 ──
         min_rank = self._LEVEL_RANK.get("部分影响", 2)
         impactful_cards = [
             card for card in gene_cards
             if card.gene_symbol and self._level_rank(card.assessment.level) >= min_rank
         ]
-        genes = [card.gene_symbol for card in impactful_cards]
+        path_a_genes = {card.gene_symbol for card in impactful_cards}
 
-        if not genes:
-            logger.info("Stage 6: no genes meet impact threshold, skipping API enrichment")
+        # ── Path B: OR 基因纯合蛋白影响变异 ──
+        or_protein_csq = {"frameshift_variant", "stop_gained",
+                          "splice_acceptor_variant", "splice_donor_variant",
+                          "missense_variant", "inframe_deletion", "inframe_insertion"}
+        path_b_genes: Dict[str, list] = {}  # gene → list of homozygous protein-affecting variants
+        for card in gene_cards:
+            gene = card.gene_symbol
+            if not gene or not gene.startswith("OR"):
+                continue
+            if gene in path_a_genes:
+                continue
+            homo_variants = [
+                v for v in card.variants
+                if v.gt == "1/1" and v.consequence in or_protein_csq
+            ]
+            if homo_variants:
+                path_b_genes[gene] = homo_variants
+
+        all_genes = sorted(set(path_a_genes) | set(path_b_genes.keys()))
+        if not all_genes:
+            logger.info("Stage 6: no genes match enrichment criteria, skipping")
             return {}
 
-        logger.info("Stage 6: enriching %d impactful genes (threshold: 部分影响+)", len(genes))
+        logger.info(
+            "Stage 6: enriching %d genes (Path A: %d impactful, Path B: %d OR-homozygous)",
+            len(all_genes), len(path_a_genes), len(path_b_genes),
+        )
 
-        # 将所有基因的所有 API 查询 flatten 为一个大任务列表
+        # ── 构建任务 ──
+        # 基因级 API: UniProt, ClinVar, GTEx → 对所有基因
+        # gnomAD: gene-level for Path A, variant-level for Path B
         all_tasks = []
-        task_meta = []  # (gene, api_name) 用于结果归类
+        task_meta = []  # (gene, api_name, variant_info_or_None)
 
-        for gene in genes:
-            all_tasks.extend([
-                self._safe_query(self.uniprot_client.query, gene),
-                self._safe_query(self.gnomad_client.query, gene),
-                self._safe_query(self.clinvar_client.query, gene),
-                self._safe_query(self.gtex_client.query, gene),
-            ])
-            task_meta.extend([
-                (gene, "uniprot"),
-                (gene, "gnomad"),
-                (gene, "clinvar"),
-                (gene, "gtex"),
-            ])
+        for gene in all_genes:
+            # 基因级: UniProt, ClinVar, GTEx
+            all_tasks.append(self._safe_query(self.uniprot_client.query, gene))
+            task_meta.append((gene, "uniprot", None))
+            all_tasks.append(self._safe_query(self.clinvar_client.query, gene))
+            task_meta.append((gene, "clinvar", None))
+            all_tasks.append(self._safe_query(self.gtex_client.query, gene))
+            task_meta.append((gene, "gtex", None))
 
-        # 一次性并发所有查询
+            # gnomAD
+            if gene in path_a_genes:
+                # Path A: 基因级约束查询
+                all_tasks.append(self._safe_query(self.gnomad_client.query, gene))
+                task_meta.append((gene, "gnomad", None))
+            elif gene in path_b_genes:
+                # Path B: 逐变异频率查询（本地 gnomAD precompute DB）
+                for v in path_b_genes[gene]:
+                    all_tasks.append(self._safe_query_variant(
+                        self.local_gnomad.query_variant_async,
+                        str(v.chrom), v.pos, v.ref, v.alt,
+                    ))
+                    task_meta.append((gene, "gnomad_variant", {
+                        "pos": v.pos, "ref": v.ref, "alt": v.alt,
+                        "consequence": v.consequence,
+                    }))
+
+        # ── 并发执行 ──
         results = await asyncio.gather(*all_tasks, return_exceptions=True)
 
-        # 按基因归类结果（仅对 impactful 基因填充；其余基因留空）
+        # ── 按基因归类 ──
         enrichment: Dict[str, Dict[str, Any]] = {}
-        for (gene, api_name), result in zip(task_meta, results):
+        for (gene, api_name, variant_info), result in zip(task_meta, results):
             if gene not in enrichment:
                 enrichment[gene] = {}
-            if isinstance(result, Exception):
-                enrichment[gene][api_name] = {"error": str(result)}
+
+            if api_name == "gnomad_variant":
+                # 变异性 gnomAD → 聚合到 gnomad_variants 列表
+                variants_list = enrichment[gene].setdefault("gnomad_variants", [])
+                entry = {
+                    "variant": variant_info,
+                }
+                if isinstance(result, Exception):
+                    entry["error"] = str(result)
+                else:
+                    entry["result"] = result
+                variants_list.append(entry)
             else:
-                enrichment[gene][api_name] = result
+                if isinstance(result, Exception):
+                    enrichment[gene][api_name] = {"error": str(result)}
+                else:
+                    enrichment[gene][api_name] = result
+
+        # 同样为 Path A 基因补充一个空的 gnomad_variants（如果没有的话）
+        # 维持 report 模板的兼容性
+        for gene in path_a_genes:
+            if gene in enrichment and "gnomad_variants" not in enrichment[gene]:
+                enrichment[gene]["gnomad_variants"] = []
 
         return enrichment
 
@@ -761,6 +857,14 @@ class SensoryPipeline:
             return await query_func(key)
         except Exception as exc:
             return {"error": str(exc), "api": "unknown", "key": key}
+
+    @staticmethod
+    async def _safe_query_variant(query_func, *args, **kwargs) -> Any:
+        """安全查询变异级别的 API，异常时返回降级结果."""
+        try:
+            return await query_func(*args, **kwargs)
+        except Exception as exc:
+            return {"error": str(exc)}
 
     def _build_report(
         self,
@@ -879,8 +983,87 @@ async def run_analysis(config: AnalysisConfig, bed_path: Optional[str] = None) -
     return report
 
 
+def _resolve_vcf_with_index(vcf_path: str) -> str:
+    """确保 VCF 有可用的 tabix 索引，必要时通过多重策略解决路径问题.
+
+    策略优先级:
+        1. 索引已存在 → 直接返回原路径
+        2. 在原始路径创建索引
+        3. 创建 /tmp symlink（绕过路径编码问题）→ 在 symlink 上索引
+        4. 复制到 /tmp（绕过只读/iCloud 问题）→ 在副本上索引
+
+    Returns:
+        带可用索引的 VCF 路径（可能指向 tmp 副本）。
+    Raises:
+        RuntimeError: 所有策略均失败。
+    """
+    idx_path = vcf_path + ".tbi"
+    idx_path_csi = vcf_path + ".csi"
+
+    # 策略 1: 索引已存在
+    if os.path.exists(idx_path) or os.path.exists(idx_path_csi):
+        return vcf_path
+
+    # 策略 2: 在原始路径直接索引
+    logger.info("VCF index not found, attempting direct indexing...")
+    try:
+        subprocess.run(
+            ["bcftools", "index", "-t", vcf_path],
+            stderr=subprocess.PIPE, check=True, timeout=120,
+        )
+        logger.info("VCF index created at original path: %s", idx_path)
+        return vcf_path
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        logger.warning("Direct indexing failed (%s), trying symlink strategy...", exc)
+
+    # 策略 3: 创建 /tmp symlink（绕过路径中的特殊字符）
+    tmp_symlink = os.path.join(tempfile.gettempdir(), f"sensory_vcf_{os.getpid()}.vcf.gz")
+    try:
+        if os.path.exists(tmp_symlink) or os.path.islink(tmp_symlink):
+            os.unlink(tmp_symlink)
+        os.symlink(os.path.abspath(vcf_path), tmp_symlink)
+        logger.info("Created symlink: %s -> %s", tmp_symlink, vcf_path)
+        subprocess.run(
+            ["bcftools", "index", "-t", tmp_symlink],
+            stderr=subprocess.PIPE, check=True, timeout=120,
+        )
+        logger.info("VCF index created via symlink: %s.tbi", tmp_symlink)
+        return tmp_symlink
+    except (OSError, subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        logger.warning("Symlink strategy failed (%s), trying copy strategy...", exc)
+        if os.path.exists(tmp_symlink) or os.path.islink(tmp_symlink):
+            os.unlink(tmp_symlink)
+
+    # 策略 4: 复制到 /tmp（最终 fallback）
+    tmp_copy = os.path.join(tempfile.gettempdir(), f"sensory_vcf_{os.getpid()}_copy.vcf.gz")
+    try:
+        logger.info("Copying VCF to %s ...", tmp_copy)
+        subprocess.run(
+            ["cp", vcf_path, tmp_copy],
+            stderr=subprocess.PIPE, check=True, timeout=300,
+        )
+        subprocess.run(
+            ["bcftools", "index", "-t", tmp_copy],
+            stderr=subprocess.PIPE, check=True, timeout=120,
+        )
+        logger.info("VCF copied and indexed at: %s", tmp_copy)
+        return tmp_copy
+    except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as exc:
+        logger.error("Copy strategy also failed: %s", exc)
+        if os.path.exists(tmp_copy):
+            os.unlink(tmp_copy)
+        raise RuntimeError(
+            f"Failed to create VCF index via all strategies. "
+            f"Original path: {vcf_path}. "
+            f"Please check file permissions and bcftools installation."
+        )
+
+
 def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str, Optional[str]]:
     """用 BED 文件筛选感官基因区域的变异，返回临时 VCF 路径和使用的 BED 路径.
+
+    索引策略：多重 fallback（直接索引 → symlink → 复制到 /tmp），
+    只有所有策略都失败才放弃 BED 过滤。不再因路径编码或权限问题静默跳过。
 
     Args:
         vcf_path: 输入 VCF 路径。
@@ -912,11 +1095,6 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
         skill_root / "assets" / "data" / "sensory_gene_regions.bed",
     ]
 
-    # 外部 BED
-    external_beds = [
-        "/tmp/core_genes.bed",
-    ]
-
     bed_path = None
     bed_source = "broad"
 
@@ -933,40 +1111,31 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
 
     # 再找基因全区域 BED
     if bed_path is None:
-        for bed in broad_beds + [Path(p) for p in external_beds]:
+        for bed in broad_beds:
             if bed.exists():
                 bed_path = str(bed)
                 bed_source = "broad (gene region)"
                 break
 
     if bed_path is None:
-        logger.warning("No BED file found, using full VCF")
-        return vcf_path, None
+        # 彻底没有 BED — 这是 hard error，不能静默跳过
+        raise RuntimeError(
+            "No sensory gene BED file found. "
+            "Please run precompute first: python scripts/precompute.py"
+        )
 
-    # 检查并自动创建 VCF 索引（bcftools -R 需要索引）
-    idx_path = vcf_path + ".tbi"
-    idx_path_csi = vcf_path + ".csi"
-    if not os.path.exists(idx_path) and not os.path.exists(idx_path_csi):
-        logger.info("VCF index not found, auto-indexing with bcftools...")
-        try:
-            subprocess.run(
-                ["bcftools", "index", "-t", vcf_path],
-                stderr=subprocess.PIPE, check=True, timeout=120,
-            )
-            logger.info("VCF index created: %s", idx_path)
-        except subprocess.CalledProcessError as exc:
-            logger.error("Auto-index failed: %s", exc)
-            logger.warning("Proceeding without BED filter due to missing index")
-            return vcf_path, None
-        except subprocess.TimeoutExpired:
-            logger.error("Auto-index timeout")
-            return vcf_path, None
+    # 多重策略确保 VCF 索引可用
+    try:
+        indexed_vcf = _resolve_vcf_with_index(vcf_path)
+    except RuntimeError as exc:
+        logger.critical("BED filter failed — all indexing strategies exhausted: %s", exc)
+        raise  # 不再静默跳过，直接报错让用户知道
 
     # 检查 VCF 染色体命名
     has_chr = False
     try:
         result = subprocess.run(
-            ["bcftools", "view", vcf_path],
+            ["bcftools", "view", indexed_vcf],
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, timeout=10
         )
         for line in result.stdout.split("\n"):
@@ -984,7 +1153,6 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
     bed_has_chr = first_line.startswith("chr")
 
     if has_chr and not bed_has_chr:
-        # 为 BED 添加 chr 前缀
         tmp_bed = tempfile.NamedTemporaryFile(mode="w", suffix=".bed", delete=False)
         with open(bed_path, "r") as f:
             for line in f:
@@ -1001,10 +1169,10 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
 
     try:
         subprocess.run(
-            ["bcftools", "view", "-Oz", "-o", tmp_vcf.name, "-R", bed_path, vcf_path],
+            ["bcftools", "view", "-Oz", "-o", tmp_vcf.name, "-R", bed_path, indexed_vcf],
             stderr=subprocess.PIPE,
             check=True,
-            timeout=60,
+            timeout=120,
         )
         # 创建索引
         subprocess.run(
@@ -1018,22 +1186,20 @@ def _filter_vcf_by_bed(vcf_path: str, strict_filter: bool = False) -> tuple[str,
             stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, timeout=30
         )
         variant_count = sum(1 for line in count.stdout.split("\n") if line and not line.startswith("#"))
-        logger.info("BED-filtered VCF: %s -> %d variants", tmp_vcf.name, variant_count)
+        logger.info("BED-filtered VCF: %s -> %d variants (%s)", tmp_vcf.name, variant_count, bed_source)
         if variant_count == 0:
-            logger.warning("No variants in sensory gene regions, using full VCF")
-            os.unlink(tmp_vcf.name)
-            return vcf_path, None
+            logger.warning("No variants in sensory gene regions (0 variants after BED filter)")
         return tmp_vcf.name, bed_path
     except subprocess.CalledProcessError as exc:
         logger.error("BED filter failed: %s", exc)
         if os.path.exists(tmp_vcf.name):
             os.unlink(tmp_vcf.name)
-        return vcf_path, None
-    except subprocess.TimeoutExpired:
+        raise RuntimeError(f"bcftools view -R failed: {exc}") from exc
+    except subprocess.TimeoutExpired as exc:
         logger.error("BED filter timeout")
         if os.path.exists(tmp_vcf.name):
             os.unlink(tmp_vcf.name)
-        return vcf_path, None
+        raise RuntimeError("bcftools view -R timed out") from exc
 
 
 def _auto_infer_sex(vcf_path: str) -> Optional[str]:

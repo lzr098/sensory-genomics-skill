@@ -177,21 +177,30 @@ class MarkdownReportGenerator:
         # 构建综合特征档案
         profile = self._build_comprehensive_profile(report)
 
-        # 构建 gnomAD 频率参考表
+        # 构建 gnomAD 频率参考表（从 enrichment 数据提取）
         gnomad_refs = []
         for card in report.gene_cards:
-            for v in card.variants:
-                if v.rsid and (v.gnomad_af_exome is not None or v.gnomad_af_genome is not None):
+            ed = card.enrichment_data or {}
+            gnmd_vars = ed.get("gnomad_variants", [])
+            if not gnmd_vars:
+                continue
+            for gv in gnmd_vars:
+                vi = gv.get("variant") or {}
+                res = gv.get("result") or {}
+                af = res.get("gnomad_af")
+                if af is not None:
+                    gene = card.gene_symbol
+                    variant_str = f"{vi.get('ref','?')}>{vi.get('alt','?')}@{vi.get('pos','?')}"
                     gnomad_refs.append({
-                        "gene": card.gene_symbol,
-                        "variant": f"{v.chrom}:{v.pos} {v.ref}>{v.alt}",
-                        "rsid": v.rsid,
-                        "exome_af": v.gnomad_af_exome,
-                        "genome_af": v.gnomad_af_genome,
-                        "flags": v.lof_flags,
+                        "gene": gene,
+                        "variant": variant_str,
+                        "rsid": res.get("rsids", [None])[0] if res.get("rsids") else None,
+                        "exome_af": af,  # Use precompute AF as genome AF
+                        "genome_af": af,
+                        "flags": "common" if af > 0.30 else ("rare" if af < 0.01 else "moderate"),
                     })
-                    if len(gnomad_refs) >= 30:
-                        break
+                if len(gnomad_refs) >= 30:
+                    break
             if len(gnomad_refs) >= 30:
                 break
 
@@ -207,6 +216,12 @@ class MarkdownReportGenerator:
                     or_tier_b.append(ot)
                 else:
                     or_tier_c.append(ot)
+
+        # v0.2.0: Known-ligand OR tiered display (Tier A/B/C)
+        known_ligand_tiers = self._build_known_ligand_or_tiers(report.gene_cards, report.or_tiers)
+
+        # v0.2.0: Unknown-ligand OR gating (Layer 1/2/3)
+        unknown_or_gating = self._build_unknown_or_gating(report.gene_cards, report.or_tiers)
 
         # 预计算 LOF/GOF 分组（用于 v5 模板分层展示）
         lof_gof_variants = self._collect_lof_gof_variants(report.gene_cards)
@@ -258,6 +273,10 @@ class MarkdownReportGenerator:
             "non_or_impactful": [c for c in non_or_impactful
                 if c.gene_symbol not in downgraded_genes],
             "other_lof": other_lof,
+            # v0.2.0: Known-ligand OR tiered display
+            "known_ligand_or_tiers": known_ligand_tiers,
+            # v0.2.0: Unknown-ligand OR gating
+            "unknown_or_gating": unknown_or_gating,
             "executive_summary": report.executive_summary,
             "personal_traits": report.executive_summary.personal_traits,
             "disclaimer_zh": report.disclaimer_zh,
@@ -589,6 +608,161 @@ class MarkdownReportGenerator:
 
         sorted_vars = sorted(variants, key=score, reverse=True)
         return sorted_vars[:n]
+
+        return profile
+
+    # ── v0.2.0: Known-ligand OR tiered display helpers ──
+
+    OR_PROTEIN_CSQ = frozenset({
+        "frameshift_variant", "stop_gained",
+        "splice_acceptor_variant", "splice_donor_variant",
+        "missense_variant", "inframe_deletion", "inframe_insertion",
+    })
+
+    @classmethod
+    def _build_known_ligand_or_tiers(
+        cls,
+        gene_cards: List[GeneCard],
+        or_tiers: Optional[List[Any]],
+    ) -> Dict[str, List[Dict[str, Any]]]:
+        """Build Tier A/B/C lists for known-ligand OR genes.
+
+        Tier A: HOM protein-affecting → detail table
+        Tier B: HET protein-affecting → compact table
+        Tier C: syn/UTR only → appendix line
+        """
+        # Load ligand map
+        ligand_map = cls._load_ligand_map()
+        tier_a, tier_b, tier_c = [], [], []
+
+        for card in gene_cards:
+            gene = card.gene_symbol
+            if not gene.startswith("OR"):
+                continue
+            lig = ligand_map.get(gene, {})
+            if not lig:
+                continue  # Only known-ligand OR genes
+
+            # Classify by variant severity
+            a_vars, b_vars, c_vars = [], [], []
+            for v in card.variants:
+                if v.consequence in cls.OR_PROTEIN_CSQ:
+                    if v.is_homozygous:
+                        a_vars.append(v)
+                    else:
+                        b_vars.append(v)
+                else:
+                    c_vars.append(v)
+
+            # Get gnomAD AF from enrichment data
+            gnmd_vars = card.enrichment_data.get("gnomad_variants", []) if card.enrichment_data else []
+            af_by_pos = {}
+            for gv in gnmd_vars:
+                vi = gv.get("variant", {})
+                res = gv.get("result", {})
+                if res.get("found"):
+                    af_by_pos[(vi.get("pos"), vi.get("ref"), vi.get("alt"))] = res.get("gnomad_af")
+
+            entry = {
+                "gene": gene,
+                "ligand_zh": lig.get("ligand_zh", ""),
+                "odor_zh": lig.get("odor_description_zh", ""),
+                "tier_a_variants": a_vars,
+                "tier_b_variants": b_vars,
+                "tier_c_variants": c_vars,
+                "af_by_pos": af_by_pos,
+                "total_variants": len(card.variants),
+                "uniprot": card.enrichment_data.get("uniprot", {}) if card.enrichment_data else {},
+                "clinvar": card.enrichment_data.get("clinvar", {}) if card.enrichment_data else {},
+            }
+
+            if a_vars:
+                tier_a.append(entry)
+            elif b_vars:
+                tier_b.append(entry)
+            else:
+                tier_c.append(entry)
+
+        return {"tier_a": tier_a, "tier_b": tier_b, "tier_c": tier_c,
+                "counts": f"{len(tier_a)} Tier A, {len(tier_b)} Tier B, {len(tier_c)} Tier C"}
+
+    @classmethod
+    def _build_unknown_or_gating(
+        cls,
+        gene_cards: List[GeneCard],
+        or_tiers: Optional[List[Any]],
+    ) -> Dict[str, Any]:
+        """Build Layer 1/2/3 gating for unknown-ligand OR genes.
+
+        Layer 1 (hide): ALL homozygous protein-affecting variants have AF > 30%
+        Layer 2 (appendix): at least one variant with AF 5-30%
+        Layer 3 (main report): at least one variant with AF < 5%
+        """
+        ligand_map = cls._load_ligand_map()
+
+        layer1, layer2, layer3 = [], [], []
+        for card in gene_cards:
+            gene = card.gene_symbol
+            if not gene.startswith("OR"):
+                continue
+            if gene in ligand_map:
+                continue  # Skip known-ligand OR genes
+
+            # Check homozygous protein-affecting variants
+            homo_prot_variants = [
+                v for v in card.variants
+                if v.is_homozygous and v.consequence in cls.OR_PROTEIN_CSQ
+            ]
+            if not homo_prot_variants:
+                continue  # Only gate genes with homozygous changes
+
+            # Get gnomAD AFs
+            gnmd_vars = card.enrichment_data.get("gnomad_variants", []) if card.enrichment_data else []
+            afs = []
+            for gv in gnmd_vars:
+                res = gv.get("result", {})
+                af = res.get("gnomad_af")
+                if af is not None:
+                    afs.append(af)
+
+            entry = {
+                "gene": gene,
+                "n_homo_variants": len(homo_prot_variants),
+                "gnomad_afs": afs,
+                "min_af": min(afs) if afs else None,
+                "max_af": max(afs) if afs else None,
+            }
+
+            if not afs:
+                layer2.append(entry)  # No data → appendix (conservative)
+            elif min(afs) > 0.30:
+                layer1.append(entry)  # All common → hide
+            elif min(afs) < 0.05:
+                layer3.append(entry)  # Has rare → main report
+            else:
+                layer2.append(entry)  # Moderate → appendix
+
+        return {
+            "layer1": layer1, "layer2": layer2, "layer3": layer3,
+            "counts": f"隐藏 {len(layer1)}, 附录 {len(layer2)}, 主报告 {len(layer3)}",
+        }
+
+    @classmethod
+    def _load_ligand_map(cls) -> Dict[str, Dict[str, Any]]:
+        """Load OR ligand map from JSON (cached)."""
+        if not hasattr(cls, '_cached_ligand_map'):
+            data_path = Path(__file__).resolve().parent.parent.parent.parent / "assets" / "data" / "or_ligands.json"
+            cls._cached_ligand_map = {}
+            try:
+                with open(data_path, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                for entry in data.get("ligands", []):
+                    gene = entry.get("gene_symbol", "")
+                    if gene:
+                        cls._cached_ligand_map[gene] = entry
+            except Exception:
+                pass
+        return cls._cached_ligand_map
 
     @staticmethod
     def _build_comprehensive_profile(report: SensoryReport) -> List[Dict[str, Any]]:

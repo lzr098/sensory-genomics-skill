@@ -545,7 +545,9 @@ class PersonalTraitPredictor:
         """预测耳垢类型.
 
         核心逻辑：
-        - ABCC11 rs17822931：AA → 干耳垢（东亚典型）；GG/GA → 湿耳垢
+        - ABCC11 rs17822931 (GRCh38 ref=C, alt=[G,T]):
+            TT (T纯合) → 干耳垢（东亚典型，T为功能缺失等位基因）
+            CC/CG/GG → 湿耳垢（C/G等位基因保留ABCC11功能）
         """
         abcc11_snp = self._get_snp("rs17822931")
         abcc11_gene = self._get_gene("ABCC11")
@@ -558,7 +560,9 @@ class PersonalTraitPredictor:
             key_snps.append(abcc11_snp.rsid)
             key_genes.append("ABCC11")
             gt = abcc11_snp.inferred_genotype
-            if "A" in gt:
+            # T allele = dry earwax (ABCC11 loss-of-function), common in East Asians
+            # Genotypes with T: TT (homozygous dry), CT/GT/AT (heterozygous dry tendency)
+            if "T" in gt:
                 prediction = "干耳垢 — 东亚典型表型"
                 confidence = "中高"
                 evidence.append(f"ABCC11 rs17822931 {gt} → 干耳垢等位基因携带（东亚常见）")

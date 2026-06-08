@@ -26,6 +26,7 @@ class UniProtClient(AsyncApiClient):
             cache=cache,
             rate_limit=rate_limit,
             timeout=timeout,
+            trust_env=False,
         )
 
     async def _fetch(self, key: str) -> Dict[str, Any]:
