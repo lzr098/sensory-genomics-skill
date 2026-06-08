@@ -279,7 +279,22 @@ snps:
       AA:
         label: 光敏感功能改变
         description: OPN4变异纯合，黑视蛋白信号肽功能改变，光敏感性可能改变
-    notes: OPN4 p.Pro10Leu (P10L)，位于信号肽区域，影响黑视蛋白的细胞内定位和光响应特性
+      CT:
+        label: C等位基因杂合（非经典P10L变异，文献数据有限）
+        description: 携带一个C等位基因（非经典P10L的A等位基因），对黑视蛋白功能影响不确定
+      CC:
+        label: C等位基因纯合（经典AA→光敏感改变，TT→标准光敏感）
+        description: C等位基因纯合，非经典P10L的A等位基因。经典：A等位基因纯合→光敏感功能改变，T纯合→标准光敏感
+      GT:
+        label: G等位基因杂合（OPN4罕见等位基因，文献数据有限）
+        description: 携带一个OPN4 G等位基因，非经典P10L变异，功能影响无明确文献报道
+      GG:
+        label: G等位基因纯合（OPN4罕见等位基因，文献数据有限）
+        description: OPN4 G等位基因纯合，非经典P10L变异，功能影响无明确文献报道
+      CG:
+        label: C/G杂合（OPN4罕见等位基因组合，文献数据有限）
+        description: C与G等位基因杂合组合，均为非经典P10L变异，功能影响无明确文献报道
+    notes: OPN4 p.Pro10Leu (P10L)，位于信号肽区域，影响黑视蛋白的细胞内定位和光响应特性。rs941600 为多等位位点 (T>A/C/G)，A 等位基因为经典 P10L 变异，C/G 等位基因文献数据有限
   rs72474224:
     gene: GJB2
     chrom: '13'
@@ -338,7 +353,19 @@ snps:
       AA:
         label: 鱼腥味感知减弱
         description: OR2T11变异纯合，对含硫化合物（鱼腥味）感知显著减弱
-    notes: OR2T11 p.Thr133Ile (T133I)，与鱼类气味感知个体差异相关，影响甲硫醇和二甲基硫醚的检测
+      GT:
+        label: G等位基因杂合（非经典T133I变异，文献数据有限）
+        description: 携带一个G等位基因（非经典T133I的A等位基因），鱼腥味感知影响不确定
+      GG:
+        label: G等位基因纯合（经典AA→鱼腥味感知减弱，TT→正常）
+        description: G等位基因纯合，非经典T133I的A等位基因。经典：A等位基因纯合→鱼腥味感知减弱，T纯合→正常感知
+      CT:
+        label: C等位基因杂合（非经典T133I变异，文献数据有限）
+        description: 携带一个C等位基因，非经典T133I变异，鱼腥味感知影响不确定
+      CC:
+        label: C等位基因纯合（非经典T133I变异，文献数据有限）
+        description: C等位基因纯合，非经典T133I变异，鱼腥味感知影响无明确文献报道
+    notes: OR2T11 p.Thr133Ile (T133I)，与鱼类气味感知个体差异相关，影响甲硫醇和二甲基硫醚的检测。rs7943953 为多等位位点 (T>A/C/G)，A 等位基因为经典 T133I 变异，C/G 等位基因文献数据有限
   rs61729907:
     gene: OR7D4
     chrom: '19'
@@ -413,7 +440,13 @@ snps:
       AA:
         label: 甜味不敏感
         description: TAS1R3启动子变异纯合，受体表达水平降低，对蔗糖甜度感知不敏感
-    notes: TAS1R3启动子C/T变异（-1572），T等位基因降低TAS1R3表达水平，减弱甜味感知，需更高蔗糖浓度达到同等甜度
+      CT:
+        label: C等位基因杂合（非经典启动子变异，甜味影响不确定）
+        description: 携带一个C等位基因（非经典-1572T/A的A等位基因），甜味感知影响不确定
+      CC:
+        label: C等位基因纯合（经典AA→甜味不敏感，TT→甜味敏感）
+        description: C等位基因纯合，非经典-1572T/A的A等位基因。经典：A等位基因纯合→甜味不敏感，T纯合→甜味敏感
+    notes: TAS1R3启动子C/T变异（-1572），T等位基因降低TAS1R3表达水平，减弱甜味感知，需更高蔗糖浓度达到同等甜度。rs307355 为多等位位点 (T>A/C)，A 等位基因为经典启动子变异，C 等位基因文献数据有限
   rs34160967:
     gene: TAS1R1
     chrom: '1'
@@ -883,10 +916,19 @@ snps:
       CC:
         label: 高VDR活性/骨密度倾向
         description: VDR 424aa短蛋白纯合，维生素D受体转录活性更高，骨密度/钙吸收效率可能增强
+      AG:
+        label: AG杂合，非经典FokI（经典CC→高VDR活性，AC→中等，AA→标准）
+        description: 携带一个G等位基因，非经典FokI的C等位基因。经典：C等位基因纯合→高VDR活性/骨密度倾向，A/C杂合→中等，A纯合→标准
       GG:
         label: VDR G等位基因纯合（罕见）
         description: VDR罕见等位基因纯合型，文献数据有限，表型未完全阐明
-    notes: VDR FokI rs2228570 (c.2T>C, p.Met1Thr)，T=ATG起始密码子(427aa)，C=ACG(424aa, 更短但转录活性更高)，与骨密度、钙吸收效率相关
+      AT:
+        label: AT杂合（非经典FokI位点，T等位基因文献有限）
+        description: 携带一个T等位基因（非经典FokI的C等位基因），维生素D受体功能影响无明确文献报道
+      TT:
+        label: VDR T等位基因纯合（罕见）
+        description: VDR罕见等位基因纯合型，文献数据有限，表型未完全阐明
+    notes: VDR FokI rs2228570 (c.2T>C, p.Met1Thr)，T=ATG起始密码子(427aa)，C=ACG(424aa, 更短但转录活性更高)，与骨密度、钙吸收效率相关。rs2228570 为多等位位点 (A>C/G/T)，C 等位基因为经典 FokI 变异，G/T 等位基因文献数据有限
   rs1800587:
     gene: IL1A
     chrom: '2'
