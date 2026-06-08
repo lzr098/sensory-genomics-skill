@@ -9,26 +9,47 @@
 
 ### 4.1 已知配体的嗅觉受体变异
 
-以下 OR 基因已有文献报道的配体对应关系，且在本样本中检出功能丧失（LoF）变异。
+{% if known_ligand_or_tiers and known_ligand_or_tiers.summary %}
+{% set summary = known_ligand_or_tiers.summary %}
+> **筛查范围**: {{ summary.screened }} 个已知配体 OR 基因
+> **检出结果**: {{ summary.with_variants }} 个基因有覆盖，{{ summary.with_protein_impact }} 个有蛋白影响变异
+> **经 gnomAD 校验**: {{ summary.downgraded_by_af }} 个经频率校验确认为常见多态
+> {% if summary.with_protein_impact - summary.downgraded_by_af > 0 %}
+> **真正罕见**: {{ summary.with_protein_impact - summary.downgraded_by_af }} 个基因变异可能影响功能
+> {% else %}
+> **结论**: 未发现真正罕见的功能丧失变异需关注
+> {% endif %}
 
-{% if or_tiers %}
-{% set tier_a = or_tiers | selectattr("tier", "equalto", "A") | list %}
-{% if tier_a %}
-{% for or_result in tier_a %}
-#### {{ or_result.gene_symbol }}
-
-- **负责识别的气味分子**：{{ or_result.known_ligand_zh or "未知" }}
-- **气味特征**：{{ or_result.odor_description_zh or "—" }}
-- **变异后果**：{{ or_result.variant.consequence or "N/A" }} | 基因型：{{ or_result.variant.gt }}
-
-> 🔬 **嗅觉影响推断**：{{ or_result.gene_symbol }} 负责识别 **{{ or_result.known_ligand_zh or "特定气味分子" }}**（{{ or_result.odor_description_zh or "气味特征待研究" }}）。由于人类嗅觉系统存在广泛的受体冗余，该受体单个失活通常不会导致完全无法感知此类气味，但可能使对该气味的**敏感度降低**或在低浓度下**辨识度下降**。实际生活中可能表现为：对含该气味分子的食物/环境气味反应较常人稍弱，但通常不易自我察觉。
-
+| 基因 | 配体气味 | 变异 | AF | 解读 |
+|------|---------|------|-----|------|
+{% for entry in known_ligand_or_tiers.all_genes if entry.has_variants %}
+{% set gene = entry.gene %}
+{% set odor = entry.odor_zh if entry.odor_zh else entry.ligand_zh %}
+{% if entry.tier_a_variants %}
+{% for v in entry.tier_a_variants[:1] %}
+{% set af = entry.max_af %}
+{% set af_str = ('%.0f%%'|format(af*100)) if af is not none else 'N/A' %}
+{% set note = entry.af_note if entry.af_note else '' %}
+| **{{ gene }}** | {{ odor[:20] if odor else '—' }} | HOM {{ v.consequence.replace('_variant','') }} ({{ v.ref }}>{{ v.alt }}) | {{ af_str }} | {{ note }} |
+{% endfor %}
+{% elif entry.tier_b_variants %}
+{% for v in entry.tier_b_variants[:1] %}
+{% set af = entry.max_af %}
+{% set af_str = ('%.0f%%'|format(af*100)) if af is not none else 'N/A' %}
+{% set note = entry.af_note if entry.af_note else '杂合，嗅觉冗余下影响轻微' %}
+| {{ gene }} | {{ odor[:20] if odor else '—' }} | HET {{ v.consequence.replace('_variant','') }} ({{ v.ref }}>{{ v.alt }}) | {{ af_str }} | {{ note }} |
 {% endfor %}
 {% else %}
-*未发现已知配体 OR 基因的功能丧失变异。*
+| {{ gene }} | {{ odor[:20] if odor else '—' }} | UTR/syn only | — | 非编码区变异，无蛋白影响 |
+{% endif %}
+{% endfor %}
+
+> **注**: {{ summary.tier_c_count }} 个仅有 UTR/同义变异的基因未列出。{{ summary.not_covered }} 个基因不在测序覆盖范围内。
+{% if summary.with_protein_impact - summary.downgraded_by_af <= 0 %}
+> 所有检出蛋白影响变异的基因经 gnomAD 频率校验均为人群常见多态，不构成功能影响。
 {% endif %}
 {% else %}
-*未发现需要关注的 OR 基因变异。*
+*未发现已知配体 OR 基因需要关注。*
 {% endif %}
 
 ### 4.2 配体未明确的 OR 基因变异

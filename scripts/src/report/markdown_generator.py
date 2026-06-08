@@ -3,6 +3,7 @@
 使用 Jinja2 模板引擎渲染人类可读的 Markdown 报告。
 """
 
+import json
 import os
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -624,28 +625,50 @@ class MarkdownReportGenerator:
         cls,
         gene_cards: List[GeneCard],
         or_tiers: Optional[List[Any]],
-    ) -> Dict[str, List[Dict[str, Any]]]:
-        """Build Tier A/B/C lists for known-ligand OR genes.
+    ) -> Dict[str, Any]:
+        """Build known-ligand OR gene display with gnomAD AF context.
 
-        Tier A: HOM protein-affecting → detail table
-        Tier B: HET protein-affecting → compact table
-        Tier C: syn/UTR only → appendix line
+        Shows ALL known-ligand OR genes with variants in the sample,
+        annotated by AF and downgraded where appropriate.
+        Structure:
+            summary: {total_screened, with_variants, with_protein_impact, downgraded_by_af}
+            all_genes: [{gene, ligand, odor, variants_summary, af_note, level}]
+            tier_a/b/c: same as before for backward compatibility
         """
-        # Load ligand map
         ligand_map = cls._load_ligand_map()
+        all_known_ors = sorted(ligand_map.keys())
+
         tier_a, tier_b, tier_c = [], [], []
+        all_entries = []
+        screened = len(all_known_ors)
+        with_variants = 0
+        with_protein = 0
+        downgraded_by_af = 0
 
-        for card in gene_cards:
-            gene = card.gene_symbol
-            if not gene.startswith("OR"):
-                continue
+        report_genes = {card.gene_symbol: card for card in gene_cards}
+
+        for gene in all_known_ors:
             lig = ligand_map.get(gene, {})
-            if not lig:
-                continue  # Only known-ligand OR genes
+            card = report_genes.get(gene)
 
-            # Classify by variant severity
+            if not card:
+                # Gene not in VCF coverage
+                all_entries.append({
+                    "gene": gene,
+                    "ligand_zh": lig.get("ligand_zh", ""),
+                    "odor_zh": lig.get("odor_description_zh", ""),
+                    "has_variants": False,
+                    "status": "not_covered",
+                    "af_note": "—",
+                })
+                continue
+
+            with_variants += 1
+            variants = card.variants
+
+            # Classify variants
             a_vars, b_vars, c_vars = [], [], []
-            for v in card.variants:
+            for v in variants:
                 if v.consequence in cls.OR_PROTEIN_CSQ:
                     if v.is_homozygous:
                         a_vars.append(v)
@@ -654,7 +677,7 @@ class MarkdownReportGenerator:
                 else:
                     c_vars.append(v)
 
-            # Get gnomAD AF from enrichment data
+            # Get gnomAD AF from enrichment
             gnmd_vars = card.enrichment_data.get("gnomad_variants", []) if card.enrichment_data else []
             af_by_pos = {}
             for gv in gnmd_vars:
@@ -663,19 +686,51 @@ class MarkdownReportGenerator:
                 if res.get("found"):
                     af_by_pos[(vi.get("pos"), vi.get("ref"), vi.get("alt"))] = res.get("gnomad_af")
 
+            # Determine AF annotation
+            af_values = [v for v in af_by_pos.values() if v is not None]
+            max_af = max(af_values) if af_values else None
+            min_af = min(af_values) if af_values else None
+
+            af_note = ""
+            if a_vars and max_af is not None:
+                if max_af > 0.30:
+                    af_note = f"常见多态 (AF={max_af*100:.0f}%) — 参考基因组为罕见等位基因"
+                    downgraded_by_af += 1
+                elif max_af < 0.01:
+                    af_note = f"罕见变异 (AF={max_af*100:.2f}%) — 可能影响功能"
+                else:
+                    af_note = f"低频变异 (AF={max_af*100:.1f}%)"
+            elif b_vars and max_af is not None:
+                af_note = f"杂合, AF={max_af*100:.0f}%" if max_af > 0.30 else f"杂合, AF={max_af*100:.2f}%"
+            elif not a_vars and not b_vars:
+                af_note = "非编码区/同义变异"
+
+            has_protein_impact = bool(a_vars or b_vars)
+            if has_protein_impact:
+                with_protein += 1
+
             entry = {
                 "gene": gene,
                 "ligand_zh": lig.get("ligand_zh", ""),
                 "odor_zh": lig.get("odor_description_zh", ""),
+                "has_variants": True,
+                "has_protein_impact": has_protein_impact,
                 "tier_a_variants": a_vars,
                 "tier_b_variants": b_vars,
                 "tier_c_variants": c_vars,
                 "af_by_pos": af_by_pos,
-                "total_variants": len(card.variants),
+                "max_af": max_af,
+                "min_af": min_af,
+                "af_note": af_note,
+                "total_variants": len(variants),
+                "level": card.assessment.level,
                 "uniprot": card.enrichment_data.get("uniprot", {}) if card.enrichment_data else {},
                 "clinvar": card.enrichment_data.get("clinvar", {}) if card.enrichment_data else {},
             }
 
+            all_entries.append(entry)
+
+            # Classic tiering (backward compatible)
             if a_vars:
                 tier_a.append(entry)
             elif b_vars:
@@ -683,8 +738,23 @@ class MarkdownReportGenerator:
             else:
                 tier_c.append(entry)
 
-        return {"tier_a": tier_a, "tier_b": tier_b, "tier_c": tier_c,
-                "counts": f"{len(tier_a)} Tier A, {len(tier_b)} Tier B, {len(tier_c)} Tier C"}
+        summary = {
+            "screened": screened,
+            "with_variants": with_variants,
+            "with_protein_impact": with_protein,
+            "downgraded_by_af": downgraded_by_af,
+            "not_covered": screened - with_variants,
+            "tier_c_count": len(tier_c),
+        }
+
+        return {
+            "summary": summary,
+            "all_genes": all_entries,
+            "tier_a": tier_a,
+            "tier_b": tier_b,
+            "tier_c": tier_c,
+            "counts": f"筛查{screened}个, 检出{with_variants}个有变异, {with_protein}个有蛋白影响, {downgraded_by_af}个经AF降级",
+        }
 
     @classmethod
     def _build_unknown_or_gating(
@@ -751,8 +821,8 @@ class MarkdownReportGenerator:
     def _load_ligand_map(cls) -> Dict[str, Dict[str, Any]]:
         """Load OR ligand map from JSON (cached)."""
         if not hasattr(cls, '_cached_ligand_map'):
-            data_path = Path(__file__).resolve().parent.parent.parent.parent / "assets" / "data" / "or_ligands.json"
             cls._cached_ligand_map = {}
+            data_path = Path(__file__).resolve().parents[3] / "assets" / "data" / "or_ligands.json"
             try:
                 with open(data_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
@@ -760,8 +830,9 @@ class MarkdownReportGenerator:
                     gene = entry.get("gene_symbol", "")
                     if gene:
                         cls._cached_ligand_map[gene] = entry
-            except Exception:
-                pass
+            except Exception as exc:
+                from src.logger import get_logger
+                get_logger(__name__).warning("Failed to load or_ligands.json: %s", exc)
         return cls._cached_ligand_map
 
     @staticmethod

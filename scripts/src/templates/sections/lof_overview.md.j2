@@ -3,37 +3,75 @@
 
 > **章节说明**：本节列出具有明确蛋白功能后果（移码、无义、剪接位点破坏）的变异。"功能丧失"指该变异大概率导致所编码蛋白无法正常行使功能。以下按子系统分类，突出需要关注的条目。
 
-### 2.1 嗅觉受体 — 已知配体变异（信息含量更高，优先展示）
+### 2.1 嗅觉受体 — 已知配体变异筛查
 
-> ⚠️ **嗅觉系统冗余说明**：人类约有 400 个功能性嗅觉受体基因。单个 OR 基因变异通常不会导致完全无法感知某种气味，但可能降低对该气味分子的**敏感度**或在低浓度下**辨识度下降**。
+> ⚠️ **嗅觉系统冗余说明**：人类约有 400 个功能性嗅觉受体基因。单个 OR 基因变异通常不会导致完全无法感知某种气味，但可能降低对该气味分子的**敏感度**或在低浓度下**辨识度**下降。
 
-以下 OR 基因有**明确的配体-受体对应关系**，且在本样本中检出变异。这些属于报告中**信息含量最高**的嗅觉发现，直接对应具体气味：
+{% if known_ligand_or_tiers and known_ligand_or_tiers.summary %}
+{% set ks = known_ligand_or_tiers.summary %}
 
-{% if or_tier_a %}
-| 基因 | 识别的气味分子 | 气味特征 | 变异后果 | 基因型 | 影响评估 |
-|------|--------------|---------|---------|--------|---------|
-{% for ot in or_tier_a %}
-| **{{ ot.gene_symbol }}** | {{ ot.known_ligand_zh or "未知" }} | {{ ot.odor_description_zh or "—" }} | {{ ot.variant.consequence or "N/A" }} | {{ ot.variant.gt }} | {% if ot.variant.is_homozygous %}{% if "missense" in (ot.variant.consequence or "") %}错义+纯合，可能对对应气味敏感度有一定影响{% else %}功能丧失+纯合，该受体可能完全失活{% endif %}{% else %}杂合，加上嗅觉系统冗余，通常影响轻微{% endif %} |
-{% endfor %}
-
-**实际影响解读**：
-- 纯合变异（1/1）的 OR 基因对对应气味的敏感度可能有一定下降，但日常生活中通常自我察觉不明显
-- 杂合变异（0/1）的 OR 基因加上嗅觉系统的高度冗余，通常不会导致明显表型变化
-- 例如：OR6A2 杂合变异不会把你变成"爱吃香菜的人"，OR7D4 杂合变异也不会让你对猪肉骚味完全无感
+> **筛查范围**: {{ ks.screened }} 个已知配体 OR 基因  
+> **检出**: {{ ks.with_variants }} 个基因有覆盖，{{ ks.with_protein_impact }} 个有蛋白影响变异  
+> **经 gnomAD 频率校验**: {{ ks.downgraded_by_af }} 个为人群常见多态，不构成功能影响  
+{% if ks.with_protein_impact - ks.downgraded_by_af > 0 %}
+> **值得关注**: {{ ks.with_protein_impact - ks.downgraded_by_af }} 个基因的变异可能影响功能
 {% else %}
-> 未在已知配体的 OR 基因中检出值得关注的功能变异。
+> **结论**: 所有检出蛋白影响变异的基因均为人群常见多态，无功能影响。
 {% endif %}
 
-### 2.2 嗅觉受体 — 配体未知的纯合功能丧失
+| 基因 | 配体气味 | 变异类型 | AF | 解读 |
+|------|---------|---------|-----|------|
+{% for entry in known_ligand_or_tiers.all_genes if entry.has_variants %}
+{% set gene = entry.gene %}
+{% set odor = entry.odor_zh if entry.odor_zh else entry.ligand_zh %}
+{% set af = entry.max_af %}
+{% set af_str = ('%.0f%%'|format(af*100)) if af is not none else 'N/A' %}
+{% set note = entry.af_note if entry.af_note else '—' %}
+{% if entry.tier_a_variants %}
+{% for v in entry.tier_a_variants[:1] %}
+| **{{ gene }}** | {{ odor[:25] if odor else '—' }} | HOM {{ v.consequence.replace('_variant','') }} | {{ af_str }} | {{ note }} |
+{% endfor %}
+{% elif entry.tier_b_variants %}
+{% for v in entry.tier_b_variants[:1] %}
+| {{ gene }} | {{ odor[:25] if odor else '—' }} | HET {{ v.consequence.replace('_variant','') }} | {{ af_str }} | {{ note }} |
+{% endfor %}
+{% else %}
+| {{ gene }} | {{ odor[:25] if odor else '—' }} | UTR/syn | — | 非编码区变异 |
+{% endif %}
+{% endfor %}
 
-本样本中检出 **{{ or_homozygous_lof_unknown | length }} 个 OR 基因**的纯合功能丧失变异。这些基因目前**配体尚未明确**，暂无法推断具体气味影响。
+> **注**: {{ ks.tier_c_count }} 个仅有同义/UTR 变异的基因未列出。{{ ks.not_covered }} 个基因不在测序覆盖范围内。
+{% else %}
+> 未在已知配体的 OR 基因中检出需要关注的变异。
+{% endif %}
 
-> 由于嗅觉系统的高度冗余（约 400 个受体协同工作），单个 OR 基因的纯合失活通常不会导致明显的嗅觉缺陷。杂合 OR 功能丧失变异数量更多，但因冗余性影响更轻微，详见 [附录 F](#f-杂合嗅觉受体-lof-汇总)。
+### 2.2 嗅觉受体 — 配体未知的纯合变异（经频率筛选）
 
-> 完整的纯合 OR 功能丧失基因列表见 [附录 G](#g-配体未知的纯合-or-功能丧失汇总)。
+{% if unknown_or_gating %}
+{% set uog = unknown_or_gating %}
+{% set total = uog.layer1|length + uog.layer2|length + uog.layer3|length %}
+本样本中检出 **{{ total }} 个配体未知 OR 基因**的纯合蛋白影响变异。经 gnomAD 频率筛选后：
 
-{% if not or_homozygous_lof_unknown %}
-> 未检出配体未知的纯合功能丧失 OR 变异。
+- **{{ uog.layer3|length }} 个基因**有 AF < 5% 的罕见变异 → 值得关注（见下）
+- **{{ uog.layer2|length }} 个基因** AF 5-30% → 附录简表
+- **{{ uog.layer1|length }} 个基因** 全部纯合变异 AF > 30% → 人群常见多态，已从报告中隐藏
+
+{% if uog.layer3 %}
+**值得关注的罕见变异**：
+| 基因 | 纯合变异数 | gnomAD AF |
+|------|-----------|-----------|
+{% for entry in uog.layer3 %}
+| **{{ entry.gene }}** | {{ entry.n_homo_variants }} | {{ ('%.2f%%'|format(entry.min_af*100)) if entry.min_af is not none else 'N/A' }} |
+{% endfor %}
+{% endif %}
+
+{% if total == uog.layer1|length %}
+> **结论**: 所有检出纯合蛋白影响变异的配体未知 OR 基因均为人群常见多态（AF > 30%），不构成功能影响。
+{% endif %}
+
+> 由于嗅觉系统的高度冗余（约 400 个受体协同工作），即使单个 OR 基因的罕见纯合失活通常也不会导致明显的嗅觉缺陷。详细列表见附录 G。
+{% else %}
+> 无数据。
 {% endif %}
 
 ### 2.3 其他子系统功能丧失变异

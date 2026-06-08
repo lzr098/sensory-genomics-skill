@@ -241,6 +241,10 @@ class SensoryPipeline:
         enrichment_data = await self._enrich_genes(gene_cards)
         logger.info("Stage 6 complete: enriched %d genes", len(enrichment_data))
 
+        # Stage 6.3: gnomAD AF 降级评估（对所有级别生效）
+        downgraded_count = self._apply_gnomad_af_downgrade(gene_cards, enrichment_data)
+        logger.info("Stage 6.3 complete: %d genes downgraded by gnomAD AF", downgraded_count)
+
         # Stage 6.5: OR 基因分级重分类（使用 enrichment 数据）
         or_tier_results = self._reclassify_or_genes_with_enrichment(
             gene_cards, enrichment_data, or_tier_results
@@ -693,6 +697,72 @@ class SensoryPipeline:
         except Exception as exc:
             logger.error("OR tier classification failed: %s", exc)
             return None
+
+    def _apply_gnomad_af_downgrade(
+        self,
+        gene_cards: List[GeneCard],
+        enrichment_data: Dict[str, Dict[str, Any]],
+    ) -> int:
+        """用 gnomAD AF 对所有基因进行可能性评估降级.
+
+        对 enrichment 数据中 gnomAD AF > 30% 的纯合蛋白影响变异，
+        无论基因当前评估级别如何，都降级为 "无影响"。
+        仅影响具有纯合蛋白影响变异的基因。
+
+        Returns:
+            被降级的基因数量。
+        """
+        protein_csq = {"frameshift_variant", "stop_gained",
+                       "splice_acceptor_variant", "splice_donor_variant",
+                       "missense_variant", "inframe_deletion", "inframe_insertion"}
+        downgraded = 0
+
+        for card in gene_cards:
+            ed = enrichment_data.get(card.gene_symbol, {})
+            gnmd_vars = ed.get("gnomad_variants", [])
+            if not gnmd_vars:
+                continue
+
+            # Find homozygous protein-affecting variants with AF > 30%
+            has_high_af = False
+            af_values = []
+            for v in card.variants:
+                if not v.is_homozygous:
+                    continue
+                if v.consequence not in protein_csq:
+                    continue
+                # Match to gnomAD data
+                for gv in gnmd_vars:
+                    vi = gv.get("variant", {})
+                    if vi.get("pos") == v.pos and vi.get("ref") == v.ref and vi.get("alt") == v.alt:
+                        af = gv.get("result", {}).get("gnomad_af")
+                        if af is not None:
+                            af_values.append(af)
+                            if af > 0.30:
+                                has_high_af = True
+                        break
+
+            if not has_high_af:
+                continue
+
+            # All homozygous protein-affecting variants have AF > 30% → common polymorphism
+            # Downgrade assessment to "无影响"
+            old_level = card.assessment.level
+            old_level_rank = self._level_rank(old_level)
+            if old_level_rank <= self._level_rank("无影响"):
+                continue  # Already minimal
+
+            max_af = max(af_values) * 100 if af_values else 0
+            card.assessment.level = "无影响"
+            card.assessment.rationale_zh = (
+                f"gnomAD 频率校验：检出纯合蛋白影响变异但人群频率 {max_af:.0f}% (常见多态)，"
+                f"参考基因组可能携带罕见等位基因。原评估: {old_level}"
+            )
+            downgraded += 1
+            logger.debug("AF downgrade: %s %s → 无影响 (max AF=%.1f%%)",
+                        card.gene_symbol, old_level, max_af)
+
+        return downgraded
 
     def _reclassify_or_genes_with_enrichment(
         self,
