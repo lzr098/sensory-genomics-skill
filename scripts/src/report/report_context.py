@@ -161,6 +161,10 @@ class ReportContextBuilder:
                 key_findings.append(
                     f"{card.gene_symbol}: {level}（{card.assessment.rationale_zh[:50]}...）"
                 )
+            # 统计各子系统 × 影响级别计数
+            if subsystem not in subsystem_counts:
+                subsystem_counts[subsystem] = {}
+            subsystem_counts[subsystem][level] = subsystem_counts[subsystem].get(level, 0) + 1
 
         # 生成个人特征定性预测
         predictor = PersonalTraitPredictor(

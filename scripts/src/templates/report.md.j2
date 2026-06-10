@@ -1,10 +1,11 @@
-{# 主报告模板 - v5 格式：
+{# 主报告模板 - v5.2 格式：
    1 执行摘要
-   2 功能丧失变异总览（已知配体OR优先）
-   3 感官子系统深度分析
-   4 个人特征
+   2 个性化特征（前置）
+   3 功能丧失变异总览
+   4 感官子系统深度分析（折叠无发现）
    5 方法学与局限性
-   6 附录
+   6 详细免责声明
+   7 附录
 #}
 {% from "macros/gene_card.md.j2" import render_gene_card %}
 
@@ -18,11 +19,12 @@
 ## 目录
 
 1. [执行摘要](#1-执行摘要)
-2. [功能丧失变异总览](#2-功能丧失变异总览)
-3. [感官子系统深度分析](#3-感官子系统深度分析)
-4. [个人特征详情](#4-个人特征详情)
+2. [个性化特征速览](#2-个性化特征速览)
+3. [功能丧失变异总览](#3-功能丧失变异总览)
+4. [感官子系统深度分析](#4-感官子系统深度分析)
 5. [方法学与局限性](#5-方法学与局限性)
-6. [附录](#6-附录)
+6. [详细免责声明](#6-详细免责声明)
+7. [附录](#7-附录)
 
 ---
 
@@ -30,66 +32,85 @@
 
 {% include "sections/executive_summary.md.j2" %}
 
+{% include "sections/personal_traits.md.j2" %}
+
 {% include "sections/lof_overview.md.j2" %}
 
-## 3. 感官子系统深度分析
+## 4. 感官子系统深度分析
 
 以下按子系统展示评估为 **"部分影响"及以上** 的基因的详细分析。低影响/无影响基因见 [附录 C](#c-无关或轻微影响基因)。
 
+{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
+
 {% if "vision" in subsystems %}
-### 3.1 视觉系统
+### 4.1 视觉系统
 
 {% set vision_cards = subsys_cards.get("vision", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if vision_cards %}
 {% for card in vision_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts, high_risk_genes=high_risk_genes) }}
 {% endfor %}
 {% else %}
+<details>
+<summary>🔍 视觉系统 — 未发现显著影响变异（点击展开）</summary>
+
 > 视觉系统未检出评估为"部分影响"及以上的基因。
+
+</details>
 {% endif %}
 {% endif %}
 
 {% if "hearing" in subsystems %}
-### 3.2 听觉系统
+### 4.2 听觉系统
 
 {% set hearing_cards = subsys_cards.get("hearing", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if hearing_cards %}
 {% for card in hearing_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts, high_risk_genes=high_risk_genes) }}
 {% endfor %}
 {% else %}
+<details>
+<summary>🔍 听觉系统 — 未发现显著影响变异（点击展开）</summary>
+
 > 听觉系统未检出评估为"部分影响"及以上的基因。
+
+</details>
 {% endif %}
 {% endif %}
 
 {% if "somatosensation" in subsystems %}
-### 3.3 体感 / 痛觉 / 温度觉系统
+### 4.3 体感 / 痛觉 / 温度觉系统
 
 {% set soma_cards = subsys_cards.get("somatosensation", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if soma_cards %}
 {% for card in soma_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts, high_risk_genes=high_risk_genes) }}
 {% endfor %}
 {% else %}
+<details>
+<summary>🔍 体感/痛觉/温度觉系统 — 未发现显著影响变异（点击展开）</summary>
+
 > 体感系统未检出评估为"部分影响"及以上的基因。
+
+</details>
 {% endif %}
 {% endif %}
 
 {% if "olfaction" in subsystems %}
-### 3.4 嗅觉系统
+### 4.4 嗅觉系统
 
-> 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因变异通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。本样本中嗅觉相关的关键发现已在 [第 2 章](#2-功能丧失变异总览) 按信息含量分层展示：
-> - [2.1 已知配体变异](#21-嗅觉受体--已知配体变异信息含量更高优先展示) → 直接对应花香、鱼腥、香菜、薄荷等具体气味
-> - [2.2 配体未知的纯合 LoF](#22-嗅觉受体--配体未知的纯合功能丧失) → 纯合功能丧失但配体不明的 OR 基因
+> 嗅觉系统涉及约 400 个 OR 基因。由于嗅觉具有高度受体冗余，单个 OR 基因变异通常不会导致完全丧失某种气味感知，而仅可能降低敏感度或辨识度。本样本中嗅觉相关的关键发现已在 [第 3 章](#3-功能丧失变异总览) 按信息含量分层展示：
+> - [3.1 已知配体变异](#31-嗅觉受体--已知配体变异信息含量更高优先展示) → 直接对应花香、鱼腥、香菜、薄荷等具体气味
+> - [3.2 配体未知的纯合 LoF](#32-嗅觉受体--配体未知的纯合功能丧失) → 纯合功能丧失但配体不明的 OR 基因
 > - [附录 F](#f-杂合嗅觉受体-lof-汇总) → 杂合 LOF，因冗余性影响轻微
 
 本节不再重复罗列上述表格，仅补充说明：
 
-**已知配体 OR 的实际影响**（对应 [2.1 节](#21-嗅觉受体--已知配体变异信息含量更高优先展示)）：
+**已知配体 OR 的实际影响**（对应 [3.1 节](#31-嗅觉受体--已知配体变异信息含量更高优先展示)）：
 - 纯合错义的 OR 基因对对应气味的敏感度可能有一定下降，但日常生活中通常自我察觉不明显
 - 杂合错义的 OR 基因加上嗅觉受体大量冗余，基本不会导致可察觉表型
 
-**纯合 LoF OR 的实际影响**（对应 [2.2 节](#22-嗅觉受体--配体未知的纯合功能丧失)）：
+**纯合 LoF OR 的实际影响**（对应 [3.2 节](#32-嗅觉受体--配体未知的纯合功能丧失)）：
 - 配体未知的纯合 LoF OR 虽然受体完全失活，但无法推断具体气味影响
 - 多个受体同时失活是否会产生可察觉的嗅觉缺陷，目前缺乏研究证据
 
@@ -98,13 +119,13 @@
 #### 嗅觉信号转导通路
 
 {% for card in olf_signal_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts, high_risk_genes=high_risk_genes) }}
 {% endfor %}
 {% endif %}
 {% endif %}
 
 {% if "taste" in subsystems %}
-### 3.5 味觉系统
+### 4.5 味觉系统
 
 {% if tas2r38 %}
 #### TAS2R38 苦味感知单倍型
@@ -131,44 +152,25 @@
 {% set taste_cards = subsys_cards.get("taste", []) | selectattr("assessment.level", "in", ["完全丧失", "显著影响", "部分影响"]) | list %}
 {% if taste_cards %}
 {% for card in taste_cards %}
-{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts) }}
+{{ render_gene_card(card, phenotypic_impacts=phenotypic_impacts, high_risk_genes=high_risk_genes) }}
 {% endfor %}
+{% else %}
+<details>
+<summary>🔍 味觉系统 — 未发现显著影响变异（点击展开）</summary>
+
+> 味觉系统未检出评估为"部分影响"及以上的基因。
+
+</details>
 {% endif %}
 {% endif %}
-
----
-
-## 4. 个人特征详情
-
-本章涵盖瞳孔颜色、毛发形态、耳垢类型、香菜喜好、咖啡因/酒精代谢、乳糖耐受、运动类型等与感官间接相关的个人特征。
-
-### 4.1 关键性状 SNP 基因型推断
-
-以下 SNP 是基于文献明确报道的性状关联位点。对于 VCF 中未检出的位点，按参考基因组型（REF/REF）推断；检出的位点按实际基因型推断。
-
-| SNP | 基因 | 位置 | 推断基因型 | 来源 | 支持质量 | 推断表型 |
-|-----|------|------|-----------|------|---------|---------|
-{% for snp in key_snps %}
-| **{{ snp.rsid }}** | {{ snp.gene }} | {{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF 检出{% else %}REF/REF 推断{% endif %} | {% if snp.found_in_vcf and (snp.dp is not none or (snp.gq is not none and snp.gq < 90)) %}{% set qparts = [] %}{% if snp.dp is not none %}{% set _ = qparts.append("DP=" + snp.dp | string) %}{% endif %}{% if snp.gq is not none and snp.gq < 90 %}{% set _ = qparts.append("GQ=" + snp.gq | string) %}{% endif %}{% if snp.ad_ref is not none or snp.ad_alt is not none %}{% set _ = qparts.append("AD=" + (snp.ad_ref | string) + "/" + (snp.ad_alt | string)) %}{% endif %}{{ qparts | join(", ") }}{% else %}—{% endif %} | **{{ snp.phenotype_label }}** |
-{% endfor %}
-
-> **说明**: "REF/REF 推断"表示该位点在 VCF 中未出现，推断为纯合参考基因型。此类推断基于 GRCh38 参考等位基因，置信度较高但非实验验证。
-
-### 4.2 个人特征速览
-
-基于关键 SNP 基因型推断与基因层面变异数据，以下是个人特征的定性预测：
-
-| 特征 | 预测结论 | 置信度 | 关键依据 |
-|------|---------|--------|---------|
-{% for trait in personal_traits %}
-| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
-{% endfor %}
-
-> **说明**：以上预测基于 VCF 实际检出基因型或 REF/REF 推断。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
 
 ---
 
 {% include "sections/methodology.md.j2" %}
+
+---
+
+{% include "sections/disclaimer_full.md.j2" %}
 
 ---
 

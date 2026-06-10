@@ -76,6 +76,8 @@ class MarkdownReportGenerator:
         self.jinja_env.filters["polyphen_badge"] = self._polyphen_badge_filter
         self.jinja_env.filters["freq_desc"] = self._freq_desc_filter
         self.jinja_env.filters["key_variants"] = self._key_variants_filter
+        self.jinja_env.filters["certainty_badge"] = self._certainty_badge_filter
+        self.jinja_env.filters["subsystem_status_bar"] = self._subsystem_status_bar_filter
         # Register 'in' test for selectattr/rejectattr
         self.jinja_env.tests["in"] = lambda x, y: x in y
 
@@ -306,7 +308,34 @@ class MarkdownReportGenerator:
                 )
                 for card in report.gene_cards
             },
+            # v0.2.0: 各子系统整体状态
+            "subsystem_statuses": self._build_subsystem_statuses(report.executive_summary.subsystem_counts),
+            # v0.2.0: 高风险基因集合
+            "high_risk_genes": {"SCN9A", "PIEZO2", "MT-RNR1", "MT-TS1"},
         }
+
+    @staticmethod
+    def _build_subsystem_statuses(
+        subsystem_counts: Dict[str, Dict[str, int]]
+    ) -> Dict[str, str]:
+        """根据 subsystem_counts 构建各子系统整体状态.
+
+        状态规则：
+        - 有"完全丧失"或"显著影响" → 🔴 需要关注
+        - 有"部分影响" → 🟡 有变异需留意
+        - 全"无影响"或"可能轻微影响" → 🟢 正常
+        """
+        statuses = {}
+        for subsystem, counts in subsystem_counts.items():
+            severe = counts.get("完全丧失", 0) + counts.get("显著影响", 0)
+            moderate = counts.get("部分影响", 0)
+            if severe > 0:
+                statuses[subsystem] = f"🔴 需要关注（{severe}个高风险基因）"
+            elif moderate > 0:
+                statuses[subsystem] = f"🟡 有变异需留意（{moderate}个需留意基因）"
+            else:
+                statuses[subsystem] = "🟢 正常"
+        return statuses
 
     # Protein-affecting consequence types (for downgrade check eligibility)
     _PROTEIN_AFFECTING_CONS = frozenset({
@@ -1087,6 +1116,37 @@ class MarkdownReportGenerator:
             score += 5
         score += min(int(variant.qual / 10), 10)
         return score
+
+    @staticmethod
+    def _certainty_badge_filter(certainty: Optional[str]) -> str:
+        """将基因可信度转换为星级标签."""
+        if not certainty:
+            return ""
+        mapping = {
+            "high": "⭐⭐⭐⭐⭐ 高可信度",
+            "medium": "⭐⭐⭐ 中等可信度",
+            "low": "⭐⭐ 低可信度",
+        }
+        return mapping.get(certainty.lower(), "")
+
+    @staticmethod
+    def _subsystem_status_bar_filter(subsystem_counts: Dict[str, int]) -> str:
+        """将子系统计数转换为 emoji 状态条.
+
+        根据五级影响数量计算整体状态：
+        - 有"完全丧失"或"显著影响" → 🔴 需要关注
+        - 有"部分影响" → 🟡 有变异需留意
+        - 全"无影响"或"可能轻微影响" → 🟢 正常
+        """
+        if not subsystem_counts:
+            return "🟢 正常"
+        severe = subsystem_counts.get("完全丧失", 0) + subsystem_counts.get("显著影响", 0)
+        moderate = subsystem_counts.get("部分影响", 0)
+        if severe > 0:
+            return f"🔴 需要关注（{severe}个高风险基因）"
+        if moderate > 0:
+            return f"🟡 有变异需留意（{moderate}个需留意基因）"
+        return "🟢 正常"
 
     @staticmethod
     def _key_variants_filter(variants: List[Variant], n: int = 3) -> List[Variant]:

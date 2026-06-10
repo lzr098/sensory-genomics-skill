@@ -1,45 +1,50 @@
-{# 执行摘要 - v5 格式：合并 1.3/1.4 为统一的重点关注发现表 #}
+{# 执行摘要 - v5.2 格式：感官状态概览 + 个性化速览 + 重点关注发现表 #}
 ## 1. 执行摘要
 
-### 1.1 样本信息
+### 1.1 感官系统整体状态
 
-| 项目 | 内容 |
-|------|------|
-| 样本 ID | {{ sample_id or "未提供" }} |
-| 性别 | {{ "男性" if sex == "M" else "女性" }} |
-| 参考基因组 | {{ ref_genome }} |
-| 分析日期 | {{ analysis_date }} |
-| 分析范围 | {{ ", ".join(subsystems) }} |
+基于分析范围内的所有基因变异评估，各子系统整体状态如下：
 
-### 1.2 个人特征速览
+{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
 
-基于关键 SNP 基因型推断与基因层面变异数据，以下是个人特征的定性预测：
+| 子系统 | 状态 | 详情 |
+|--------|------|------|
+{% for subsystem, counts in (executive_summary.subsystem_counts or {}).items() %}
+| {{ subsys_names.get(subsystem, subsystem) }} | {{ counts | subsystem_status_bar }} | 🔴×{{ counts.get("完全丧失", 0) + counts.get("显著影响", 0) }} 🟡×{{ counts.get("部分影响", 0) }} 🔵×{{ counts.get("可能轻微影响", 0) }} 🟢×{{ counts.get("无影响", 0) }} |
+{% else %}
+| — | — | 暂无子系统统计数据 |
+{% endfor %}
+
+> **图例**：🔴 需要关注（存在完全丧失/显著影响基因）｜🟡 有变异需留意（存在部分影响基因）｜🟢 正常（无显著变异）
+
+### 1.2 个性化发现速览
+
+基于关键 SNP 基因型推断与基因层面变异数据，以下是 Top 个人特征预测：
 
 | 特征 | 预测结论 | 置信度 | 关键依据 |
 |------|---------|--------|---------|
-{% for trait in personal_traits %}
-| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] }}{% if trait.evidence | length > 80 %}...{% endif %} |
+{% for trait in (personal_traits or [])[:3] %}
+| **{{ trait.trait }}** | {{ trait.prediction }} | {{ trait.confidence }} | {{ trait.evidence[:80] if trait.evidence else "—" }}{% if trait.evidence and trait.evidence | length > 80 %}...{% endif %} |
+{% else %}
+| — | — | — | 暂无个性化特征预测数据 |
 {% endfor %}
 
 > **说明**：以上预测基于 VCF 实际检出基因型或 REF/REF 推断。预测为**定性推断**，非确定性结论，建议结合实际表型观察验证。
->
-> **置信度评分**：⭐⭐⭐⭐⭐ = 多基因/多SNP一致支持；⭐⭐⭐⭐ = 关键SNP VCF检出+基因评估吻合；⭐⭐⭐ = 主要依据REF/REF推断或单一位点；⭐⭐ = 数据有限或部分矛盾；⭐ = 数据严重不足。当前报告中的"高/中高/中/低"为简化表述，对应上述星级体系。
 
 ### 1.3 重点关注发现
 
 以下基因在本样本中评估为**"部分影响"及以上**，建议优先关注：
 
-{% set subsys_names = {"vision": "视觉", "hearing": "听觉", "olfaction": "嗅觉", "taste": "味觉", "somatosensation": "体感/痛觉/温度觉", "pigmentation": "色素沉着", "metabolism": "代谢", "muscle": "肌肉", "hair": "毛发"} %}
-
-| 基因 | 子系统 | 评估 | 遗传模式 | 关键变异 | 支持质量 | gnomAD/ClinVar | 科普一句话 |
-|------|--------|------|---------|---------|---------|---------------|-----------|
+| 基因 | 子系统 | 评估 | 可信度 | 遗传模式 | 关键变异 | 支持质量 | gnomAD/ClinVar | 科普一句话 |
+|------|--------|------|--------|---------|---------|---------|---------------|-----------|
 {% for finding in key_findings %}
-| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.cross_check_summary or "—" }} | {{ finding.phenotypic_impact[:30] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact | length > 30 %}...{% endif %} |
+{% set card = report.gene_cards | selectattr("gene_symbol", "equalto", finding.gene) | first %}
+| **{{ finding.gene }}** | {{ subsys_names.get(finding.subsystem, finding.subsystem) }} | {{ finding.level | level_badge }} | {{ (card.assessment.gene_certainty if card else "") | certainty_badge }} | {{ finding.inheritance_pattern or "未知" }} | {{ finding.variants[:50] if finding.variants else "—" }} | {{ finding.quality_summary or "—" }} | {{ finding.cross_check_summary or "—" }} | {{ finding.phenotypic_impact[:30] if finding.phenotypic_impact else "—" }}{% if finding.phenotypic_impact and finding.phenotypic_impact | length > 30 %}...{% endif %} |
 {% else %}
-| — | — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
+| — | — | — | — | — | — | — | 未检出"部分影响"及以上级别的基因变异 |
 {% endfor %}
 
-> **阅读指引**：上表为速览，每个发现的详细科普解释和分子机制见 [第 3 章](#3-感官子系统深度分析)。
+> **阅读指引**：上表为速览，每个发现的详细科普解释和分子机制见 [第 4 章](#4-感官子系统深度分析)。
 > **gnomAD/ClinVar 提示**：对于评估为"显著影响"或"完全丧失"的基因，已交叉验证 gnomAD 人群频率和 ClinVar 临床意义。若 ClinVar 标注为 Benign/Likely_benign，或 gnomAD 等位基因频率 >30%，该基因已降级处理（详见 [附录 H](#h-降级基因说明)）。
 
 ---

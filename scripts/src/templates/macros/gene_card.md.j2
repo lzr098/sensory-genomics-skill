@@ -1,22 +1,37 @@
-{# 基因卡片宏 - v5 基因维度格式：每个基因只展示关键功能变异 #}
-{% macro render_gene_card(card, max_variants=3, phenotypic_impacts={}) %}
+{# 基因卡片宏 - v5.2 分层格式：客户层 + 技术详情层 #}
+{% macro render_gene_card(card, max_variants=3, phenotypic_impacts={}, high_risk_genes=set()) %}
 {% set top_vars = card.key_variants | key_variants(max_variants) %}
 
 ### {{ card.gene_symbol }}{% if top_vars and top_vars[0].rsid %} — {{ top_vars[0].rsid }}{% endif %}
 
+{# --- 客户层（默认展示） --- #}
+
 **基因功能**：{{ card.sensory_function_zh or "未定义" }}
 
-**感官影响评估**：{{ card.assessment.level | level_badge }}
+**感官影响评估**：{{ card.assessment.level | level_badge }} {{ card.assessment.gene_certainty | certainty_badge }}
+
+{% if card.assessment.gene_certainty and card.assessment.gene_certainty.lower() == "low" %}
+> ⓘ 该结论研究证据有限，建议结合临床表现综合判断。
+{% endif %}
+
+{% set impact = phenotypic_impacts.get(card.gene_symbol, "") %}
+{% if impact %}
+**表型影响解读**：{{ impact }}
+{% endif %}
+
+{# 高风险动态提醒 #}
+{% if card.gene_symbol in high_risk_genes and card.assessment.level in ("完全丧失", "显著影响") %}
+> ⚠️ **建议遗传咨询**：该基因（{{ card.gene_symbol }}）与严重感官障碍相关，建议咨询遗传咨询师。
+{% endif %}
+
+---
+
+{# --- 技术详情层（收缩展示） --- #}
 
 **遗传模式**：{{ card.assessment.inheritance_pattern or "未知" }}
 
 {% if card.assessment.rationale_zh %}
 **影响依据**：{{ card.assessment.rationale_zh }}
-{% endif %}
-
-{% set impact = phenotypic_impacts.get(card.gene_symbol, "") %}
-{% if impact %}
-**表型影响推断**：{{ impact }}
 {% endif %}
 
 {% if card.protein_impact_summary %}
@@ -26,14 +41,14 @@
 {% if top_vars %}
 #### 关键功能变异
 
-| 位置 | 变异 | 基因型 | 后果 | gnomAD频率 |
-|------|------|--------|------|-----------|
+| 位置 | 变异 | HGVSc | HGVSp | 基因型 | 后果 | gnomAD频率 |
+|------|------|-------|-------|--------|------|-----------|
 {% for v in top_vars %}
-| {{ v.chrom }}:{{ v.pos }} | {% if v.amino_acid_change %}{{ v.amino_acid_change }}{% else %}{{ v.ref }}>{{ v.alt }}{% endif %} | {{ v.gt }} | {{ v.consequence[:30] if v.consequence else "N/A" }} | {% if v.gnomad_af_exome is not none %}{{ v.gnomad_af_exome | freq_desc }}{% elif v.gnomad_af_genome is not none %}{{ v.gnomad_af_genome | freq_desc }}{% elif v.af_gnomad is not none %}{{ v.af_gnomad | freq_desc }}{% else %}N/A{% endif %} |
+| {{ v.chrom }}:{{ v.pos }} | {% if v.amino_acid_change %}{{ v.amino_acid_change }}{% else %}{{ v.ref }}>{{ v.alt }}{% endif %} | {{ v.hgvsc or "—" }} | {{ v.hgvsp or "—" }} | {{ v.gt }} | {{ v.consequence[:30] if v.consequence else "N/A" }} | {% if v.gnomad_af_exome is not none %}{{ v.gnomad_af_exome | freq_desc }}{% elif v.gnomad_af_genome is not none %}{{ v.gnomad_af_genome | freq_desc }}{% elif v.af_gnomad is not none %}{{ v.af_gnomad | freq_desc }}{% else %}N/A{% endif %} |
 {% endfor %}
 
 {% for v in top_vars %}
-{% if v.sift or v.polyphen or v.protein_domain %}
+{% if v.sift or v.polyphen or v.protein_domain or v.lof_flags %}
 - **{{ v.chrom }}:{{ v.pos }}**{% if v.amino_acid_change %} `{{ v.amino_acid_change }}`{% endif %}{% if v.protein_position %} (蛋白位置: {{ v.protein_position }}){% endif %}{% if v.protein_domain %} — 功能域: *{{ v.protein_domain }}*{% endif %}{% if v.sift %} — SIFT: {{ v.sift | sift_badge }}{% endif %}{% if v.polyphen %} — PolyPhen: {{ v.polyphen | polyphen_badge }}{% endif %}{% if v.lof_flags %} — LoF: `{{ v.lof_flags }}`{% endif %}
 {% endif %}
 {% endfor %}
