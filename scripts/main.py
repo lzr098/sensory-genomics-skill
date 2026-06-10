@@ -854,40 +854,67 @@ class SensoryPipeline:
             len(all_genes), len(path_a_genes), len(path_b_genes),
         )
 
-        # ── 构建任务 ──
-        # 基因级 API: UniProt, ClinVar, GTEx → 对所有基因
-        # gnomAD: gene-level for Path A, variant-level for Path B
-        all_tasks = []
-        task_meta = []  # (gene, api_name, variant_info_or_None)
+        # ── 逐个基因顺序执行，带详细日志 ──
+        enrichment: Dict[str, Dict[str, Any]] = {}
+        for idx, gene in enumerate(all_genes):
+            logger.info("Stage 6: [%d/%d] enriching %s", idx + 1, len(all_genes), gene)
+            if gene not in enrichment:
+                enrichment[gene] = {}
 
-        for gene in all_genes:
-            # 基因级: UniProt, ClinVar, GTEx
-            all_tasks.append(self._safe_query(self.uniprot_client.query, gene))
-            task_meta.append((gene, "uniprot", None))
-            all_tasks.append(self._safe_query(self.clinvar_client.query, gene))
-            task_meta.append((gene, "clinvar", None))
-            all_tasks.append(self._safe_query(self.gtex_client.query, gene))
-            task_meta.append((gene, "gtex", None))
+            # UniProt
+            try:
+                logger.debug("  -> UniProt query for %s", gene)
+                enrichment[gene]["uniprot"] = await self._safe_query(self.uniprot_client.query, gene)
+                logger.debug("  <- UniProt done for %s", gene)
+            except Exception as exc:
+                logger.error("UniProt error for %s: %s", gene, exc)
+                enrichment[gene]["uniprot"] = {"error": str(exc)}
+
+            # ClinVar
+            try:
+                logger.debug("  -> ClinVar query for %s", gene)
+                enrichment[gene]["clinvar"] = await self._safe_query(self.clinvar_client.query, gene)
+                logger.debug("  <- ClinVar done for %s", gene)
+            except Exception as exc:
+                logger.error("ClinVar error for %s: %s", gene, exc)
+                enrichment[gene]["clinvar"] = {"error": str(exc)}
+
+            # GTEx
+            try:
+                logger.debug("  -> GTEx query for %s", gene)
+                enrichment[gene]["gtex"] = await self._safe_query(self.gtex_client.query, gene)
+                logger.debug("  <- GTEx done for %s", gene)
+            except Exception as exc:
+                logger.error("GTEx error for %s: %s", gene, exc)
+                enrichment[gene]["gtex"] = {"error": str(exc)}
 
             # gnomAD
             if gene in path_a_genes:
-                # Path A: 基因级约束查询
-                all_tasks.append(self._safe_query(self.gnomad_client.query, gene))
-                task_meta.append((gene, "gnomad", None))
+                try:
+                    logger.debug("  -> gnomAD gene query for %s", gene)
+                    enrichment[gene]["gnomad"] = await self._safe_query(self.gnomad_client.query, gene)
+                    logger.debug("  <- gnomAD done for %s", gene)
+                except Exception as exc:
+                    logger.error("gnomAD error for %s: %s", gene, exc)
+                    enrichment[gene]["gnomad"] = {"error": str(exc)}
+                enrichment[gene]["gnomad_variants"] = []
             elif gene in path_b_genes:
-                # Path B: 逐变异频率查询（本地 gnomAD precompute DB）
+                variants_list = enrichment[gene].setdefault("gnomad_variants", [])
                 for v in path_b_genes[gene]:
-                    all_tasks.append(self._safe_query_variant(
-                        self.local_gnomad.query_variant_async,
-                        str(v.chrom), v.pos, v.ref, v.alt,
-                    ))
-                    task_meta.append((gene, "gnomad_variant", {
-                        "pos": v.pos, "ref": v.ref, "alt": v.alt,
-                        "consequence": v.consequence,
-                    }))
+                    try:
+                        logger.debug("  -> gnomAD variant query for %s %s:%d", gene, v.chrom, v.pos)
+                        result = await self._safe_query_variant(
+                            self.local_gnomad.query_variant_async,
+                            str(v.chrom), v.pos, v.ref, v.alt,
+                        )
+                        variants_list.append({"variant": {"pos": v.pos, "ref": v.ref, "alt": v.alt, "consequence": v.consequence}, "result": result})
+                        logger.debug("  <- gnomAD variant done for %s", gene)
+                    except Exception as exc:
+                        logger.error("gnomAD variant error for %s: %s", gene, exc)
+                        variants_list.append({"variant": {"pos": v.pos, "ref": v.ref, "alt": v.alt, "consequence": v.consequence}, "error": str(exc)})
 
-        # ── 并发执行 ──
-        results = await asyncio.gather(*all_tasks, return_exceptions=True)
+        logger.info("Stage 6: enrichment loop completed for %d genes", len(enrichment))
+        return enrichment
 
         # ── 按基因归类 ──
         enrichment: Dict[str, Dict[str, Any]] = {}
