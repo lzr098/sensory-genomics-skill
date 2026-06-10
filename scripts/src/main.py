@@ -35,8 +35,10 @@ from src.models import (
     SensoryReport,
     Variant,
 )
+from src.report.html_generator import HtmlReportGenerator
 from src.report.json_generator import JsonReportGenerator
 from src.report.markdown_generator import MarkdownReportGenerator
+from src.report.pdf_generator import PdfReportGenerator
 from src.specialized.mitochondrial import MitochondrialAnnotator
 from src.specialized.or_tiers import ORTierClassifier
 from src.specialized.tas2r38 import TAS2R38Analyzer
@@ -1045,7 +1047,7 @@ async def main(config: Optional[AnalysisConfig] = None) -> Dict[str, str]:
         config: 分析配置，若为 None 则解析命令行参数。
 
     Returns:
-        输出文件路径字典 {"markdown": ..., "json": ...}。
+        输出文件路径字典 {"markdown"|"html"|"pdf": ..., "json": ...}。
     """
     if config is None:
         config = _parse_args()
@@ -1075,17 +1077,45 @@ async def main(config: Optional[AnalysisConfig] = None) -> Dict[str, str]:
     os.makedirs(output_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    md_path = os.path.join(output_dir, f"sensory_report_{timestamp}.md")
+    out_format = config.output_format.lower()
+    report_paths: Dict[str, str] = {"json": "", "markdown": "", "html": "", "pdf": ""}
+
+    # 始终输出 JSON
     json_path = os.path.join(output_dir, f"sensory_report_{timestamp}.json")
-
-    with open(md_path, "w", encoding="utf-8") as f:
-        f.write(markdown_content)
-
     with open(json_path, "w", encoding="utf-8") as f:
         f.write(json_content)
+    report_paths["json"] = json_path
 
-    logger.info("Reports saved: markdown=%s, json=%s", md_path, json_path)
-    return {"markdown": md_path, "json": json_path}
+    if out_format == "markdown":
+        md_path = os.path.join(output_dir, f"sensory_report_{timestamp}.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(markdown_content)
+        report_paths["markdown"] = md_path
+    elif out_format == "html":
+        html_path = os.path.join(output_dir, f"sensory_report_{timestamp}.html")
+        html_generator = HtmlReportGenerator(markdown_generator=md_generator)
+        html_generator.generate_to_file(report, html_path)
+        report_paths["html"] = html_path
+    elif out_format == "pdf":
+        pdf_path = os.path.join(output_dir, f"sensory_report_{timestamp}.pdf")
+        pdf_generator = PdfReportGenerator(html_generator=HtmlReportGenerator(markdown_generator=md_generator))
+        actual_path = pdf_generator.generate_to_file(report, pdf_path)
+        if actual_path.endswith(".pdf"):
+            report_paths["pdf"] = actual_path
+        else:
+            # 降级到 HTML
+            report_paths["html"] = actual_path
+    else:
+        logger.warning("Unknown output format '%s', falling back to markdown", out_format)
+        md_path = os.path.join(output_dir, f"sensory_report_{timestamp}.md")
+        with open(md_path, "w", encoding="utf-8") as f:
+            f.write(markdown_content)
+        report_paths["markdown"] = md_path
+
+    # 清理空键，便于日志展示
+    active_paths = {k: v for k, v in report_paths.items() if v}
+    logger.info("Reports saved: %s", active_paths)
+    return active_paths
 
 
 def _parse_args() -> AnalysisConfig:
@@ -1097,6 +1127,12 @@ def _parse_args() -> AnalysisConfig:
         "--subsystems",
         default="vision,hearing,olfaction,taste,somatosensation",
         help="Comma-separated subsystems",
+    )
+    parser.add_argument(
+        "--format",
+        default="markdown",
+        choices=["markdown", "html", "pdf"],
+        help="报告输出格式（默认 markdown）",
     )
     parser.add_argument("--output-dir", default=None, help="Output directory")
     parser.add_argument("--known-phenotype", default=None, help="Known phenotype text")
@@ -1120,6 +1156,7 @@ def _parse_args() -> AnalysisConfig:
         known_phenotype=args.known_phenotype,
         show_reference_info=not args.no_reference_info,
         strict_filter=args.strict_filter,
+        output_format=args.format,
     )
 
 

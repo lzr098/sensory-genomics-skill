@@ -267,6 +267,7 @@ class AnalysisConfig(BaseModel):
     vep_source: str = Field("rest_api", description="VEP 来源")
     output_dir: Optional[str] = Field(None, description="输出目录")
     strict_filter: bool = Field(False, description="使用精确外显子/CDS坐标预过滤（排除内含子变异）")
+    output_format: str = Field("markdown", description="报告输出格式：markdown/html/pdf")
     precompute_db: Optional[str] = Field(None, description="预计算 VEP SQLite 数据库路径，运行时优先查库")
     original_vcf_path: Optional[str] = Field(None, description="原始 VCF 路径（BED 过滤前），用于 KeySNPInferrer 查询")
     auto_sex: bool = Field(False, description="从 VCF chrX/chrY 基因型模式自动推断性别")
