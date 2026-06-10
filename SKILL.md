@@ -298,3 +298,31 @@ pheno = sorted_pmap.get("".join(sorted(gt)), {})
 Some trait SNPs are multi-allelic (e.g., rs1229984 / ADH1B has three alleles in GRCh38). The original `phenotype_map` only covered bi-allelic combinations. When a VCF reports a genotype involving a secondary alt allele (e.g., `CT` where `T` is the primary ref and `C` is alt[1]), it falls through to "unknown phenotype".
 
 **Fix**: Ensure `phenotype_map` covers all combinatorial genotypes for multi-allelic SNPs after coordinate updates. After the 2026-06-07 fix, all 46 key SNPs resolve to defined phenotypes with zero "unknown" entries.
+
+### Stage 6 API Enrichment Concurrency Crash
+
+**Symptom**: Pipeline reaches Stage 6 (UniProt/gnomAD/ClinVar/GTEx enrichment) and is killed with `exit code 143` (SIGTERM). No report is generated.
+
+**Root cause**: `_enrich_genes()` constructs a list of coroutines and passes them to `asyncio.gather()` all at once. For ~114 enrichment genes this fires 400-500 concurrent HTTP/API requests simultaneously, exhausting file descriptors / connection pools / memory and triggering the OS OOM killer or process watcher.
+
+**Fix** (commit `05d3d99`): Replace the single `asyncio.gather()` burst with **per-gene sequential execution**:
+
+```python
+# OLD — crashes under load
+results = await asyncio.gather(*all_tasks, return_exceptions=True)
+
+# NEW — stable, with per-step logging
+for gene in all_genes:
+    enrichment[gene]["uniprot"]  = await self._safe_query(self.uniprot_client.query, gene)
+    enrichment[gene]["clinvar"]  = await self._safe_query(self.clinvar_client.query, gene)
+    enrichment[gene]["gtex"]     = await self._safe_query(self.gtex_client.query, gene)
+    enrichment[gene]["gnomad"]   = await self._safe_query(self.gnomad_client.query, gene)
+```
+
+- Each gene's APIs run serially, but the loop is still `async` → other event-loop tasks are not blocked.
+- Per-step `logger.debug()` is added so a crash can be traced to the exact gene + API call.
+- Each API call has its own `try/except` → a single failing API does not abort the entire Stage 6.
+
+**Performance impact**: ~8 minutes for 114 genes (vs ~30 s theoretical for full concurrency). Acceptable trade-off for reliability.
+
+**When to skip Stage 6**: Use `--no-reference-info` only as a temporary workaround, not as the default. The correct fix is always the sequential execution above.
