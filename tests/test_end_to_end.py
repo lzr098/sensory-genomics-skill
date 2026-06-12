@@ -4,9 +4,15 @@
 """
 
 import json
+import sys
 from pathlib import Path
 
 import pytest
+
+# 确保测试覆盖生产入口 scripts/main.py
+_SCRIPTS_DIR = Path(__file__).parent.parent / "scripts"
+if str(_SCRIPTS_DIR) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS_DIR))
 
 from src.assessment.engine import ImpactEngine
 from src.config_loader import load_config
@@ -44,10 +50,8 @@ class TestImports:
         import src.logger
 
     def test_main_module_importable(self) -> None:
-        """main.py 应可导入（依赖 VCF/VEP 的部分除外）."""
-        # 由于 pysam 环境问题，main.py 可能无法完全导入
-        # 但我们可以验证至少非 VCF 相关类可导入
-        from src.main import SensoryPipeline, run_analysis
+        """生产入口 scripts/main.py 应可导入."""
+        from main import SensoryPipeline, run_analysis
         assert SensoryPipeline is not None
         assert run_analysis is not None
 
@@ -61,7 +65,7 @@ class TestPipelineAssembly:
 
     def test_config_loading(self) -> None:
         cfg = load_config()
-        assert cfg.vep.source in ("rest_api", "local")
+        assert cfg.vep.source in ("rest_api", "local", "local_docker")
 
     def test_prefilter_creation(self) -> None:
         p = Prefilter(min_qual=30, min_dp=10, pass_only=True)

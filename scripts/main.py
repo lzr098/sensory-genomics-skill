@@ -816,6 +816,7 @@ class SensoryPipeline:
         两条路径去重后统一并发查询。
         """
         if not self.config.show_reference_info:
+            self._last_enrichment_summary = {"mode": "disabled", "total": len(gene_cards), "enriched": 0}
             return {}
 
         # ── Path A: 影响评估阈值筛选 ──
@@ -826,25 +827,30 @@ class SensoryPipeline:
         ]
         path_a_genes = {card.gene_symbol for card in impactful_cards}
 
-        # ── Path B: OR 基因纯合蛋白影响变异 ──
-        or_protein_csq = {"frameshift_variant", "stop_gained",
-                          "splice_acceptor_variant", "splice_donor_variant",
-                          "missense_variant", "inframe_deletion", "inframe_insertion"}
-        path_b_genes: Dict[str, list] = {}  # gene → list of homozygous protein-affecting variants
-        for card in gene_cards:
-            gene = card.gene_symbol
-            if not gene or not gene.startswith("OR"):
-                continue
-            if gene in path_a_genes:
-                continue
-            homo_variants = [
-                v for v in card.variants
-                if v.gt == "1/1" and v.consequence in or_protein_csq
-            ]
-            if homo_variants:
-                path_b_genes[gene] = homo_variants
+        if self.config.enrich_all_genes:
+            # 全量富集模式：覆盖所有有基因符号的卡片
+            all_genes = sorted({card.gene_symbol for card in gene_cards if card.gene_symbol})
+            path_b_genes: Dict[str, list] = {}
+        else:
+            # ── Path B: OR 基因纯合蛋白影响变异 ──
+            or_protein_csq = {"frameshift_variant", "stop_gained",
+                              "splice_acceptor_variant", "splice_donor_variant",
+                              "missense_variant", "inframe_deletion", "inframe_insertion"}
+            path_b_genes: Dict[str, list] = {}  # gene → list of homozygous protein-affecting variants
+            for card in gene_cards:
+                gene = card.gene_symbol
+                if not gene or not gene.startswith("OR"):
+                    continue
+                if gene in path_a_genes:
+                    continue
+                homo_variants = [
+                    v for v in card.variants
+                    if v.gt == "1/1" and v.consequence in or_protein_csq
+                ]
+                if homo_variants:
+                    path_b_genes[gene] = homo_variants
 
-        all_genes = sorted(set(path_a_genes) | set(path_b_genes.keys()))
+            all_genes = sorted(set(path_a_genes) | set(path_b_genes.keys()))
         if not all_genes:
             logger.info("Stage 6: no genes match enrichment criteria, skipping")
             return {}
@@ -889,7 +895,7 @@ class SensoryPipeline:
                 enrichment[gene]["gtex"] = {"error": str(exc)}
 
             # gnomAD
-            if gene in path_a_genes:
+            if self.config.enrich_all_genes or gene in path_a_genes:
                 try:
                     logger.debug("  -> gnomAD gene query for %s", gene)
                     enrichment[gene]["gnomad"] = await self._safe_query(self.gnomad_client.query, gene)
@@ -913,38 +919,15 @@ class SensoryPipeline:
                         logger.error("gnomAD variant error for %s: %s", gene, exc)
                         variants_list.append({"variant": {"pos": v.pos, "ref": v.ref, "alt": v.alt, "consequence": v.consequence}, "error": str(exc)})
 
+        self._last_enrichment_summary = {
+            "mode": "all" if self.config.enrich_all_genes else "threshold",
+            "total": len(gene_cards),
+            "enriched": len(enrichment),
+            "path_a": len(path_a_genes),
+            "path_b": len(path_b_genes),
+            "skipped": len(gene_cards) - len(enrichment),
+        }
         logger.info("Stage 6: enrichment loop completed for %d genes", len(enrichment))
-        return enrichment
-
-        # ── 按基因归类 ──
-        enrichment: Dict[str, Dict[str, Any]] = {}
-        for (gene, api_name, variant_info), result in zip(task_meta, results):
-            if gene not in enrichment:
-                enrichment[gene] = {}
-
-            if api_name == "gnomad_variant":
-                # 变异性 gnomAD → 聚合到 gnomad_variants 列表
-                variants_list = enrichment[gene].setdefault("gnomad_variants", [])
-                entry = {
-                    "variant": variant_info,
-                }
-                if isinstance(result, Exception):
-                    entry["error"] = str(result)
-                else:
-                    entry["result"] = result
-                variants_list.append(entry)
-            else:
-                if isinstance(result, Exception):
-                    enrichment[gene][api_name] = {"error": str(result)}
-                else:
-                    enrichment[gene][api_name] = result
-
-        # 同样为 Path A 基因补充一个空的 gnomad_variants（如果没有的话）
-        # 维持 report 模板的兼容性
-        for gene in path_a_genes:
-            if gene in enrichment and "gnomad_variants" not in enrichment[gene]:
-                enrichment[gene]["gnomad_variants"] = []
-
         return enrichment
 
     @staticmethod
@@ -994,6 +977,7 @@ class SensoryPipeline:
                 topology="可用" if data.get("uniprot", {}).get("found") else "N/A",
             )
 
+        enrichment_summary = getattr(self, "_last_enrichment_summary", {})
         report = SensoryReport(
             sample_id=self.vcf_parser.sample_name,
             sex=self.config.sex,
@@ -1006,6 +990,7 @@ class SensoryPipeline:
             key_snps=key_snp_results,
             executive_summary=executive_summary,
             data_availability=data_availability,
+            enrichment_summary=enrichment_summary,
             disclaimer_zh=self._default_disclaimer(),
         )
         return report
@@ -1398,6 +1383,11 @@ def _parse_args() -> AnalysisConfig:
         action="store_true",
         help="Use precise exon/CDS coordinates for pre-filtering (excludes intronic variants)",
     )
+    parser.add_argument(
+        "--enrich-all-genes",
+        action="store_true",
+        help="Enrich all candidate genes via API (default: only high-impact and key OR genes)",
+    )
 
     args = parser.parse_args()
 
@@ -1416,6 +1406,7 @@ def _parse_args() -> AnalysisConfig:
         show_reference_info=not args.no_reference_info,
         strict_filter=args.strict_filter,
         auto_sex=auto_sex,
+        enrich_all_genes=args.enrich_all_genes,
     )
 
 

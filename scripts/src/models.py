@@ -250,6 +250,9 @@ class SensoryReport(BaseModel):
     data_availability: Dict[str, DataAvailability] = Field(
         default_factory=dict, description="各基因数据可用性状态"
     )
+    enrichment_summary: Dict[str, Any] = Field(
+        default_factory=dict, description="Stage 6 API 富集策略与统计"
+    )
     disclaimer_zh: str = Field("", description="免责声明（中文）")
 
 
@@ -271,3 +274,4 @@ class AnalysisConfig(BaseModel):
     precompute_db: Optional[str] = Field(None, description="预计算 VEP SQLite 数据库路径，运行时优先查库")
     original_vcf_path: Optional[str] = Field(None, description="原始 VCF 路径（BED 过滤前），用于 KeySNPInferrer 查询")
     auto_sex: bool = Field(False, description="从 VCF chrX/chrY 基因型模式自动推断性别")
+    enrich_all_genes: bool = Field(False, description="对所有候选基因执行 API 富集（默认仅富集高影响基因和关键 OR 基因）")

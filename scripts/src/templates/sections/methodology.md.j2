@@ -21,16 +21,21 @@
 
 {% set enriched_cards = gene_cards | selectattr("enrichment_data") | list %}
 {% set enriched_count = enriched_cards | length %}
+{% set summary = enrichment_summary or {} %}
 
 | 指标 | 数值 |
 |------|------|
 | 完成 API 富集的基因数 | {{ enriched_count }} / {{ gene_cards | length }} |
+| 富集模式 | {{ "全部基因" if summary.get("mode") == "all" else "按需富集" }} |
+| Path A（评估≥部分影响） | {{ summary.get("path_a", "—") }} |
+| Path B（OR 基因纯合蛋白影响） | {{ summary.get("path_b", "—") }} |
+| 未触发 API 富集 | {{ summary.get("skipped", gene_cards | length - enriched_count) }} |
 | 含 UniProt 注释 | {{ gene_cards | selectattr("enrichment_data.uniprot") | list | length }} |
 | 含 GTEx 表达数据 | {{ gene_cards | selectattr("enrichment_data.gtex") | list | length }} |
 | 含 ClinVar 记录 | {{ gene_cards | selectattr("enrichment_data.clinvar") | list | length }} |
 | 含 gnomAD 频率 | {{ gene_cards | selectattr("enrichment_data.gnomad") | list | length }} |
 
-> **说明**：API 富集主要覆盖评估为"部分影响"及以上、或属于嗅觉受体（OR）关键通路的基因。其余基因（多为无影响/轻微影响）未触发 API 富集，以控制运行时间与网络负载。
+> **说明**：默认模式下，API 富集仅覆盖评估为"部分影响"及以上的基因（Path A），以及检出纯合蛋白影响变异的嗅觉受体（OR）基因（Path B）。其余基因（多为"无影响"或"可能轻微影响"）未触发 API 富集，以控制运行时间与网络负载。如需覆盖全部候选基因，可使用 `--enrich-all-genes` 参数。
 
 ### 5.2 已知局限
 

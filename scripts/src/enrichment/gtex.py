@@ -1,127 +1,105 @@
 """GTEx 查询客户端.
 
+v0.10.16: 本地 GTEx SQLite DB 优先，零外部 API 调用。
+v0.10.16b: 本地 miss 时自动从 GTEx API 拉取并缓存（lazy loading）。
 查询基因在感官组织中的表达水平。
-使用本地 gene→ENSG 映射表 (gene_ensg_map.json)，零外部 API 依赖用于 ID 转换。
-
-trust_env=False: 不走系统代理。
 """
 
-import json
-from typing import Any, Dict, Optional
+import asyncio
+import sys
+from typing import Any, Dict
 from pathlib import Path
 
 from src.enrichment.cache import CacheManager
 from src.enrichment.client_base import AsyncApiClient
 
 
-# 本地 ENSG 映射表路径
-_ENSG_MAP_PATH = Path(__file__).resolve().parent.parent.parent.parent / "assets" / "data" / "gene_ensg_map.json"
+# 本地 GTEx DB 查询辅助
+def _query_gtex_local(gene_symbol: str) -> Dict[str, float]:
+    """查询本地 GTEx SQLite DB，返回 {tissue: median_tpm}."""
+    try:
+        gtex_local_path = str(Path.home() / ".workbuddy" / "scripts")
+        if gtex_local_path not in sys.path:
+            sys.path.insert(0, gtex_local_path)
+        from gtex_local import query_gtex_local
+        return query_gtex_local(gene_symbol, tissues=None)
+    except Exception:
+        return {}
 
 
-def _load_ensg_map() -> Dict[str, str]:
-    """加载 gene_symbol → ENSG ID 映射表."""
-    if _ENSG_MAP_PATH.exists():
-        with open(_ENSG_MAP_PATH) as f:
-            return json.load(f)
-    return {}
+def _fetch_and_cache_gtex(gene_symbol: str) -> bool:
+    """从 GTEx API 拉取并写入本地 SQLite DB（sync，用于 asyncio.to_thread）."""
+    try:
+        gtex_local_path = str(Path.home() / ".workbuddy" / "scripts")
+        if gtex_local_path not in sys.path:
+            sys.path.insert(0, gtex_local_path)
+        from gtex_local import query_gtex_api_median, insert_gtex_api_results
+        results = query_gtex_api_median(gene_symbol)
+        if results:
+            insert_gtex_api_results(None, gene_symbol, results)
+            return True
+    except Exception:
+        pass
+    return False
 
 
 class GTExClient(AsyncApiClient):
-    """GTEx REST API 客户端.
+    """GTEx 本地 DB + lazy loading 客户端.
 
-    使用本地 ENSG 映射表将 gene symbol 转换为 gencodeId，
-    避免外部 API 依赖用于 ID 转换。
-
-    trust_env=False: 不走系统代理。
+    v0.10.16b: 本地优先，miss 时自动在线补数据。
     """
-
-    _API_URLS = ["https://gtexportal.org/api/v2"]
 
     def __init__(self, cache: CacheManager, rate_limit: int = 10, timeout: int = 30) -> None:
         super().__init__(
             api_name="gtex",
-            base_url="https://gtexportal.org/api/v2",
+            base_url="local_db",  # dummy, not used
             cache=cache,
             rate_limit=rate_limit,
             timeout=timeout,
             trust_env=False,
         )
-        self._ensg_map = _load_ensg_map()
 
     async def _fetch(self, key: str) -> Dict[str, Any]:
-        """查询 GTEx 基因表达.
+        """查询本地 GTEx SQLite DB，miss 时自动在线拉取缓存.
 
-        策略:
-            1. 本地 ENSG 映射 → gencodeId 查询
-            2. geneSymbol 查询 (fallback)
-            3. geneId 查询 (fallback)
+        返回和原 API 客户端一致的格式，确保下游代码零改动。
         """
-        session = await self._get_session()
+        local_data = _query_gtex_local(key)
 
-        # 策略 1: 本地 ENSG 映射
-        ensg = self._ensg_map.get(key)
-        if ensg:
+        # --- v0.10.16b: LAZY LOAD ---
+        if not local_data:
             try:
-                result = await self._try_query(session, "gencodeId", ensg, key)
-                if result.get("found"):
-                    return result
+                fetched = await asyncio.to_thread(_fetch_and_cache_gtex, key)
+                if fetched:
+                    local_data = _query_gtex_local(key)
             except Exception:
                 pass
 
-        # 策略 2: geneSymbol
-        try:
-            result = await self._try_query(session, "geneSymbol", key, key)
-            if result.get("found"):
-                return result
-        except Exception:
-            pass
+        if not local_data:
+            return {"found": False, "gene": key}
 
-        # 策略 3: geneId
-        try:
-            result = await self._try_query(session, "geneId", key, key)
-            if result.get("found"):
-                return result
-        except Exception:
-            pass
+        # 筛选感官相关组织
+        sensory_tissues = {
+            "Brain", "Nerve", "Skin", "Tongue", "Eye", "Ear",
+            "Whole Blood", "Pituitary", "Spinal cord",
+        }
 
-        return {"found": False, "gene": key}
+        tissue_expressions = []
+        for tissue, tpm in local_data.items():
+            if any(st.lower() in tissue.lower() for st in sensory_tissues):
+                tissue_expressions.append({
+                    "tissue": tissue,
+                    "tissue_site": tissue,
+                    "median_tpm": tpm,
+                    "unit": "TPM",
+                })
 
-    async def _try_query(
-        self, session, param_name: str, param_value: str, key: str
-    ) -> Dict[str, Any]:
-        """尝试一种参数组合查询."""
-        for api_url in self._API_URLS:
-            url = (
-                f"{api_url}/expression/geneExpression"
-                f"?{param_name}={param_value}&datasetId=gtex_v10"
-            )
-            async with session.get(url) as response:
-                response.raise_for_status()
-                data = await response.json()
-
-            gene_expression = data.get("geneExpression", [])
-            if gene_expression:
-                sensory_tissues = {
-                    "Brain", "Nerve", "Skin", "Tongue", "Eye", "Ear",
-                    "Whole Blood", "Pituitary", "Spinal cord",
-                }
-                tissue_expressions = []
-                for expr in gene_expression:
-                    tissue = expr.get("tissueSiteDetailId", "")
-                    if any(st.lower() in tissue.lower() for st in sensory_tissues):
-                        tissue_expressions.append({
-                            "tissue": tissue,
-                            "tissue_site": expr.get("tissueSiteDetail", ""),
-                            "median_tpm": expr.get("median", 0),
-                            "unit": expr.get("unit", "TPM"),
-                        })
-                return {
-                    "found": True,
-                    "gene": key,
-                    "tissue_expressions": tissue_expressions,
-                    "source": f"gtex_v10/{param_name}",
-                }
-        return {"found": False, "gene": key}
+        return {
+            "found": True,
+            "gene": key,
+            "tissue_expressions": tissue_expressions,
+            "source": "gtex_local_db",
+        }
 
     async def query_gene(self, gene_symbol: str) -> Dict[str, Any]:
         """查询基因在感官组织中的表达."""
