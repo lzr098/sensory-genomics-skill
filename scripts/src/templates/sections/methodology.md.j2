@@ -12,8 +12,25 @@
 | 基因集 | 预定义五大感官子系统基因集（YAML 静态配置） |
 | 功能评估 | 五级评估体系，综合蛋白影响 × 基因确定性 × 遗传模式 |
 | 遗传模式 | 隐性纯合 / X-连锁 / 显性 / 线粒体 |
-| API 富集 | UniProt（蛋白功能）、gnomAD（本地预计算 AF）、ClinVar（本地 VCF）、GTEx（表达，待集成） |
+| API 富集 | UniProt（蛋白功能）、gnomAD（本地预计算 AF）、ClinVar（本地 VCF）、GTEx（表达） |
 | 缓存策略 | SQLite 异步缓存，TTL 30 天 |
+
+### 5.1.1 Stage 6 API 富集汇总
+
+本次分析对候选基因进行了异步 API 富集，以补充蛋白功能、组织表达、人群频率及临床意义信息。
+
+{% set enriched_cards = gene_cards | selectattr("enrichment_data") | list %}
+{% set enriched_count = enriched_cards | length %}
+
+| 指标 | 数值 |
+|------|------|
+| 完成 API 富集的基因数 | {{ enriched_count }} / {{ gene_cards | length }} |
+| 含 UniProt 注释 | {{ gene_cards | selectattr("enrichment_data.uniprot") | list | length }} |
+| 含 GTEx 表达数据 | {{ gene_cards | selectattr("enrichment_data.gtex") | list | length }} |
+| 含 ClinVar 记录 | {{ gene_cards | selectattr("enrichment_data.clinvar") | list | length }} |
+| 含 gnomAD 频率 | {{ gene_cards | selectattr("enrichment_data.gnomad") | list | length }} |
+
+> **说明**：API 富集主要覆盖评估为"部分影响"及以上、或属于嗅觉受体（OR）关键通路的基因。其余基因（多为无影响/轻微影响）未触发 API 富集，以控制运行时间与网络负载。
 
 ### 5.2 已知局限
 
@@ -38,7 +55,7 @@
 | gnomAD AF | 本地预计算 DB (sensory_variants_vep.sqlite, 19,861 条) | ✅ 本次分析调用成功 | 仅覆盖 AF≥0.1% 常见变异；罕见/私有变异不在 DB 中 |
 | ClinVar | 本地 VCF (clinvar.vcf.gz, 183MB) | ✅ 本次分析调用成功 | bcftools 本地查询，零网络延迟 |
 | UniProt | REST API (rest.uniprot.org) | ✅ 本次分析调用成功 | 异步并发查询，覆盖所有需富集的基因 |
-| GTEx | REST API (gtexportal.org) + 本地 ENSG 映射 | ⚠️ 待集成 | gene_ensg_map.json 已就绪 (501 条)，API 连通性问题待解决 |
+| GTEx | REST API (gtexportal.org) + 本地 ENSG 映射 | ✅ 本次分析调用成功 | 覆盖完成 API 富集的全部基因；组织表达数据用于评估基因功能相关性 |
 | SpliceAI | VEP / 外部 | ❌ 待集成 | v0.2.0 未集成 |
 | CADD | VEP / 外部 | ❌ 待集成 | v0.2.0 未集成 |
 

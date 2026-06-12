@@ -17,4 +17,18 @@
 >
 > **置信度评分**：⭐⭐⭐⭐⭐ = 多基因/多SNP一致支持；⭐⭐⭐⭐ = 关键SNP VCF检出+基因评估吻合；⭐⭐⭐ = 主要依据REF/REF推断或单一位点；⭐⭐ = 数据有限或部分矛盾；⭐ = 数据严重不足。
 
+### 2.1 全部关键性状 SNP（{{ key_snps | length }} 个）
+
+下表列出本次分析覆盖的全部关键 SNP。基因型为 **VCF 实际检出** 的以 ✅ 标记；未检出的位点根据参考基因组推断为 REF/REF（以 📌 标记）。
+
+| rsID | 基因 | 位置 | 基因型 | 来源 | 表型标签 | 表型描述 |
+|------|------|------|--------|------|----------|----------|
+{% for snp in (key_snps or []) %}
+| {{ snp.rsid }} | {{ snp.gene }} | chr{{ snp.chrom }}:{{ snp.pos }} | {{ snp.inferred_genotype }} | {% if snp.found_in_vcf %}✅ VCF{% else %}📌 REF推断{% endif %} | {{ snp.phenotype_label }} | {{ snp.phenotype_description[:60] if snp.phenotype_description else "—" }}{% if snp.phenotype_description and snp.phenotype_description | length > 60 %}...{% endif %} |
+{% else %}
+| — | — | — | — | — | — | 无关键 SNP 数据 |
+{% endfor %}
+
+> **详细注释**：每个 SNP 的文献依据、等位基因功能及人群频率信息见 JSON 输出中的 `key_snps` 字段。
+
 ---
