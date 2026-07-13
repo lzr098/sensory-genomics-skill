@@ -2,26 +2,44 @@ subsystems:
 - name: vision
   display_name: 视觉系统
   genes:
+  - symbol: ABCA4
+    function: 视网膜色素上皮细胞转运蛋白，与黄斑变性相关
+  - symbol: CRYAA
+    function: 晶状体 alpha-A 晶体蛋白，维持晶状体透明度
+  - symbol: CRYAB
+    function: alpha-B crystallin，晶状体分子伴侣，白内障/肌原纤维病变相关
+  - symbol: CRYBA1
+    function: beta-A1 crystallin，晶状体结构蛋白
+  - symbol: CRYBA2
+    function: beta-A2 crystallin，晶状体结构蛋白
+  - symbol: CRYBB1
+    function: beta-B1 crystallin，晶状体结构蛋白
+  - symbol: CRYBB2
+    function: beta-B2 crystallin，晶状体结构蛋白
+  - symbol: CRYGA
+    function: gamma-A crystallin，晶状体结构蛋白
+  - symbol: CRYGB
+    function: gamma-B crystallin，晶状体结构蛋白
+  - symbol: CRYGC
+    function: gamma-C crystallin，晶状体结构蛋白
+  - symbol: CRYGS
+    function: gamma-S crystallin，晶状体结构蛋白
+  - symbol: EYS
+    function: 视网膜感光细胞外节结构蛋白，与视网膜色素变性相关
+  - symbol: GJA8
+    function: 缝隙连接蛋白，晶状体发育与透明性维持
+  - symbol: OCA2
+    function: 黑色素体膜转运蛋白，影响虹膜色素沉着与视力
   - symbol: OPN1LW
     function: 长波长视蛋白（红敏色素），色觉三色视觉的关键基因
   - symbol: OPN1MW
     function: 中波长视蛋白（绿敏色素），色觉三色视觉的关键基因
   - symbol: OPN1SW
     function: 短波长视蛋白（蓝敏色素），负责蓝紫光感知
-  - symbol: RHO
-    function: 视紫红质，杆状细胞光信号传导的关键蛋白
   - symbol: PDE6A
     function: 磷酸二酯酶6A，光传导级联反应的效应酶
-  - symbol: ABCA4
-    function: 视网膜色素上皮细胞转运蛋白，与黄斑变性相关
-  - symbol: EYS
-    function: 视网膜感光细胞外节结构蛋白，与视网膜色素变性相关
-  - symbol: GJA8
-    function: 缝隙连接蛋白，晶状体发育与透明性维持
-  - symbol: CRYAA
-    function: 晶状体 alpha-A 晶体蛋白，维持晶状体透明度
-  - symbol: OCA2
-    function: 黑色素体膜转运蛋白，影响虹膜色素沉着与视力
+  - symbol: RHO
+    function: 视紫红质，杆状细胞光信号传导的关键蛋白
   - symbol: TYRP1
     function: 酪氨酸酶相关蛋白1，黑色素合成通路
 - name: hearing
